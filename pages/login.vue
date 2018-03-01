@@ -4,11 +4,11 @@
       <h3>Masuk kedalam sistem PackTrack</h3>
         <form>
           <v-text-field
-            v-model="email"
-            label="E-mail"
-            :error-messages="errors.collect('email')"
-            v-validate="'required|email'"
-            data-vv-name="email"
+            v-model="username"
+            label="Username"
+            :error-messages="errors.collect('username')"
+            v-validate="'required'"
+            data-vv-name="username"
             required
           ></v-text-field>
           <v-text-field
@@ -18,9 +18,10 @@
             :error-messages="errors.collect('password')"
             v-validate="'required'"
             data-vv-name="password"
+            type="password"
             required
           ></v-text-field>
-          <v-btn color="primary" @click="submit">Login</v-btn>
+          <v-btn color="primary" @click="login">Login</v-btn>
         </form>
     </v-flex>
   </v-layout>
@@ -33,15 +34,18 @@ export default {
 
   data: () => ({
     password: '',
-    email: '',
+    username: '',
     dictionary: {
       attributes: {
-        email: 'Alamat email'
+        username: 'Username'
         // custom attributes
       },
       custom: {
         password: {
           required: () => 'Kata sandi tidak boleh kosong',
+        },
+        username: {
+          required: () => 'Username harus diisi'
         },
       }
     }
@@ -52,8 +56,20 @@ export default {
   },
 
   methods: {
-    submit () {
-      this.$validator.validateAll()
+    login () {
+      let self = this;
+      this.$validator.validateAll().then(isFormValid => {
+        if (isFormValid) {
+          self.$store.dispatch('login', {
+            username: this.username,
+            password: this.password,
+          }).then(() => {
+            this.$router.push('dashboard');
+          }).catch(err => {
+            console.log('error when trying to login : ', err);
+          })
+        }
+      })
     },
   }
 }

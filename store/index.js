@@ -24,7 +24,7 @@ const createStore = () => {
         }
       },
       login(vuexContext, authData) {
-        this.$axios.$get('/items').then(result => {
+        this.$axios.$post('/auth/login', authData).then(result => {
           console.log('the result : ', result)
         }).catch(err => {
           console.log('the errors : ', err)
