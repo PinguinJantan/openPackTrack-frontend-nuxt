@@ -11,7 +11,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" flat nuxt to="/inspire">Continue</v-btn>
+          <v-btn color="primary" flat nuxt to="/login">Masuk Sistem</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>

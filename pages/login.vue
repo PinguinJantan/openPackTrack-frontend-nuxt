@@ -1,6 +1,6 @@
 <template>
-  <v-layout>
-    <v-flex text-xs-center>
+  <v-layout align-center justify-center>
+    <v-flex xs12 sm4 md4 text-xs-center mt-5>
       <h3>Masuk kedalam sistem PackTrack</h3>
         <form>
           <v-text-field
@@ -20,8 +20,7 @@
             data-vv-name="password"
             required
           ></v-text-field>
-          <v-btn @click="submit">submit</v-btn>
-          <v-btn @click="clear">clear</v-btn>
+          <v-btn color="primary" @click="submit">Login</v-btn>
         </form>
     </v-flex>
   </v-layout>
@@ -56,11 +55,6 @@ export default {
     submit () {
       this.$validator.validateAll()
     },
-    clear () {
-      this.password = ''
-      this.email = ''
-      this.$validator.reset()
-    }
   }
 }
 </script>
