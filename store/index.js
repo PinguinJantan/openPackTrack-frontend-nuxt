@@ -26,6 +26,11 @@ const createStore = () => {
       login(vuexContext, authData) {
         this.$axios.$post('/auth/login', authData).then(result => {
           console.log('the result : ', result)
+          if (result.success) {
+           vuexContext.setToken(vuexContext, result.user.token); 
+          } else {
+
+          }
         }).catch(err => {
           console.log('the errors : ', err)
         })
