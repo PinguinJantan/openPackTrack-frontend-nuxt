@@ -28,6 +28,7 @@ const createStore = () => {
           console.log('the result : ', result)
           if (result.success) {
            vuexContext.setToken(vuexContext, result.user.token); 
+           localStorage.setItem('token', result.user.token)
           } else {
 
           }
@@ -35,8 +36,19 @@ const createStore = () => {
           console.log('the errors : ', err)
         })
         console.log('trying to login')
+      },
+      logout(vuexContext) {
+        vuexContext.commit('clearToken')
+        if (process.client) {
+          localStorage.removeItem('token')
+        }
       }
-    }
+    },
+    getters: {
+      isLogedIn(state) {
+        return state.token !== null ? true : false;
+      }
+    } 
   })
 }
 

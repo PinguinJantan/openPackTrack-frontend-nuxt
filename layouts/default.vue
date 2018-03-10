@@ -8,16 +8,26 @@
       <v-list>
         <v-list-tile
           router
-          :to="item.to"
+          :to="menu.to"
           :key="i"
-          v-for="(item, i) in items"
+          v-for="(menu, i) in menus"
           exact
         >
           <v-list-tile-action>
-            <v-icon v-html="item.icon"></v-icon>
+            <v-icon v-html="menu.icon"></v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="item.title"></v-list-tile-title>
+            <v-list-tile-title v-text="menu.title"></v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile router :to="'/login'" exact>
+          <v-list-tile-action>
+            <v-icon>apps</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              Log out
+            </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -60,14 +70,18 @@
         clipped: false,
         drawer: true,
         fixed: false,
-        items: [
+        menus: [
           { icon: 'apps', title: 'Beranda', to: '/' },
-          { icon: 'bubble_chart', title: 'Login', to: '/login' }
         ],
         miniVariant: false,
         right: true,
         rightDrawer: false,
         title: 'Open PackTrack'
+      }
+    },
+    computed: {
+      isUserLogedInd() {
+        return this.$store.getters.isLogedIn;
       }
     }
   }
