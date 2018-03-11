@@ -50,6 +50,9 @@
     </v-toolbar>
     <v-content>
       <v-container>
+        <v-alert type="error" :value="alert.show" @input="dismissAlert()" dismissible>
+          {{ alert.content }}
+        </v-alert>
         <nuxt />
       </v-container>
     </v-content>
@@ -83,6 +86,7 @@
         fixed: false,
         menus: [
           { icon: 'apps', title: 'Beranda', to: '/' },
+          { icon: 'folder', title: 'Item', to: '/items'}
         ],
         miniVariant: false,
         right: true,
@@ -93,6 +97,9 @@
     computed: {
       isLogedIn() {
         return this.$store.getters.isLogedIn;
+      },
+      alert() {
+        return this.$store.getters.alert;
       }
     },
     methods: {
@@ -101,6 +108,9 @@
         this.$router.push({
           name: 'index'
         })
+      },
+      dismissAlert() {
+        this.$store.commit('clearAlert')
       }
     }
   }

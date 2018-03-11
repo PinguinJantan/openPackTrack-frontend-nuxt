@@ -4,6 +4,10 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       token: null,
+      alert: {
+        show: false,
+        content: ''
+      }
     },
     mutations: {
       setToken(state, token) {
@@ -11,6 +15,14 @@ const createStore = () => {
       },
       clearToken(state) {
         state.token = null;
+      },
+      setAlert(state, content) {
+        state.alert.show = true;
+        state.alert.content = content;
+      },
+      clearAlert(state) {
+        state.alert.show = false;
+        state.alert.content = '';
       }
     },
     actions: {
@@ -47,7 +59,10 @@ const createStore = () => {
     getters: {
       isLogedIn(state) {
         return state.token !== null ? true : false;
-      }
+      },
+      alert(state) {
+        return state.alert;
+      },
     } 
   })
 }
