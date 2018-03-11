@@ -27,53 +27,58 @@
 </template>
 <script>
 export default {
-  middleware: ['auth'],
   data: () => {
     return {
-      search: '',
+      search: "",
       totalItems: 0,
       loading: true,
       pagination: {
-        rowPerPage: 10,
+        rowPerPage: 10
       },
       items: [],
       headers: [
-        { text: 'Kode', value: 'code'},
-        { text: 'Ukuran', value: 'size'},
-        { text: 'SKU', value: 'sku.code'},
-        { text: 'Nama', value: 'sku.name'},
-        { text: 'Kategori', value: 'sku.category'},
-        { text: 'Warna', value: 'sku.color'}
-      ],
-    }
+        { text: "Kode", value: "code" },
+        { text: "Ukuran", value: "size" },
+        { text: "SKU", value: "sku.code" },
+        { text: "Nama", value: "sku.name" },
+        { text: "Kategori", value: "sku.category" },
+        { text: "Warna", value: "sku.color" }
+      ]
+    };
   },
   created() {
-    this.fetchItems(1)
+    this.fetchItems(1);
   },
   methods: {
     fetchItems(page) {
       this.loading = true;
-      this.$axios.$get(`/api/item/all?page=${page}`).then(response => {
-        this.loading = false;
-        if (response.success) {
-          this.items = response.item;
-          this.pagination.page = page
-          this.pagination.totalItems = response.pagination.itemTotal;
-          this.totalItems = response.pagination.pageCount;
-        }
-      }).catch(err => {
-        this.$store.commit('setAlert', err.message)
-      })
+      this.$axios
+        .$get(`/api/item/all?page=${page}`)
+        .then(response => {
+          this.loading = false;
+          if (response.success) {
+            this.items = response.item;
+            this.pagination.page = page;
+            this.pagination.totalItems = response.pagination.itemTotal;
+            this.totalItems = response.pagination.pageCount;
+          }
+        })
+        .catch(err => {
+          this.$store.commit("setAlert", err.message);
+        });
     }
   },
   computed: {
     pages() {
-      if (this.pagination.rowPerPage == null || this.pagination.totalItems == null) {
+      if (
+        this.pagination.rowPerPage == null ||
+        this.pagination.totalItems == null
+      ) {
         return 0;
       }
-      
-      return Math.ceil(this.pagination.totalItems / this.pagination.rowPerPage)
+
+      return Math.ceil(this.pagination.totalItems / this.pagination.rowPerPage);
     }
   }
-}
+};
 </script>
