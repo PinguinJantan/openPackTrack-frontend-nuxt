@@ -1,4 +1,6 @@
-import Vuex from 'vuex'
+import Vuex from "vuex";
+
+import authUtil from "~/utils/auth";
 
 const createStore = () => {
   return new Vuex.Store({
@@ -6,7 +8,7 @@ const createStore = () => {
       token: null,
       alert: {
         show: false,
-        content: ''
+        content: ""
       }
     },
     mutations: {
@@ -22,10 +24,14 @@ const createStore = () => {
       },
       clearAlert(state) {
         state.alert.show = false;
-        state.alert.content = '';
+        state.alert.content = "";
       }
     },
     actions: {
+      nuxtServerInit(vuexContext, { req }) {
+        console.log("-----------> Ljakfa");
+        vuexContext.dispatch("initAuth", req);
+      },
       initAuth(vuexContext, req) {
         let token;
 
@@ -35,39 +41,42 @@ const createStore = () => {
           }
 
           const jwtCookie = req.headers.cookie
-            .split(';')
-            .find(c => c.trim().startsWith('jwt='))
-          
+            .split(";")
+            .find(c => c.trim().startsWith("jwt="));
+
           if (!jwtCookie) {
             return;
           }
 
-          token = jwtCookie.split('=')[1]
+          token = jwtCookie.split("=")[1];
         } else {
-          token = localStorage.getItem('token')
+          token = localStorage.getItem("token");
         }
 
-        vuexContext.commit('setToken', token)
+        vuexContext.commit("setToken", token);
       },
       login(vuexContext, authData) {
-        this.$axios.$post('/auth/login', authData).then(result => {
-          console.log('the result : ', result)
-          if (result.success) {
-           vuexContext.commit('setToken', result.user.token); 
-           localStorage.setItem('token', result.user.token)
-          } else {
-
-          }
-        }).catch(err => {
-          console.log('the errors : ', err)
-          vuexContext.commit('setAlert', err.message)
-        })
-        console.log('trying to login')
+        this.$axios
+          .$post("/auth/login", authData)
+          .then(result => {
+            console.log("the result : ", result);
+            if (result.success) {
+              vuexContext.commit("setToken", result.user.token);
+              authUtil.setToken(result.user.token);
+            } else {
+              vuexContext.commit("setAlert", result.message);
+            }
+          })
+          .catch(err => {
+            console.log("the errors : ", err);
+            vuexContext.commit("setAlert", err.message);
+          });
+        console.log("trying to login");
       },
       logout(vuexContext) {
-        vuexContext.commit('clearToken')
+        vuexContext.commit("clearToken");
         if (process.client) {
-          localStorage.removeItem('token')
+          authUtil.unsetToken();
         }
       }
     },
@@ -77,9 +86,9 @@ const createStore = () => {
       },
       alert(state) {
         return state.alert;
-      },
-    } 
-  })
-}
+      }
+    }
+  });
+};
 
 export default createStore;

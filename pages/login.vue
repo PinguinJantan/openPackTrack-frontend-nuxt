@@ -29,48 +29,51 @@
 <script>
 export default {
   $_veeValidate: {
-    validator: 'new'
+    validator: "new"
   },
 
   data: () => ({
-    password: '',
-    username: '',
+    password: "",
+    username: "",
     dictionary: {
       attributes: {
-        username: 'Username'
+        username: "Username"
         // custom attributes
       },
       custom: {
         password: {
-          required: () => 'Kata sandi tidak boleh kosong',
+          required: () => "Kata sandi tidak boleh kosong"
         },
         username: {
-          required: () => 'Username harus diisi'
-        },
+          required: () => "Username harus diisi"
+        }
       }
     }
   }),
 
-  mounted () {
-    this.$validator.localize('en', this.dictionary)
+  mounted() {
+    this.$validator.localize("en", this.dictionary);
   },
 
   methods: {
-    login () {
+    login() {
       let self = this;
       this.$validator.validateAll().then(isFormValid => {
         if (isFormValid) {
-          self.$store.dispatch('login', {
-            username: this.username,
-            password: this.password,
-          }).then(() => {
-            this.$router.push('dashboard');
-          }).catch(err => {
-            console.log('error when trying to login : ', err);
-          })
+          self.$store
+            .dispatch("login", {
+              username: this.username,
+              password: this.password
+            })
+            .then(() => {
+              this.$router.push("dashboard");
+            })
+            .catch(err => {
+              console.log("error when trying to login : ", err);
+            });
         }
-      })
-    },
+      });
+    }
   }
-}
+};
 </script>
