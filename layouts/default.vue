@@ -20,16 +20,27 @@
             <v-list-tile-title v-text="menu.title"></v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile router :to="'/login'" exact>
+        <v-list-tile v-if="!isLogedIn" router :to="'/login'" exact>
           <v-list-tile-action>
-            <v-icon>apps</v-icon>
+            <v-icon>account_box</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>
-              Log out
+              Masuk
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile v-else @click="logout" exact>
+          <v-list-tile-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              Keluar
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
       </v-list>
     </v-navigation-drawer>
     <v-toolbar fixed app>
@@ -80,8 +91,16 @@
       }
     },
     computed: {
-      isUserLogedInd() {
+      isLogedIn() {
         return this.$store.getters.isLogedIn;
+      }
+    },
+    methods: {
+      logout() {
+        this.$store.dispatch('logout');
+        this.$router.push({
+          name: 'index'
+        })
       }
     }
   }

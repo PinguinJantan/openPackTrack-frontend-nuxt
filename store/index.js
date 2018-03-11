@@ -27,7 +27,7 @@ const createStore = () => {
         this.$axios.$post('/auth/login', authData).then(result => {
           console.log('the result : ', result)
           if (result.success) {
-           vuexContext.setToken(vuexContext, result.user.token); 
+           vuexContext.commit('setToken', result.user.token); 
            localStorage.setItem('token', result.user.token)
           } else {
 
