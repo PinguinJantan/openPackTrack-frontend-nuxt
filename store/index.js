@@ -33,7 +33,21 @@ const createStore = () => {
           if (!req.headers.cookie) {
             return;
           }
+
+          const jwtCookie = req.headers.cookie
+            .split(';')
+            .find(c => c.trim().startsWith('jwt='))
+          
+          if (!jwtCookie) {
+            return;
+          }
+
+          token = jwtCookie.split('=')[1]
+        } else {
+          token = localStorage.getItem('token')
         }
+
+        vuexContext.commit('setToken', token)
       },
       login(vuexContext, authData) {
         this.$axios.$post('/auth/login', authData).then(result => {
@@ -46,6 +60,7 @@ const createStore = () => {
           }
         }).catch(err => {
           console.log('the errors : ', err)
+          vuexContext.commit('setAlert', err.message)
         })
         console.log('trying to login')
       },
