@@ -20,7 +20,7 @@
         </template>
       </v-data-table>
       <div class="text-xs-center pt-2">
-        <v-pagination v-model="pagination.page" :length="pages" @next="fetchItems(pagination.page + 1)" @previous="fetchItems(pagination.page - 1)"></v-pagination>
+        <v-pagination v-model="pagination.page" :length="pages" @next="fetchItems(pagination.page)" @previous="fetchItems(pagination.page)" @input="fetchItems(pagination.page)"></v-pagination>
       </div>
     </v-flex>
   </v-layout>
