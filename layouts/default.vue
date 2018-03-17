@@ -43,7 +43,7 @@
 
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar fixed app>
+    <v-toolbar fixed color="primary" flat dark app>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title" ></v-toolbar-title>
       <v-spacer></v-spacer>
