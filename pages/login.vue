@@ -27,6 +27,7 @@
   </v-layout>
 </template>
 <script>
+import bahasa from 'vee-validate/dist/locale/id'
 export default {
   $_veeValidate: {
     validator: "new"
@@ -35,24 +36,10 @@ export default {
   data: () => ({
     password: "",
     username: "",
-    dictionary: {
-      attributes: {
-        username: "Username"
-        // custom attributes
-      },
-      custom: {
-        password: {
-          required: () => "Kata sandi tidak boleh kosong"
-        },
-        username: {
-          required: () => "Username harus diisi"
-        }
-      }
-    }
   }),
 
   mounted() {
-    this.$validator.localize("en", this.dictionary);
+    this.$validator.localize("en", bahasa);
   },
 
   methods: {
