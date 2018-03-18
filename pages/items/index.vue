@@ -1,6 +1,7 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8>
+      <v-btn color="primary mb-3" to="/items/create">Buat Item Baru</v-btn>
       <v-data-table
         :headers="headers"
         :pagination.sync="pagination"
