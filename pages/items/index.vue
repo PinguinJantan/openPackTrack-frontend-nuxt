@@ -1,6 +1,18 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8>
+      <v-btn color="primary mb-3" to="/items/create">Buat Item Baru</v-btn>
+      <v-card-title>
+        Semua Item
+      <v-spacer></v-spacer>
+      <v-text-field
+        append-icon="search"
+        label="Cari"
+        single-line
+        hide-details
+        v-model="search"
+      ></v-text-field>
+      </v-card-title>
       <v-data-table
         :headers="headers"
         :pagination.sync="pagination"
@@ -50,10 +62,10 @@ export default {
     this.fetchItems(1);
   },
   methods: {
-    fetchItems(page) {
+    fetchItems(page = 1, keyword = '') {
       this.loading = true;
       this.$axios
-        .$get(`/api/item/all?page=${page}`)
+        .$get(`/api/item/all?page=${page}&search=${keyword}`)
         .then(response => {
           this.loading = false;
           if (response.success) {
@@ -66,7 +78,7 @@ export default {
         .catch(err => {
           this.$store.commit("setAlert", err.message);
         });
-    }
+    },
   },
   computed: {
     pages() {
@@ -78,6 +90,11 @@ export default {
       }
 
       return Math.ceil(this.pagination.totalItems / this.pagination.rowPerPage);
+    }
+  },
+  watch: {
+    search(keyword) {
+      this.fetchItems(1, keyword)
     }
   }
 };
