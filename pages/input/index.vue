@@ -1,5 +1,5 @@
 <template>
-  <v-stepper class="elevation-0" v-model="step">
+  <v-stepper class="pt-stepper elevation-0" v-model="step">
     <v-layout>
       <v-flex md6 offset-md3>
         <v-stepper-header class="elevation-0">
@@ -70,15 +70,13 @@
                 </section>
                 <section class="text-xs-center">
                   <div class="title">Sudah diinputkan</div>
-                  <div class="display-4">
-                    {{ itemsAdded }}
-                  </div>
+                  <div class="display-4">{{ itemsAdded }}</div>
                 </section>
               </v-card>
             </v-container>
           </v-flex>
           <v-flex md9>
-            <v-card class="table-input mb-5" >
+            <v-card class="table-input mb-5" flat>
               <v-container>
                 <v-btn color="error" @click="items = []" outline>Kosongkan Inputan</v-btn>
                 <v-data-table
@@ -122,7 +120,6 @@
 
 <script>
 export default {
-  layout: 'temp',
   data () {
     return {
       step: 0,
@@ -176,17 +173,33 @@ export default {
 </script>
 
 <style lang="stylus" >
-section
-  margin-bottom 1rem
-.card
-  &.table-input
-    min-height 50vh
+.pt-stepper
+  section
+    margin-bottom 1rem
+  .card
+    &.table-input
+      min-height 50vh
+      border 1px solid #becece
+      border-radius 3px
 
-// overwrite from the original
-// .table-narrow
-table.table tbody td
-  height 34px
-  padding .25em .5em
-  font-size 16px
-  line-height 1.5
+  .stepper__content
+    padding-top 0
+  .stepper__step
+    padding-top 12px
+    padding-bottom 12px
+  .stepper__step__step
+    height 32px
+    width 32px
+
+  table.table
+    thead tr
+      height 36px
+    tbody td
+      height 34px
+      padding .25em .5em
+      font-size 16px
+      line-height 1.5
+
+.container
+  padding 0 16px
 </style>
