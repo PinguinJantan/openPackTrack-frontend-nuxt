@@ -58,12 +58,14 @@
                     ref="inputItemType"
                     class="pt-0"
                     name="input-1-3"
+                    v-validate="'required'"
                     v-model="itemInput.type"
                     single-line ></v-text-field>
                   <h3 class="title">Kode Unik</h3>
                   <v-text-field
                     class="pt-0"
                     name="input-1-3"
+                    v-validate="'required'"
                     v-model="itemInput.code"
                     single-line ></v-text-field>
                   <v-btn color="primary" :disabled="isAddBtnDisabled" @click="pushItem()" block>Tambahkan Sepatu</v-btn>
@@ -78,7 +80,7 @@
           <v-flex md9>
             <v-card class="table-input mb-5" flat>
               <v-container>
-                <v-btn color="error" @click="items = []" outline>Kosongkan Inputan</v-btn>
+                <v-btn color="secondary" @click="items = []" outline>Kosongkan Inputan</v-btn>
                 <v-data-table
                   class="table-narrow"
                   v-bind:headers="headers"
@@ -89,7 +91,6 @@
                       <th v-for="header in props.headers"
                         :key="header.text"
                         class="column sortable text-xs-left" >
-                        <v-icon>arrow_upward</v-icon>
                         {{ header.text }}
                       </th>
                     </tr>
@@ -101,7 +102,7 @@
                   </template>
                     <template slot="no-data">
                       <v-alert :value="true" color="info" icon="warning">
-                        Inputan masih kosong
+                        Inputan Kosong
                       </v-alert>
                     </template>
                 </v-data-table>
@@ -119,6 +120,8 @@
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   data () {
     return {
@@ -163,10 +166,28 @@ export default {
   },
   methods: {
     pushItem () {
-      if(this.itemInput.type && this.itemInput.code) {
-        this.items.push({type: this.itemInput.type, size: this.itemInput.size, code: this.itemInput.code})
-      }
-      this.$refs.inputItemType.focus()
+      this.$validator.validateAll().then(isFormValid => {
+        if(this.errors.any()) {
+          alert(this.errors.all());
+        } else {
+          // ngecek dulu yang mau diinput sudah diinput apa belum
+          let anu = _.find(this.items, { code: this.itemInput.code })
+          if(anu == undefined) {
+            this.items.push({type: this.itemInput.type, size: this.itemInput.size, code: this.itemInput.code})
+          } else {
+            this.$store.commit('setAlert', 'Sudah memasukkan kode ' + this.itemInput.code )
+          }
+
+          // kosongkan inputan
+          for(var props in this.itemInput) {
+            if(this.itemInput.hasOwnProperty(props)) {
+              this.itemInput[props] = null
+            }
+          }
+          console.log('asdf', this.itemInput)
+        }
+        this.$refs.inputItemType.focus()
+      })
     }
   }
 }
