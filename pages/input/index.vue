@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import _find from 'lodash/find'
 
 export default {
   data () {
@@ -171,8 +171,8 @@ export default {
           alert(this.errors.all());
         } else {
           // ngecek dulu yang mau diinput sudah diinput apa belum
-          let anu = _.find(this.items, { code: this.itemInput.code })
-          if(anu == undefined) {
+          let arrayItems = _find(this.items, { code: this.itemInput.code })
+          if(arrayItems == undefined) {
             this.items.push({type: this.itemInput.type, size: this.itemInput.size, code: this.itemInput.code})
           } else {
             this.$store.commit('setAlert', 'Sudah memasukkan kode ' + this.itemInput.code )
@@ -184,7 +184,6 @@ export default {
               this.itemInput[props] = null
             }
           }
-          console.log('asdf', this.itemInput)
         }
         this.$refs.inputItemType.focus()
       })
