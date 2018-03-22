@@ -3,16 +3,14 @@
     <v-navigation-drawer
       v-model="drawer"
       fixed
-      app
-    >
+      app>
       <v-list>
         <v-list-tile
           router
           :to="menu.to"
           :key="i"
           v-for="(menu, i) in menus"
-          exact
-        >
+          exact>
           <v-list-tile-action>
             <v-icon v-html="menu.icon"></v-icon>
           </v-list-tile-action>
@@ -43,7 +41,7 @@
 
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar fixed app>
+    <v-toolbar fixed color="primary" flat dark dense app>
       <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title v-text="title" ></v-toolbar-title>
       <v-spacer></v-spacer>
@@ -60,8 +58,7 @@
       temporary
       :right="right"
       v-model="rightDrawer"
-      fixed
-    >
+      fixed>
       <v-list>
         <v-list-tile @click.native="right = !right">
           <v-list-tile-action>
@@ -86,7 +83,8 @@
         fixed: false,
         menus: [
           { icon: 'apps', title: 'Beranda', to: '/' },
-          { icon: 'folder', title: 'Item', to: '/items'}
+          { icon: 'folder', title: 'Item', to: '/items'},
+          { icon: 'play_for_work', title: 'Input', to: '/input'}
         ],
         miniVariant: false,
         right: true,
