@@ -29,7 +29,6 @@ const createStore = () => {
     },
     actions: {
       nuxtServerInit(vuexContext, { req }) {
-        console.log("-----------> Ljakfa");
         vuexContext.dispatch("initAuth", req);
       },
       initAuth(vuexContext, req) {

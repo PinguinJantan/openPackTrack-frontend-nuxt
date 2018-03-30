@@ -2,6 +2,7 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8>
       <v-btn color="primary mb-3" to="/items/create">Buat Item Baru</v-btn>
+      <v-btn color="mb-3" @click="toggleImportModal = !toggleImportModal">Import Item</v-btn>
       <v-card-title>
         Semua Item
       <v-spacer></v-spacer>
@@ -35,6 +36,22 @@
         <v-pagination v-model="pagination.page" :length="pages" @next="fetchItems(pagination.page)" @previous="fetchItems(pagination.page)" @input="fetchItems(pagination.page)"></v-pagination>
       </div>
     </v-flex>
+    <v-dialog v-model="toggleImportModal" persistent max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Import Item</span>
+        </v-card-title>
+        <v-card-text>
+          <input type="file" name="import-item" id="import-item" @change="handleFileUpload()">
+          
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" flat @click.native="toggleImportModal = false">Close</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="toggleImportModal = false">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 <script>
@@ -55,7 +72,8 @@ export default {
         { text: "Nama", value: "sku.name" },
         { text: "Kategori", value: "sku.category" },
         { text: "Warna", value: "sku.color" }
-      ]
+      ],
+      toggleImportModal: false,
     };
   },
   created() {
@@ -79,6 +97,9 @@ export default {
           this.$store.commit("setAlert", err.message);
         });
     },
+    handleFileUpload() {
+
+    }
   },
   computed: {
     pages() {
