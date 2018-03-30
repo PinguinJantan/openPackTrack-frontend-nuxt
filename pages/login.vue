@@ -9,6 +9,7 @@
             :error-messages="errors.collect('username')"
             v-validate="'required'"
             data-vv-name="username"
+            @keyup.enter="login"
             required
           ></v-text-field>
           <v-text-field
@@ -19,6 +20,7 @@
             v-validate="'required'"
             data-vv-name="password"
             type="password"
+            @keyup.enter="login"
             required
           ></v-text-field>
           <v-btn color="primary" @click="login">Login</v-btn>
