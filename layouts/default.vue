@@ -12,13 +12,16 @@
           v-for="(menu, i) in menus"
           exact>
           <v-list-tile-action>
-            <v-icon v-html="menu.icon"></v-icon>
+            <v-icon v-html="menu.icon"/>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="menu.title"></v-list-tile-title>
+            <v-list-tile-title v-text="menu.title"/>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-if="!isLogedIn" router :to="'/login'" exact>
+        <v-list-tile v-if="!isLogedIn" 
+                     router 
+                     :to="'/login'" 
+                     exact>
           <v-list-tile-action>
             <v-icon>account_box</v-icon>
           </v-list-tile-action>
@@ -41,14 +44,22 @@
 
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar fixed color="primary" flat dark dense app>
-      <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title v-text="title" ></v-toolbar-title>
-      <v-spacer></v-spacer>
+    <v-toolbar fixed 
+               color="primary" 
+               flat 
+               dark 
+               dense 
+               app>
+      <v-toolbar-side-icon @click="drawer = !drawer"/>
+      <v-toolbar-title v-text="title" />
+      <v-spacer/>
     </v-toolbar>
     <v-content>
       <v-container>
-        <v-alert type="error" :value="alert.show" @input="dismissAlert()" dismissible>
+        <v-alert type="error" 
+                 :value="alert.show" 
+                 @input="dismissAlert()" 
+                 dismissible>
           {{ alert.content }}
         </v-alert>
         <nuxt />
@@ -75,41 +86,41 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        clipped: false,
-        drawer: true,
-        fixed: false,
-        menus: [
-          { icon: 'apps', title: 'Beranda', to: '/' },
-          { icon: 'folder', title: 'Item', to: '/items'},
-          { icon: 'play_for_work', title: 'Input', to: '/input'}
-        ],
-        miniVariant: false,
-        right: true,
-        rightDrawer: false,
-        title: 'Open PackTrack'
-      }
+export default {
+  data() {
+    return {
+      clipped: false,
+      drawer: true,
+      fixed: false,
+      menus: [
+        { icon: 'apps', title: 'Beranda', to: '/' },
+        { icon: 'folder', title: 'Item', to: '/items' },
+        { icon: 'play_for_work', title: 'Input', to: '/input' },
+      ],
+      miniVariant: false,
+      right: true,
+      rightDrawer: false,
+      title: 'Open PackTrack',
+    };
+  },
+  computed: {
+    isLogedIn() {
+      return this.$store.getters.isLogedIn;
     },
-    computed: {
-      isLogedIn() {
-        return this.$store.getters.isLogedIn;
-      },
-      alert() {
-        return this.$store.getters.alert;
-      }
+    alert() {
+      return this.$store.getters.alert;
     },
-    methods: {
-      logout() {
-        this.$store.dispatch('logout');
-        this.$router.push({
-          name: 'index'
-        })
-      },
-      dismissAlert() {
-        this.$store.commit('clearAlert')
-      }
-    }
-  }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.push({
+        name: 'index',
+      });
+    },
+    dismissAlert() {
+      this.$store.commit('clearAlert');
+    },
+  },
+};
 </script>

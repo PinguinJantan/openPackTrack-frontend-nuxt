@@ -10,8 +10,11 @@
           </div>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" flat nuxt to="/login">Masuk Sistem</v-btn>
+          <v-spacer/>
+          <v-btn color="primary" 
+                 flat 
+                 nuxt 
+                 to="/login">Masuk Sistem</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -19,11 +22,11 @@
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Logo from '~/components/Logo.vue';
 
 export default {
   components: {
     Logo,
-  }
-}
+  },
+};
 </script>

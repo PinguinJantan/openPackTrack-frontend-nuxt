@@ -4,7 +4,7 @@
       <v-flex md6 offset-md3>
         <v-stepper-header class="elevation-0">
           <v-stepper-step step="1" :complete="step > 1">Pilih Profil karton</v-stepper-step>
-          <v-divider></v-divider>
+          <v-divider/>
           <v-stepper-step step="2" :complete="step > 2">Inputkan Inner Box</v-stepper-step>
         </v-stepper-header>
       </v-flex>
@@ -17,22 +17,22 @@
             <v-card class="my-2">
               <v-card-text>
                 <h3 class="headline">Profil Karton Box</h3>
-                 <v-select
-                  v-bind:items="optionSelectProfile"
+                <v-select
+                  :items="optionSelectProfile"
                   v-model="selectedProfile"
                   label="Select"
                   single-line
-                  bottom ></v-select>
+                  bottom />
 
                 <h3 class="headline">Kode Karton Box</h3>
                 <v-text-field
                   class="pt-0"
                   name="input-1-3"
                   v-model="cartonCode"
-                  single-line ></v-text-field>
+                  single-line />
               </v-card-text>
               <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-spacer/>
                 <v-btn color="primary" @click.native="step = 2">Continue</v-btn>
               </v-card-actions>
             </v-card>
@@ -60,15 +60,18 @@
                     name="input-1-3"
                     v-validate="'required'"
                     v-model="itemInput.type"
-                    single-line ></v-text-field>
+                    single-line />
                   <h3 class="title">Kode Unik</h3>
                   <v-text-field
                     class="pt-0"
                     name="input-1-3"
                     v-validate="'required'"
                     v-model="itemInput.code"
-                    single-line ></v-text-field>
-                  <v-btn color="primary" :disabled="isAddBtnDisabled" @click="pushItem()" block>Tambahkan Sepatu</v-btn>
+                    single-line />
+                  <v-btn color="primary" 
+                         :disabled="isAddBtnDisabled" 
+                         @click="pushItem()" 
+                         block>Tambahkan Sepatu</v-btn>
                 </section>
                 <section class="text-xs-center">
                   <div class="title">Sudah diinputkan</div>
@@ -83,14 +86,14 @@
                 <v-btn color="secondary" @click="items = []" outline>Kosongkan Inputan</v-btn>
                 <v-data-table
                   class="table-narrow"
-                  v-bind:headers="headers"
+                  :headers="headers"
                   :items="items"
                   hide-actions>
                   <template slot="headers" slot-scope="props">
                     <tr>
                       <th v-for="header in props.headers"
-                        :key="header.text"
-                        class="column sortable text-xs-left" >
+                          :key="header.text"
+                          class="column sortable text-xs-left" >
                         {{ header.text }}
                       </th>
                     </tr>
@@ -100,14 +103,14 @@
                     <td class="text-xs-left">{{ props.item.size }}</td>
                     <td class="text-xs-left">{{ props.item.code }}</td>
                   </template>
-                    <template slot="no-data">
-                      <v-alert :value="true" color="info" icon="warning">
-                        Inputan Kosong
-                      </v-alert>
-                    </template>
+                  <template slot="no-data">
+                    <v-alert :value="true" color="info" icon="warning">
+                      Inputan Kosong
+                    </v-alert>
+                  </template>
                 </v-data-table>
                 <v-card-actions>
-                  <v-spacer></v-spacer>
+                  <v-spacer/>
                   <v-btn color="primary" :disabled="isSaveBtnDisabled">Simpan</v-btn>
                 </v-card-actions>
               </v-container>
@@ -120,10 +123,10 @@
 </template>
 
 <script>
-import _find from 'lodash/find'
+import _find from 'lodash/find';
 
 export default {
-  data () {
+  data() {
     return {
       step: 0,
       selectedProfile: '',
@@ -135,61 +138,65 @@ export default {
         { text: 'State 4' },
         { text: 'State 5' },
         { text: 'State 6' },
-        { text: 'State 7' }
+        { text: 'State 7' },
       ],
       itemInput: {
         type: 'initype',
         size: 39,
-        code: 'inicode'
+        code: 'inicode',
       },
 
       headers: [
         { text: 'Kode Produk', value: 'kodeProduk' },
         { text: 'Ukuran', value: 'ukuran' },
-        { text: 'Kode Unik', value: 'kodeUnik' }
+        { text: 'Kode Unik', value: 'kodeUnik' },
       ],
-      items: []
-    }
+      items: [],
+    };
   },
   computed: {
-    itemsAdded () {
-      return this.items.length
+    itemsAdded() {
+      return this.items.length;
     },
-    isAddBtnDisabled () {
-      if(this.items.length >= 12){
-        return true
+    isAddBtnDisabled() {
+      if (this.items.length >= 12) {
+        return true;
       }
     },
-    isSaveBtnDisabled () {
-      if (this.items.length <1) return true
-    }
+    isSaveBtnDisabled() {
+      if (this.items.length < 1) return true;
+    },
   },
   methods: {
-    pushItem () {
+    pushItem() {
       this.$validator.validateAll().then(isFormValid => {
-        if(this.errors.any()) {
+        if (this.errors.any()) {
           alert(this.errors.all());
         } else {
           // ngecek dulu yang mau diinput sudah diinput apa belum
-          let arrayItems = _find(this.items, { code: this.itemInput.code })
-          if(arrayItems == undefined) {
-            this.items.push({type: this.itemInput.type, size: this.itemInput.size, code: this.itemInput.code})
+          let arrayItems = _find(this.items, { code: this.itemInput.code });
+          if (arrayItems == undefined) {
+            this.items.push({
+              type: this.itemInput.type,
+              size: this.itemInput.size,
+              code: this.itemInput.code,
+            });
           } else {
-            this.$store.commit('setAlert', 'Sudah memasukkan kode ' + this.itemInput.code )
+            this.$store.commit('setAlert', 'Sudah memasukkan kode ' + this.itemInput.code);
           }
 
           // kosongkan inputan
-          for(var props in this.itemInput) {
-            if(this.itemInput.hasOwnProperty(props)) {
-              this.itemInput[props] = null
+          for (var props in this.itemInput) {
+            if (this.itemInput.hasOwnProperty(props)) {
+              this.itemInput[props] = null;
             }
           }
         }
-        this.$refs.inputItemType.focus()
-      })
-    }
-  }
-}
+        this.$refs.inputItemType.focus();
+      });
+    },
+  },
+};
 </script>
 
 <style lang="stylus" >

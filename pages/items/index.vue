@@ -5,14 +5,14 @@
       <v-btn color="mb-3" @click="toggleImportModal = !toggleImportModal">Import Item</v-btn>
       <v-card-title>
         Semua Item
-      <v-spacer></v-spacer>
-      <v-text-field
-        append-icon="search"
-        label="Cari"
-        single-line
-        hide-details
-        v-model="search"
-      ></v-text-field>
+        <v-spacer/>
+        <v-text-field
+          append-icon="search"
+          label="Cari"
+          single-line
+          hide-details
+          v-model="search"
+        />
       </v-card-title>
       <v-data-table
         :headers="headers"
@@ -33,34 +33,38 @@
         </template>
       </v-data-table>
       <div class="text-xs-center pt-2">
-        <v-pagination v-model="pagination.page" :length="pages" @next="fetchItems(pagination.page)" @previous="fetchItems(pagination.page)" @input="fetchItems(pagination.page)"></v-pagination>
+        <v-pagination v-model="pagination.page" 
+                      :length="pages" 
+                      @next="fetchItems(pagination.page)" 
+                      @previous="fetchItems(pagination.page)" 
+                      @input="fetchItems(pagination.page)"/>
       </div>
     </v-flex>
     <import-modal :show="toggleImportModal" @close="handleCloseModal"/>
   </v-layout>
 </template>
 <script>
-import ImportModal from '@/components/items/ImportModal'
+import ImportModal from '@/components/items/ImportModal';
 export default {
   components: {
     ImportModal,
   },
   data: () => {
     return {
-      search: "",
+      search: '',
       totalItems: 0,
       loading: true,
       pagination: {
-        rowPerPage: 10
+        rowPerPage: 10,
       },
       items: [],
       headers: [
-        { text: "Kode", value: "code" },
-        { text: "Ukuran", value: "size" },
-        { text: "SKU", value: "sku.code" },
-        { text: "Nama", value: "sku.name" },
-        { text: "Kategori", value: "sku.category" },
-        { text: "Warna", value: "sku.color" }
+        { text: 'Kode', value: 'code' },
+        { text: 'Ukuran', value: 'size' },
+        { text: 'SKU', value: 'sku.code' },
+        { text: 'Nama', value: 'sku.name' },
+        { text: 'Kategori', value: 'sku.category' },
+        { text: 'Warna', value: 'sku.color' },
       ],
       toggleImportModal: false,
     };
@@ -83,30 +87,27 @@ export default {
           }
         })
         .catch(err => {
-          this.$store.commit("setAlert", err.message);
+          this.$store.commit('setAlert', err.message);
         });
     },
     handleCloseModal() {
-      this.toggleImportModal = false
-      this.fetchItems
-    }
+      this.toggleImportModal = false;
+      this.fetchItems;
+    },
   },
   computed: {
     pages() {
-      if (
-        this.pagination.rowPerPage == null ||
-        this.pagination.totalItems == null
-      ) {
+      if (this.pagination.rowPerPage == null || this.pagination.totalItems == null) {
         return 0;
       }
 
       return Math.ceil(this.pagination.totalItems / this.pagination.rowPerPage);
-    }
+    },
   },
   watch: {
     search(keyword) {
-      this.fetchItems(1, keyword)
-    }
-  }
+      this.fetchItems(1, keyword);
+    },
+  },
 };
 </script>
