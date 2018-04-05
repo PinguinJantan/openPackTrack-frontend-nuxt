@@ -36,26 +36,15 @@
         <v-pagination v-model="pagination.page" :length="pages" @next="fetchItems(pagination.page)" @previous="fetchItems(pagination.page)" @input="fetchItems(pagination.page)"></v-pagination>
       </div>
     </v-flex>
-    <v-dialog v-model="toggleImportModal" persistent max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Import Item</span>
-        </v-card-title>
-        <v-card-text>
-          <input type="file" name="import-item" id="import-item" @change="handleFileUpload()">
-          
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="toggleImportModal = false">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="toggleImportModal = false">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <import-modal :show="toggleImportModal" @close="handleCloseModal"/>
   </v-layout>
 </template>
 <script>
+import ImportModal from '@/components/items/ImportModal'
 export default {
+  components: {
+    ImportModal,
+  },
   data: () => {
     return {
       search: "",
@@ -97,8 +86,9 @@ export default {
           this.$store.commit("setAlert", err.message);
         });
     },
-    handleFileUpload() {
-
+    handleCloseModal() {
+      this.toggleImportModal = false
+      this.fetchItems
     }
   },
   computed: {
