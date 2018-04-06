@@ -31,6 +31,9 @@
                     color="primary" 
                     text-color="white">{{ role[0] }}</v-chip>
           </td>
+          <td>
+            <v-btn outline :to="{ name: 'users-username', params: { username: props.item.username}}">Lihat</v-btn>
+          </td>
         </template>
       </v-data-table>
       <div class="text-xs-center pt-2">
