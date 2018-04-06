@@ -3,6 +3,7 @@
     <v-flex xs12 sm8>
       <v-btn color="primary mb-3" to="/items/create">Buat Item Baru</v-btn>
       <v-btn color="mb-3" @click="toggleImportModal = !toggleImportModal">Import Item</v-btn>
+      <v-btn color="mb-3" @click="exportItems()">Export Item</v-btn>
       <v-card-title>
         Semua Item
         <v-spacer/>
@@ -93,6 +94,10 @@ export default {
     handleCloseModal() {
       this.toggleImportModal = false;
       this.fetchItems;
+    },
+    exportItems() {
+      const win = window.open(`${process.env.baseUrl}/api/item/export`, '_blank');
+      win.focus();
     },
   },
   computed: {
