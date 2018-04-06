@@ -36,9 +36,9 @@
       <div class="text-xs-center pt-2">
         <v-pagination v-model="pagination.page" 
                       :length="pages" 
-                      @next="fetchItems(pagination.page)" 
-                      @previous="fetchItems(pagination.page)" 
-                      @input="fetchItems(pagination.page)"/>
+                      @next="fetchItems(pagination.page, keyword)" 
+                      @previous="fetchItems(pagination.page, keyword)" 
+                      @input="fetchItems(pagination.page, keyword)"/>
       </div>
     </v-flex>
     <import-modal :show="toggleImportModal" @close="handleCloseModal"/>
