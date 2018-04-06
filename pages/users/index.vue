@@ -1,0 +1,103 @@
+<template>
+  <v-layout column justify-center align-center>
+    <v-flex xs12 sm8>
+      <v-btn color="primary mb-3" to="/items/create">Buat Pengguna Baru</v-btn>
+      <v-card-title>
+        Semua Pengguna 
+        <v-spacer/>
+        <v-text-field
+          append-icon="search"
+          label="Cari Pengguna"
+          single-line
+          hide-details
+          v-model="search"
+        />
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :pagination.sync="pagination"
+        :total-items="totalItems"
+        :loading="loading"
+        :search="search"
+        :items="items"
+        hide-actions
+        class="elevation-1">
+        <template slot="items" slot-scope="props">
+          <td>{{ props.item.name }}</td>
+          <td>{{ props.item.username }}</td>
+          <td>
+            <v-chip v-for="role in props.item.roles" 
+                    :key="role" 
+                    color="primary" 
+                    text-color="white">{{ role[0] }}</v-chip>
+          </td>
+        </template>
+      </v-data-table>
+      <div class="text-xs-center pt-2">
+        <v-pagination v-model="pagination.page" 
+                      :length="pages"
+                      @next="fetchItems(pagination.page)" 
+                      @previous="fetchItems(pagination.page)" 
+                      @input="fetchItems(pagination.page)"/>
+      </div>
+    </v-flex>
+  </v-layout>
+</template>
+<script>
+export default {
+  data: () => {
+    return {
+      search: '',
+      totalItems: 0,
+      loading: true,
+      pagination: {
+        rowPerPage: 10,
+        totalItems: 0,
+        page: 1,
+      },
+      items: [],
+      headers: [
+        { text: 'Nama', value: 'name' },
+        { text: 'Username', value: 'username' },
+        { text: 'Peran', value: 'roles' },
+      ],
+    };
+  },
+  created() {
+    this.fetchItems(1);
+  },
+  methods: {
+    fetchItems(page = 1, keyword = '') {
+      this.loading = true;
+      this.$axios
+        .$get(`/api/user/all?page=${page}&search=${keyword}`)
+        .then(response => {
+          this.loading = false;
+          if (response.success) {
+            this.items = response.users;
+            this.pagination.page = page;
+            // this.pagination.totalItems = response.pagination.itemTotal;
+            // this.totalItems = response.pagination.pageCount;
+          }
+        })
+        .catch(err => {
+          this.$store.commit('setAlert', err.message);
+        });
+    },
+  },
+  computed: {
+    pages() {
+      if (this.pagination.rowPerPage == null || this.pagination.totalItems == null) {
+        return 0;
+      }
+
+      return Math.ceil(this.pagination.totalItems / this.pagination.rowPerPage);
+    },
+  },
+  watch: {
+    search(keyword) {
+      this.fetchItems(1, keyword);
+    },
+  },
+};
+</script>

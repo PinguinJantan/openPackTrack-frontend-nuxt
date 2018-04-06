@@ -96,6 +96,7 @@ export default {
         { icon: 'apps', title: 'Beranda', to: '/' },
         { icon: 'folder', title: 'Item', to: '/items' },
         { icon: 'play_for_work', title: 'Input', to: '/input' },
+        { icon: 'account_box', title: 'Pengguna', to: '/users' },
       ],
       miniVariant: false,
       right: true,
