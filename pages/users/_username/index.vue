@@ -1,7 +1,7 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 class="text-xs-center">
-      <form>
+      <form v-cloak>
         <v-text-field
           v-model="user.name"
           label="Nama"
@@ -38,9 +38,18 @@
           :disabled="!isEditMode"
           required
         />
+        <v-select
+          :items="roleOptions"
+          v-model="selectedRole"
+          label="Peran"
+          item-text="name"
+          item-value="id"
+          :disabled="!isEditMode"
+          required
+        />
         <div v-if="isEditMode">
           <v-btn color="primary" @click="edit">Simpan</v-btn>
-          <v-btn flat @click="isEditMode = !isEditMode">batal edit</v-btn>
+          <v-btn flat @click="cencelToEdit">batal edit</v-btn>
         </div>
         <v-btn v-else outline @click="isEditMode = !isEditMode">Edit</v-btn>
       </form>
@@ -57,27 +66,48 @@ export default {
   name: 'UserDetail',
   data() {
     return {
+      name: '',
       user: {
-        name: '',
         username: '',
         email: '',
         identityNumber: '',
         roles: [],
       },
+      userBeforeEdit: {},
       isEditMode: false,
+      roleOptions: [],
+      selectedRole: '',
     };
   },
   mounted() {
-    this.fetchUser();
+    this.fetchRoles().then(() => this.fetchUser());
     this.$validator.localize('id', bahasa);
   },
   methods: {
     fetchUser() {
-      console.log('this routers : ', this.$route);
       this.$axios.$get(`/api/user/${this.$route.params.username}`).then(res => {
         if (res.success) {
-          this.user = Object.assign(this.user, res.user);
+          const user = Object.assign(this.user, res.user);
+          this.user = user;
+          // for reset button purpose, we need to temporary save it
+          this.userBeforeEdit = JSON.parse(JSON.stringify(user));
         }
+      });
+    },
+    fetchRoles() {
+      return new Promise((res, rej) => {
+        // todo: fetch actula role
+        this.roleOptions = [
+          {
+            name: 'Super Admin',
+            id: 'abc',
+          },
+          {
+            name: 'Inputer',
+            id: 'def',
+          },
+        ];
+        res(true);
       });
     },
     edit() {
@@ -87,6 +117,15 @@ export default {
           this.isEditMode = false;
         }
       });
+    },
+    assignUserToRoles(userId, roles) {
+      if (roles.length === 0) {
+        // notify user role is empty
+      }
+    },
+    cencelToEdit() {
+      this.user = this.userBeforeEdit;
+      this.isEditMode = !this.isEditMode;
     },
   },
 };
