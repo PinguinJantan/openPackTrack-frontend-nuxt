@@ -2,8 +2,8 @@
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8>
       <v-btn color="primary mb-3" to="/items/create">Buat Item Baru</v-btn>
-      <v-btn color="mb-3" @click="toggleImportModal = !toggleImportModal">Import Item</v-btn>
-      <v-btn color="mb-3" @click="exportItems()">Export Item</v-btn>
+      <v-btn outline class="mb-3" click="toggleImportModal = !toggleImportModal">Import Item</v-btn>
+      <v-btn outline class="mb-3" click="exportItems()">Export Item</v-btn>
       <v-card-title>
         Semua Item
         <v-spacer/>
