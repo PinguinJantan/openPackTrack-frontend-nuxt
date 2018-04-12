@@ -45,7 +45,7 @@
   </v-layout>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 import ImportModal from '@/components/items/ImportModal';
 export default {
@@ -76,6 +76,7 @@ export default {
     this.fetchItems(1);
   },
   methods: {
+    ...mapActions(['notify']),
     fetchItems(page = 1, keyword = '') {
       this.loading = true;
       this.$axios
@@ -90,7 +91,7 @@ export default {
           }
         })
         .catch(err => {
-          this.$store.commit('setAlert', err.message);
+          this.notify({ type: 'error', message: err.message });
         });
     },
     handleCloseModal() {

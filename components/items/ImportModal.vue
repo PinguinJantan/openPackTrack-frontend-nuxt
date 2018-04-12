@@ -24,6 +24,8 @@
   </v-dialog>
 </template>
 <script>
+import { mapActions } from 'vuex';
+
 const STATUS_INITIAL = 0,
   STATUS_SAVING = 1,
   STATUS_SUCCESS = 2,
@@ -57,6 +59,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['notify']),
     close() {
       this.$emit('close');
     },
@@ -93,7 +96,7 @@ export default {
         });
     },
     notifyError(message) {
-      this.$store.commit('setAlert', `upload gagal karena ${message}`);
+      this.notify({ type: 'error', message: `upload gagal karena ${message}` });
     },
   },
 };

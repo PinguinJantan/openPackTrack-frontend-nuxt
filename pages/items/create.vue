@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import bahasa from 'vee-validate/dist/locale/id';
 export default {
   $_veeValidate: {
@@ -58,6 +59,7 @@ export default {
     this.$validator.localize('id', bahasa);
   },
   methods: {
+    ...mapActions(['notify']),
     create() {
       this.$validator.validateAll().then(isFormValid => {
         if (isFormValid) {
@@ -74,10 +76,10 @@ export default {
                 });
                 return;
               }
-              this.$store.commit('setAlert', res);
+              this.notify({ type: 'info', message: res });
             })
             .catch(err => {
-              this.$store.commit('setAlert', err.message);
+              this.notify({ type: 'error', message: err.message });
             });
         }
       });
@@ -91,10 +93,10 @@ export default {
             return;
           }
 
-          this.$tore.dispatch('setAlert', res.message);
+          this.notify({ type: 'error', message: res.message });
         })
         .catch(err => {
-          this.$tore.dispatch('setAlert', err.message);
+          this.notify({ type: 'error', message: err.message });
         });
     },
   },

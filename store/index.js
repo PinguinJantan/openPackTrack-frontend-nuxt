@@ -6,9 +6,10 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       token: null,
-      alert: {
-        show: false,
-        content: ""
+      notification: {
+        color: 'error',
+        active: false,
+        message: ''
       }
     },
     mutations: {
@@ -18,13 +19,14 @@ const createStore = () => {
       clearToken(state) {
         state.token = null;
       },
-      setAlert(state, content) {
-        state.alert.show = true;
-        state.alert.content = content;
-      },
       clearAlert(state) {
         state.alert.show = false;
         state.alert.content = "";
+      },
+      SET_NOTIFICATION(state, payload) {
+        state.notification.active = !state.notification.active
+        state.notification.message = payload.message
+        state.notification.color = payload.type
       }
     },
     actions: {
@@ -58,25 +60,25 @@ const createStore = () => {
         this.$axios
           .$post("/auth/login", authData)
           .then(result => {
-            console.log("the result : ", result);
             if (result.success) {
               vuexContext.commit("setToken", result.user.token);
               authUtil.setToken(result.user.token);
             } else {
-              vuexContext.commit("setAlert", result.message);
+              vuexContext.dispatch('notify', { type: 'error', message: result.message})
             }
           })
           .catch(err => {
-            console.log("the errors : ", err);
-            vuexContext.commit("setAlert", err.message);
+            vuexContext.dispatch('notify', { type: 'error', message: result.message})
           });
-        console.log("trying to login");
       },
       logout(vuexContext) {
         vuexContext.commit("clearToken");
         if (process.client) {
           authUtil.unsetToken();
         }
+      },
+      notify(vuexCtx, payload) {
+        vuexCtx.commit('SET_NOTIFICATION', payload)
       }
     },
     getters: {

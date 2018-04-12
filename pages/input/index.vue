@@ -124,6 +124,7 @@
 
 <script>
 import _find from 'lodash/find';
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -168,6 +169,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['notify']),
     pushItem() {
       this.$validator.validateAll().then(isFormValid => {
         if (this.errors.any()) {
@@ -182,7 +184,7 @@ export default {
               code: this.itemInput.code,
             });
           } else {
-            this.$store.commit('setAlert', 'Sudah memasukkan kode ' + this.itemInput.code);
+            this.notify({ type: 'error', message: `Sudah memasukan kode ${this.itemInput.code}` });
           }
 
           // kosongkan inputan
