@@ -45,6 +45,8 @@
   </v-layout>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 import ImportModal from '@/components/items/ImportModal';
 export default {
   components: {
@@ -96,11 +98,15 @@ export default {
       this.fetchItems;
     },
     exportItems() {
-      const win = window.open(`${process.env.baseUrl}/api/item/export`, '_blank');
+      const win = window.open(
+        `${process.env.baseUrl}/api/item/export?accessToken=${this.token}`,
+        '_blank',
+      );
       win.focus();
     },
   },
   computed: {
+    ...mapState(['token']),
     pages() {
       if (this.pagination.rowPerPage == null || this.pagination.totalItems == null) {
         return 0;
