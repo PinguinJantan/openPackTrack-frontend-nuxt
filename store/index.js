@@ -19,10 +19,6 @@ const createStore = () => {
       clearToken(state) {
         state.token = null;
       },
-      clearAlert(state) {
-        state.alert.show = false;
-        state.alert.content = "";
-      },
       SET_NOTIFICATION(state, payload) {
         state.notification.active = !state.notification.active
         state.notification.message = payload.message

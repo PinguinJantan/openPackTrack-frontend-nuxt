@@ -56,12 +56,6 @@
     </v-toolbar>
     <v-content>
       <v-container>
-        <v-alert type="error" 
-                 :value="alert.show" 
-                 @input="dismissAlert()" 
-                 dismissible>
-          {{ alert.content }}
-        </v-alert>
         <nuxt />
       </v-container>
     </v-content>
