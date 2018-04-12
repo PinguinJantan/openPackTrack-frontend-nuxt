@@ -12,7 +12,7 @@
           label="Cari"
           single-line
           hide-details
-          v-model="search"
+          v-model="searchKeyword"
         />
       </v-card-title>
       <v-data-table
@@ -20,7 +20,7 @@
         :pagination.sync="pagination"
         :total-items="totalItems"
         :loading="loading"
-        :search="search"
+        :search="searchKeyword"
         :items="items"
         hide-actions
         class="elevation-1">
@@ -36,9 +36,9 @@
       <div class="text-xs-center pt-2">
         <v-pagination v-model="pagination.page" 
                       :length="pages" 
-                      @next="fetchItems(pagination.page, keyword)" 
-                      @previous="fetchItems(pagination.page, keyword)" 
-                      @input="fetchItems(pagination.page, keyword)"/>
+                      @next="fetchItems(pagination.page, searchKeyword)" 
+                      @previous="fetchItems(pagination.page, searchKeyword)" 
+                      @input="fetchItems(pagination.page, searchKeyword)"/>
       </div>
     </v-flex>
     <import-modal :show="toggleImportModal" @close="handleCloseModal"/>
@@ -54,7 +54,7 @@ export default {
   },
   data: () => {
     return {
-      search: '',
+      searchKeyword: '',
       totalItems: 0,
       loading: true,
       pagination: {
@@ -116,7 +116,7 @@ export default {
     },
   },
   watch: {
-    search(keyword) {
+    searchKeyword(keyword) {
       this.fetchItems(1, keyword);
     },
   },
