@@ -12,7 +12,7 @@
           label="Cari Pengguna"
           single-line
           hide-details
-          v-model="search"
+          v-model="searchKeyword"
         />
       </v-card-title>
       <v-data-table
@@ -20,7 +20,7 @@
         :pagination.sync="pagination"
         :total-items="totalItems"
         :loading="loading"
-        :search="search"
+        :search="searchKeyword"
         :items="items"
         hide-actions
         class="elevation-1">
@@ -31,7 +31,7 @@
             <v-chip v-for="role in props.item.roles" 
                     :key="role" 
                     color="primary" 
-                    text-color="white">{{ role[0] }}</v-chip>
+                    text-color="white">{{ role }}</v-chip>
           </td>
           <td>
             <v-btn outline :to="{ name: 'users-username', params: { username: props.item.username}}">Lihat</v-btn>
@@ -41,9 +41,9 @@
       <div class="text-xs-center pt-2">
         <v-pagination v-model="pagination.page" 
                       :length="pages"
-                      @next="fetchItems(pagination.page)" 
-                      @previous="fetchItems(pagination.page)" 
-                      @input="fetchItems(pagination.page)"/>
+                      @next="fetchItems(pagination.page, searchKeyword)" 
+                      @previous="fetchItems(pagination.page, searchKeyword)" 
+                      @input="fetchItems(pagination.page, searchKeyword)"/>
       </div>
     </v-flex>
   </v-layout>
@@ -54,7 +54,7 @@ import { mapActions } from 'vuex';
 export default {
   data: () => {
     return {
-      search: '',
+      searchKeyword: '',
       totalItems: 0,
       loading: true,
       pagination: {
@@ -103,7 +103,7 @@ export default {
     },
   },
   watch: {
-    search(keyword) {
+    searchKeyword(keyword) {
       this.fetchItems(1, keyword);
     },
   },
