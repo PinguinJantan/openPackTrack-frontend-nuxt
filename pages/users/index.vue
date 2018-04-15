@@ -1,7 +1,7 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8>
-      <v-btn color="primary mb-3" to="/items/create">Buat Pengguna Baru</v-btn>
+      <v-btn color="primary mb-3" to="/users/create">Buat Pengguna Baru</v-btn>
       <v-card-title>
         Semua Pengguna 
         <v-spacer/>

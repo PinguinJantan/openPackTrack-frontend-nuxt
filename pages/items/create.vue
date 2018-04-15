@@ -39,7 +39,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import bahasa from 'vee-validate/dist/locale/id';
 export default {
   $_veeValidate: {
     validator: 'new',
@@ -56,7 +55,6 @@ export default {
   mounted() {
     this.fetchOptions('size');
     this.fetchOptions('sku');
-    this.$validator.localize('id', bahasa);
   },
   methods: {
     ...mapActions(['notify']),
@@ -76,7 +74,7 @@ export default {
                 });
                 return;
               }
-              this.notify({ type: 'info', message: res });
+              this.notify({ type: 'info', message: res.message });
             })
             .catch(err => {
               this.notify({ type: 'error', message: err.message });
