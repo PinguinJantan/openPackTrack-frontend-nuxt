@@ -140,7 +140,6 @@ export default {
         if (role) {
           // notify user role is empty
           this.notify({ type: 'error', message: 'Peran tidak boleh kosong' });
-          this.fetchUser();
           resolve(false);
         }
 
@@ -163,10 +162,7 @@ export default {
     },
     chooseSelectedRole(roles) {
       // assuming a user just have only one role
-      console.log('this.role', this.roleOptions, roles);
-      const a = this.roleOptions.find(role => role === roles[0]);
-      console.log('a : ', a);
-      this.selectedRole = a;
+      this.selectedRole = this.roleOptions.find(role => role === roles[0]);
     },
     cencelToEdit() {
       this.user = this.userBeforeEdit;
