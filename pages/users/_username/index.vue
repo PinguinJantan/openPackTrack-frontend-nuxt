@@ -89,6 +89,7 @@ export default {
         if (res.success) {
           const user = Object.assign(this.user, res.user);
           this.user = user;
+          this.chooseSelectedRole(this.user.roles);
           // for reset button purpose, we need to temporary save it
           this.userBeforeEdit = JSON.parse(JSON.stringify(user));
         }
@@ -116,15 +117,56 @@ export default {
       this.$validator.validateAll().then(isFormValid => {
         if (isFormValid) {
           this.isEditMode = false;
+          this.$axios.$post('/api/user/update', this.user).then(res => {
+            if (res.success) {
+              this.assignUserToRoles(this.user.id, this.selectedRole)
+                .then(success => {
+                  if (success) {
+                    this.notify({ type: 'success', message: 'sukses update profil' });
+                  } else {
+                    this.notify({ type: 'error', message: 'gagal saat mendelkasikan peran' });
+                  }
+                })
+                .catch(err => {
+                  this.notify({ type: 'error', message: err });
+                });
+            }
+          });
         }
       });
     },
     assignUserToRoles(userId, role) {
-      if (role) {
-        // notify user role is empty
-        this.notify({ type: 'error', message: 'Peran tidak boleh kosong' });
-        this.fetchUser();
-      }
+      return new Promise((resolve, reject) => {
+        if (role) {
+          // notify user role is empty
+          this.notify({ type: 'error', message: 'Peran tidak boleh kosong' });
+          this.fetchUser();
+          resolve(false);
+        }
+
+        this.$axios
+          .$post('/api/user/role/assign', {
+            role,
+            userId,
+          })
+          .then(res => {
+            if (res.success) {
+              resolve(true);
+            } else {
+              reject(res.message);
+            }
+          })
+          .catch(err => {
+            reject(err.message);
+          });
+      });
+    },
+    chooseSelectedRole(roles) {
+      // assuming a user just have only one role
+      console.log('this.role', this.roleOptions, roles);
+      const a = this.roleOptions.find(role => role === roles[0]);
+      console.log('a : ', a);
+      this.selectedRole = a;
     },
     cencelToEdit() {
       this.user = this.userBeforeEdit;
