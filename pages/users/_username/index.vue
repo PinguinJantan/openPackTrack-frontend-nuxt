@@ -6,7 +6,7 @@
           v-model="user.name"
           label="Nama"
           :error-messages="errors.collect('name')"
-          v-validate="'required|max:10'"
+          v-validate="'required'"
           data-vv-name="name"
           :disabled="!isEditMode"
           required
@@ -57,7 +57,7 @@
   </v-layout>
 </template>
 <script>
-import bahasa from 'vee-validate/dist/locale/id';
+import { mapActions } from 'vuex';
 
 export default {
   $_veeValidate: {
@@ -81,9 +81,9 @@ export default {
   },
   mounted() {
     this.fetchRoles().then(() => this.fetchUser());
-    this.$validator.localize('id', bahasa);
   },
   methods: {
+    ...mapActions(['notify']),
     fetchUser() {
       this.$axios.$get(`/api/user/${this.$route.params.username}`).then(res => {
         if (res.success) {
@@ -95,19 +95,20 @@ export default {
       });
     },
     fetchRoles() {
-      return new Promise((res, rej) => {
-        // todo: fetch actula role
-        this.roleOptions = [
-          {
-            name: 'Super Admin',
-            id: 'abc',
-          },
-          {
-            name: 'Inputer',
-            id: 'def',
-          },
-        ];
-        res(true);
+      return new Promise((resolve, reject) => {
+        this.$axios
+          .$get('/api/user/role/all')
+          .then(res => {
+            if (res.success) {
+              this.roleOptions = res.roles;
+              resolve(true);
+            } else {
+              resolve(false);
+            }
+          })
+          .catch(err => {
+            this.notify({ type: 'error', message: err.message });
+          });
       });
     },
     edit() {
@@ -118,9 +119,11 @@ export default {
         }
       });
     },
-    assignUserToRoles(userId, roles) {
-      if (roles.length === 0) {
+    assignUserToRoles(userId, role) {
+      if (role) {
         // notify user role is empty
+        this.notify({ type: 'error', message: 'Peran tidak boleh kosong' });
+        this.fetchUser();
       }
     },
     cencelToEdit() {
