@@ -121,6 +121,7 @@ export default {
             if (res.success) {
               this.assignUserToRoles(this.user.id, this.selectedRole)
                 .then(success => {
+                  console.log('success : ', success);
                   if (success) {
                     this.notify({ type: 'success', message: 'sukses update profil' });
                   } else {
@@ -137,7 +138,7 @@ export default {
     },
     assignUserToRoles(userId, role) {
       return new Promise((resolve, reject) => {
-        if (role) {
+        if (!role) {
           // notify user role is empty
           this.notify({ type: 'error', message: 'Peran tidak boleh kosong' });
           resolve(false);
@@ -149,11 +150,8 @@ export default {
             userId,
           })
           .then(res => {
-            if (res.success) {
-              resolve(true);
-            } else {
-              reject(res.message);
-            }
+            console.log('res : ', res);
+            resolve(res.success);
           })
           .catch(err => {
             reject(err.message);
