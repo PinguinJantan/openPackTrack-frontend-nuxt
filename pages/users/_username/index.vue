@@ -119,18 +119,23 @@ export default {
           this.isEditMode = false;
           this.$axios.$post('/api/user/update', this.user).then(res => {
             if (res.success) {
-              this.assignUserToRoles(this.user.id, this.selectedRole)
-                .then(success => {
-                  console.log('success : ', success);
-                  if (success) {
-                    this.notify({ type: 'success', message: 'sukses update profil' });
-                  } else {
-                    this.notify({ type: 'error', message: 'gagal saat mendelkasikan peran' });
-                  }
-                })
-                .catch(err => {
-                  this.notify({ type: 'error', message: err });
-                });
+              // role changed ?
+              if (this.isRoleChanged(this.user.roles[0], this.selectedRole)) {
+                this.assignUserToRoles(this.user.id, this.selectedRole)
+                  .then(success => {
+                    console.log('success : ', success);
+                    if (success) {
+                      this.notify({ type: 'success', message: 'sukses update profil dan peran' });
+                    } else {
+                      this.notify({ type: 'error', message: 'gagal saat mendelkasikan peran' });
+                    }
+                  })
+                  .catch(err => {
+                    this.notify({ type: 'error', message: err });
+                  });
+              } else {
+                this.notify({ type: 'success', message: 'sukses update profil' });
+              }
             }
           });
         }
@@ -157,6 +162,9 @@ export default {
             reject(err.message);
           });
       });
+    },
+    isRoleChanged(currentRole, newRole) {
+      return currentRole !== newRole;
     },
     chooseSelectedRole(roles) {
       // assuming a user just have only one role
