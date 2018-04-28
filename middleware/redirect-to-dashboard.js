@@ -3,7 +3,7 @@ export default function({ store, route, redirect }) {
   const pageNames = ['index', 'login']
 
   pageNames.forEach(page => {
-    if (page === route.name) {
+    if (store.getters.isLogedIn && page === route.name) {
       redirect('/dashboard') 
     }
   })
