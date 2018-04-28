@@ -84,8 +84,8 @@ export default {
           if (response.success) {
             this.items = response.users;
             this.pagination.page = page;
-            // this.pagination.totalItems = response.pagination.itemTotal;
-            // this.totalItems = response.pagination.pageCount;
+            this.pagination.totalItems = response.pagination.total;
+            this.totalItems = response.pagination.pageCount;
           }
         })
         .catch(err => {
