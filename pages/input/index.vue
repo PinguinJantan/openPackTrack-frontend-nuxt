@@ -12,32 +12,7 @@
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <v-layout>
-          <v-flex md6 offset-md3>
-            <v-card class="my-2">
-              <v-card-text>
-                <h3 class="headline">Profil Karton Box</h3>
-                <v-select
-                  :items="optionSelectProfile"
-                  v-model="selectedProfile"
-                  label="Select"
-                  single-line
-                  bottom />
-
-                <h3 class="headline">Kode Karton Box</h3>
-                <v-text-field
-                  class="pt-0"
-                  name="input-1-3"
-                  v-model="cartonCode"
-                  single-line />
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer/>
-                <v-btn color="primary" @click.native="step = 2">Continue</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
+        <step-one ref="step1" @next-step="goToStepTwo()" />
       </v-stepper-content>
       <v-stepper-content step="2">
         <v-layout>
@@ -46,11 +21,11 @@
               <v-card flat color="transparent">
                 <section>
                   <div class="subheading">Profil</div>
-                  <div class="headline">{{ selectedProfile.text }}</div>
+                  <div class="headline">{{ 'selectedProfile.type' }}</div>
                 </section>
                 <section>
                   <div class="subheading">Kode Box</div>
-                  <div class="headline">{{ cartonCode }}</div>
+                  <div class="headline">{{ 'cartonCode' }}</div>
                 </section>
                 <section>
                   <h3 class="title">Kode Produk</h3>
@@ -68,9 +43,9 @@
                     v-validate="'required'"
                     v-model="itemInput.code"
                     single-line />
-                  <v-btn color="primary" 
-                         :disabled="isAddBtnDisabled" 
-                         @click="pushItem()" 
+                  <v-btn color="primary"
+                         :disabled="isAddBtnDisabled"
+                         @click="pushItem()"
                          block>Tambahkan Sepatu</v-btn>
                 </section>
                 <section class="text-xs-center">
@@ -126,21 +101,13 @@
 import _find from 'lodash/find';
 import { mapActions } from 'vuex';
 
+import StepOne from '@/components/input/StepOne';
+
 export default {
   data() {
     return {
-      step: 0,
-      selectedProfile: '',
-      cartonCode: 'test-hesoyam',
-      optionSelectProfile: [
-        { text: 'State 1' },
-        { text: 'State 2' },
-        { text: 'State 3' },
-        { text: 'State 4' },
-        { text: 'State 5' },
-        { text: 'State 6' },
-        { text: 'State 7' },
-      ],
+      step: 1,
+      inputModel: {},
       itemInput: {
         type: 'initype',
         size: 39,
@@ -197,7 +164,19 @@ export default {
         this.$refs.inputItemType.focus();
       });
     },
+    goToStepTwo() {
+      this.$refs.step1.validateStep().then(({ valid, model }) => {
+        if (valid) {
+          console.log(valid, model, 'mamama');
+          this.inputModel = { ...this.inputModel, ...model };
+          this.step = 2;
+        } else {
+          console.log(valid, model, 'false mamama');
+        }
+      });
+    },
   },
+  components: { StepOne },
 };
 </script>
 
