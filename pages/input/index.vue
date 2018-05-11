@@ -89,7 +89,7 @@
                 </v-data-table>
                 <v-card-actions>
                   <v-spacer/>
-                  <v-btn color="primary" :disabled="isSaveBtnDisabled">Simpan</v-btn>
+                  <v-btn @click="onSaveInputScan()" color="primary" :disabled="isSaveBtnDisabled">Simpan</v-btn>
                 </v-card-actions>
               </v-container>
             </v-card>
@@ -157,6 +157,7 @@ export default {
           type: itemDetail.skuName,
           size: itemDetail.size,
           code: this.innerCode,
+          itemCode: this.itemCode,
         });
       } else {
         this.notify({
@@ -215,6 +216,33 @@ export default {
           console.log(valid, model, 'false mamama');
         }
       });
+    },
+    onSaveInputScan() {
+      let innerCodes = [];
+      this.items.forEach(item => {
+        innerCodes.push({
+          barcode: item.code,
+          itemCode: item.itemCode,
+        });
+      });
+      console.log('hawaw ', innerCodes);
+
+      this.$axios
+        .$post('/api/inner/input-scan', {
+          cartonBarcode: this.inputModel.cartonCode,
+          profileId: this.inputModel.selectedProfile.id,
+          innerCodes: JSON.stringify(innerCodes),
+        })
+        .then(res => {
+          if (res.success) {
+            this.notify({ type: 'success', message: 'Box berhasil disimpan' });
+            return;
+          }
+          this.notify({ type: 'info', message: res.message });
+        })
+        .catch(err => {
+          this.notify({ type: 'error', message: err.message });
+        });
     },
   },
   components: { StepOne },
