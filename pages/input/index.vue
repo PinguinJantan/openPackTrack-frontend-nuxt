@@ -33,19 +33,22 @@
                     ref="inputItemType"
                     class="pt-0"
                     name="input-1-3"
+                    data-vv-as="Kode Produk"
                     v-validate="'required'"
-                    v-model="itemInput.type"
+                    v-model="inputModel.itemCode"
                     single-line />
-                  <h3 class="title">Kode Unik</h3>
+                  <h3 class="title">Kode Inner</h3>
                   <v-text-field
                     class="pt-0"
                     name="input-1-3"
+                    data-vv-as="Kode Inner"
                     v-validate="'required'"
-                    v-model="itemInput.code"
+                    v-model="inputModel.innerCode"
                     single-line />
                   <v-btn color="primary"
                          :disabled="isAddBtnDisabled"
-                         @click="pushItem()"
+                         @click="handleAddItem()"
+                         :loading="addBtnLoading"
                          block>Tambahkan Sepatu</v-btn>
                 </section>
                 <section class="text-xs-center">
@@ -107,17 +110,15 @@ export default {
   data() {
     return {
       step: 1,
-      inputModel: {},
-      itemInput: {
-        type: 'initype',
-        size: 39,
-        code: 'inicode',
+      inputModel: {
+        itemCode: '',
+        innerCode: '',
       },
-
+      addBtnLoading: false,
       headers: [
-        { text: 'Kode Produk', value: 'kodeProduk' },
+        { text: 'Type', value: 'kodeProduk' },
         { text: 'Ukuran', value: 'ukuran' },
-        { text: 'Kode Unik', value: 'kodeUnik' },
+        { text: 'Kode Inner', value: 'kodeUnik' },
       ],
       items: [],
     };
@@ -145,29 +146,62 @@ export default {
   },
   methods: {
     ...mapActions(['notify']),
-    pushItem() {
+    clearInput() {
+      this.inputModel.itemCode = '';
+      this.inputModel.innerCode = '';
+    },
+    pushItem(itemDetail) {
+      // ngecek dulu yang mau diinput sudah diinput apa belum
+      let arrayItems = _find(this.items, { code: this.inputModel.innerCode });
+      if (arrayItems == undefined) {
+        this.items.push({
+          type: itemDetail.skuName,
+          size: itemDetail.size,
+          code: this.inputModel.innerCode,
+        });
+      } else {
+        this.notify({
+          type: 'error',
+          message: `Sudah memasukan kode ${this.inputModel.innerCode}`,
+        });
+      }
+    },
+    handleAddItem() {
       this.$validator.validateAll().then(isFormValid => {
         if (this.errors.any()) {
           alert(this.errors.all());
         } else {
-          // ngecek dulu yang mau diinput sudah diinput apa belum
-          let arrayItems = _find(this.items, { code: this.itemInput.code });
-          if (arrayItems == undefined) {
-            this.items.push({
-              type: this.itemInput.type,
-              size: this.itemInput.size,
-              code: this.itemInput.code,
+          this.addBtnLoading = true;
+          this.$axios
+            .$get(`/api/inner/ping`, {
+              params: {
+                barcode: this.inputModel.innerCode,
+                itemCode: this.inputModel.itemCode,
+              },
+            })
+            .then(response => {
+              if (!response.exist) {
+                if (response.itemDetail) {
+                  this.pushItem(response.itemDetail);
+                } else {
+                  this.notify({
+                    type: 'error',
+                    message: 'Kode Produk tidak ditemukan di database',
+                  });
+                }
+              } else {
+                this.notify({
+                  type: 'error',
+                  message: `Kode Inner sudah pernah digunakan di database`,
+                });
+              }
+              this.addBtnLoading = false;
+              this.clearInput();
+            })
+            .catch(err => {
+              this.addBtnLoading = false;
+              this.notify({ type: 'error', message: err.message });
             });
-          } else {
-            this.notify({ type: 'error', message: `Sudah memasukan kode ${this.itemInput.code}` });
-          }
-
-          // kosongkan inputan
-          for (var props in this.itemInput) {
-            if (this.itemInput.hasOwnProperty(props)) {
-              this.itemInput[props] = null;
-            }
-          }
         }
         this.$refs.inputItemType.focus();
       });
