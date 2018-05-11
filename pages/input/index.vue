@@ -35,7 +35,7 @@
                     name="input-1-3"
                     data-vv-as="Kode Produk"
                     v-validate="'required'"
-                    v-model="inputModel.itemCode"
+                    v-model="itemCode"
                     single-line />
                   <h3 class="title">Kode Inner</h3>
                   <v-text-field
@@ -43,7 +43,7 @@
                     name="input-1-3"
                     data-vv-as="Kode Inner"
                     v-validate="'required'"
-                    v-model="inputModel.innerCode"
+                    v-model="innerCode"
                     single-line />
                   <v-btn color="primary"
                          :disabled="isAddBtnDisabled"
@@ -110,10 +110,9 @@ export default {
   data() {
     return {
       step: 1,
-      inputModel: {
-        itemCode: '',
-        innerCode: '',
-      },
+      inputModel: {},
+      itemCode: '',
+      innerCode: '',
       addBtnLoading: false,
       headers: [
         { text: 'Type', value: 'kodeProduk' },
@@ -147,22 +146,22 @@ export default {
   methods: {
     ...mapActions(['notify']),
     clearInput() {
-      this.inputModel.itemCode = '';
-      this.inputModel.innerCode = '';
+      this.itemCode = '';
+      this.innerCode = '';
     },
     pushItem(itemDetail) {
       // ngecek dulu yang mau diinput sudah diinput apa belum
-      let arrayItems = _find(this.items, { code: this.inputModel.innerCode });
+      let arrayItems = _find(this.items, { code: this.innerCode });
       if (arrayItems == undefined) {
         this.items.push({
           type: itemDetail.skuName,
           size: itemDetail.size,
-          code: this.inputModel.innerCode,
+          code: this.innerCode,
         });
       } else {
         this.notify({
           type: 'error',
-          message: `Sudah memasukan kode ${this.inputModel.innerCode}`,
+          message: `Sudah memasukan kode ${this.innerCode}`,
         });
       }
     },
@@ -175,8 +174,8 @@ export default {
           this.$axios
             .$get(`/api/inner/ping`, {
               params: {
-                barcode: this.inputModel.innerCode,
-                itemCode: this.inputModel.itemCode,
+                barcode: this.innerCode,
+                itemCode: this.itemCode,
               },
             })
             .then(response => {
