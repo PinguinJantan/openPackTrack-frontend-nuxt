@@ -21,11 +21,11 @@
               <v-card flat color="transparent">
                 <section>
                   <div class="subheading">Profil</div>
-                  <div class="headline">{{ 'selectedProfile.type' }}</div>
+                  <div class="headline">{{ selectedProfile }}</div>
                 </section>
                 <section>
                   <div class="subheading">Kode Box</div>
-                  <div class="headline">{{ 'cartonCode' }}</div>
+                  <div class="headline">{{ cartonCode }}</div>
                 </section>
                 <section>
                   <h3 class="title">Kode Produk</h3>
@@ -133,6 +133,14 @@ export default {
     },
     isSaveBtnDisabled() {
       if (this.items.length < 1) return true;
+    },
+    selectedProfile() {
+      return this.inputModel.hasOwnProperty('selectedProfile')
+        ? this.inputModel.selectedProfile.type
+        : '';
+    },
+    cartonCode() {
+      return this.inputModel.hasOwnProperty('cartonCode') ? this.inputModel.cartonCode : '';
     },
   },
   methods: {
