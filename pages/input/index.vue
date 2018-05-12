@@ -80,6 +80,13 @@
                     <td class="text-xs-left">{{ props.item.type }}</td>
                     <td class="text-xs-left">{{ props.item.size }}</td>
                     <td class="text-xs-left">{{ props.item.code }}</td>
+                    <td class="text-xs-left">
+                      <v-btn color="error"
+                             icon
+                             @click="removeItemFromTable(props.index)">
+                        <v-icon small>delete</v-icon>
+                      </v-btn>
+                    </td>
                   </template>
                   <template slot="no-data">
                     <v-alert :value="true" color="info" icon="warning">
@@ -118,6 +125,7 @@ export default {
         { text: 'Type', value: 'kodeProduk' },
         { text: 'Ukuran', value: 'ukuran' },
         { text: 'Kode Inner', value: 'kodeUnik' },
+        { text: ' ', value: ' ' },
       ],
       items: [],
     };
@@ -216,6 +224,9 @@ export default {
           console.log(valid, model, 'false mamama');
         }
       });
+    },
+    removeItemFromTable(index) {
+      this.items.splice(index, 1);
     },
     onSaveInputScan() {
       let innerCodes = [];
