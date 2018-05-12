@@ -3,6 +3,7 @@
     <v-navigation-drawer
       v-model="drawer"
       fixed
+      width=250
       app>
       <v-list>
         <v-list-tile
