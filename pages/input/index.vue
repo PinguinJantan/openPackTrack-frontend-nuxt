@@ -12,32 +12,7 @@
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <v-layout>
-          <v-flex md6 offset-md3>
-            <v-card class="my-2">
-              <v-card-text>
-                <h3 class="headline">Profil Karton Box</h3>
-                <v-select
-                  :items="optionSelectProfile"
-                  v-model="selectedProfile"
-                  label="Select"
-                  single-line
-                  bottom />
-
-                <h3 class="headline">Kode Karton Box</h3>
-                <v-text-field
-                  class="pt-0"
-                  name="input-1-3"
-                  v-model="cartonCode"
-                  single-line />
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer/>
-                <v-btn color="primary" @click.native="step = 2">Continue</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
+        <step-one ref="step1" @next-step="goToStepTwo()" />
       </v-stepper-content>
       <v-stepper-content step="2">
         <v-layout>
@@ -46,7 +21,7 @@
               <v-card flat color="transparent">
                 <section>
                   <div class="subheading">Profil</div>
-                  <div class="headline">{{ selectedProfile.text }}</div>
+                  <div class="headline">{{ selectedProfile }}</div>
                 </section>
                 <section>
                   <div class="subheading">Kode Box</div>
@@ -58,19 +33,22 @@
                     ref="inputItemType"
                     class="pt-0"
                     name="input-1-3"
+                    data-vv-as="Kode Produk"
                     v-validate="'required'"
-                    v-model="itemInput.type"
+                    v-model="itemCode"
                     single-line />
-                  <h3 class="title">Kode Unik</h3>
+                  <h3 class="title">Kode Inner</h3>
                   <v-text-field
                     class="pt-0"
                     name="input-1-3"
+                    data-vv-as="Kode Inner"
                     v-validate="'required'"
-                    v-model="itemInput.code"
+                    v-model="innerCode"
                     single-line />
-                  <v-btn color="primary" 
-                         :disabled="isAddBtnDisabled" 
-                         @click="pushItem()" 
+                  <v-btn color="primary"
+                         :disabled="isAddBtnDisabled"
+                         @click="handleAddItem()"
+                         :loading="addBtnLoading"
                          block>Tambahkan Sepatu</v-btn>
                 </section>
                 <section class="text-xs-center">
@@ -111,7 +89,7 @@
                 </v-data-table>
                 <v-card-actions>
                   <v-spacer/>
-                  <v-btn color="primary" :disabled="isSaveBtnDisabled">Simpan</v-btn>
+                  <v-btn @click="onSaveInputScan()" color="primary" :disabled="isSaveBtnDisabled">Simpan</v-btn>
                 </v-card-actions>
               </v-container>
             </v-card>
@@ -126,31 +104,20 @@
 import _find from 'lodash/find';
 import { mapActions } from 'vuex';
 
+import StepOne from '@/components/input/StepOne';
+
 export default {
   data() {
     return {
-      step: 0,
-      selectedProfile: '',
-      cartonCode: 'test-hesoyam',
-      optionSelectProfile: [
-        { text: 'State 1' },
-        { text: 'State 2' },
-        { text: 'State 3' },
-        { text: 'State 4' },
-        { text: 'State 5' },
-        { text: 'State 6' },
-        { text: 'State 7' },
-      ],
-      itemInput: {
-        type: 'initype',
-        size: 39,
-        code: 'inicode',
-      },
-
+      step: 1,
+      inputModel: {},
+      itemCode: '',
+      innerCode: '',
+      addBtnLoading: false,
       headers: [
-        { text: 'Kode Produk', value: 'kodeProduk' },
+        { text: 'Type', value: 'kodeProduk' },
         { text: 'Ukuran', value: 'ukuran' },
-        { text: 'Kode Unik', value: 'kodeUnik' },
+        { text: 'Kode Inner', value: 'kodeUnik' },
       ],
       items: [],
     };
@@ -167,37 +134,118 @@ export default {
     isSaveBtnDisabled() {
       if (this.items.length < 1) return true;
     },
+    selectedProfile() {
+      return this.inputModel.hasOwnProperty('selectedProfile')
+        ? this.inputModel.selectedProfile.type
+        : '';
+    },
+    cartonCode() {
+      return this.inputModel.hasOwnProperty('cartonCode') ? this.inputModel.cartonCode : '';
+    },
   },
   methods: {
     ...mapActions(['notify']),
-    pushItem() {
+    clearInput() {
+      this.itemCode = '';
+      this.innerCode = '';
+    },
+    pushItem(itemDetail) {
+      // ngecek dulu yang mau diinput sudah diinput apa belum
+      let arrayItems = _find(this.items, { code: this.innerCode });
+      if (arrayItems == undefined) {
+        this.items.push({
+          type: itemDetail.skuName,
+          size: itemDetail.size,
+          code: this.innerCode,
+          itemCode: this.itemCode,
+        });
+      } else {
+        this.notify({
+          type: 'error',
+          message: `Sudah memasukan kode ${this.innerCode}`,
+        });
+      }
+    },
+    handleAddItem() {
       this.$validator.validateAll().then(isFormValid => {
         if (this.errors.any()) {
           alert(this.errors.all());
         } else {
-          // ngecek dulu yang mau diinput sudah diinput apa belum
-          let arrayItems = _find(this.items, { code: this.itemInput.code });
-          if (arrayItems == undefined) {
-            this.items.push({
-              type: this.itemInput.type,
-              size: this.itemInput.size,
-              code: this.itemInput.code,
+          this.addBtnLoading = true;
+          this.$axios
+            .$get(`/api/inner/ping`, {
+              params: {
+                barcode: this.innerCode,
+                itemCode: this.itemCode,
+              },
+            })
+            .then(response => {
+              if (!response.exist) {
+                if (response.itemDetail) {
+                  this.pushItem(response.itemDetail);
+                } else {
+                  this.notify({
+                    type: 'error',
+                    message: 'Kode Produk tidak ditemukan di database',
+                  });
+                }
+              } else {
+                this.notify({
+                  type: 'error',
+                  message: `Kode Inner sudah pernah digunakan di database`,
+                });
+              }
+              this.addBtnLoading = false;
+              this.clearInput();
+            })
+            .catch(err => {
+              this.addBtnLoading = false;
+              this.notify({ type: 'error', message: err.message });
             });
-          } else {
-            this.notify({ type: 'error', message: `Sudah memasukan kode ${this.itemInput.code}` });
-          }
-
-          // kosongkan inputan
-          for (var props in this.itemInput) {
-            if (this.itemInput.hasOwnProperty(props)) {
-              this.itemInput[props] = null;
-            }
-          }
         }
         this.$refs.inputItemType.focus();
       });
     },
+    goToStepTwo() {
+      this.$refs.step1.validateStep().then(({ valid, model }) => {
+        if (valid) {
+          console.log(valid, model, 'mamama');
+          this.inputModel = { ...this.inputModel, ...model };
+          this.step = 2;
+        } else {
+          console.log(valid, model, 'false mamama');
+        }
+      });
+    },
+    onSaveInputScan() {
+      let innerCodes = [];
+      this.items.forEach(item => {
+        innerCodes.push({
+          barcode: item.code,
+          itemCode: item.itemCode,
+        });
+      });
+      console.log('hawaw ', innerCodes);
+
+      this.$axios
+        .$post('/api/inner/input-scan', {
+          cartonBarcode: this.inputModel.cartonCode,
+          profileId: this.inputModel.selectedProfile.id,
+          innerCodes: JSON.stringify(innerCodes),
+        })
+        .then(res => {
+          if (res.success) {
+            this.notify({ type: 'success', message: 'Box berhasil disimpan' });
+            return;
+          }
+          this.notify({ type: 'info', message: res.message });
+        })
+        .catch(err => {
+          this.notify({ type: 'error', message: err.message });
+        });
+    },
   },
+  components: { StepOne },
 };
 </script>
 
