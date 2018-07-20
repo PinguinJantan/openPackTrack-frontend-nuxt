@@ -61,8 +61,13 @@ export default {
         .$get(`/api/profile/list`)
         .then(response => {
           this.loadingProfile = false;
+          var options = [];
           if (response.success) {
-            this.optionSelectProfile = response.profile;
+            response.profile.forEach(profile => {
+              profile.type = profile.type + ' ' + profile.count;
+              options.push(profile);
+            });
+            this.optionSelectProfile = options;
           }
         })
         .catch(err => {

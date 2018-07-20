@@ -135,7 +135,10 @@ export default {
       return this.items.length;
     },
     isAddBtnDisabled() {
-      if (this.items.length >= 12) {
+      var count = this.inputModel.hasOwnProperty('selectedProfile')
+        ? this.inputModel.selectedProfile.count
+        : 12;
+      if (this.items.length >= count) {
         return true;
       }
     },
