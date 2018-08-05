@@ -78,7 +78,7 @@ const createStore = () => {
       }
     },
     getters: {
-      isLogedIn(state) {
+      isLoggedIn(state) {
         return state.token !== null ? true : false;
       },
       alert(state) {
