@@ -7366,6 +7366,10 @@ vue-meta@^1.4.3:
     lodash.isplainobject "^4.0.6"
     object-assign "^4.1.1"
 
+vue-multiselect@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.1.0.tgz#9e8ee7087658f029d06778cdb8da0b34ee3f1e28"
+
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
@@ -7405,9 +7409,9 @@ vue@^2.5.13:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
-vuetify@^0.17.3:
-  version "0.17.7"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-0.17.7.tgz#068c8210473643d45166ef9c5f6eb0ecf26bb5a5"
+vuetify@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.1.8.tgz#3aef842ddc9b7ec348e7ce273a24f2f8ebb1cea9"
 
 vuex@^3.0.1:
   version "3.0.1"
