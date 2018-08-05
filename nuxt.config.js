@@ -22,7 +22,7 @@ module.exports = {
   },
 
   router: {
-    middleware: ['check-auth', 'redirect-to-dashboard']
+    middleware: ['auth']
   },
 
   /*
@@ -54,7 +54,8 @@ module.exports = {
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/auth',
   ],
 
   /*
@@ -63,6 +64,28 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     baseURL: process.env.BASE_URL || 'http://wrong.url'
+  },
+
+  // config for Nuxt auth module
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/auth/login', method: 'post', propertyName: 'user.token' },
+          logout:false, 
+          user: false,
+        },
+        tokenRequired: true,
+      }
+    },
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: '/login',
+      user: '/admin',
+      home: '/admin',
+    },
+    resetOnError: true,
   },
 
   env: {
