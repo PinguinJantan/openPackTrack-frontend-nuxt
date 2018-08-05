@@ -33,36 +33,38 @@
   </v-layout>
 </template>
 <script>
+import { mapActions } from 'vuex';
 import bahasa from 'vee-validate/dist/locale/id';
 export default {
   $_veeValidate: {
     validator: 'new',
   },
-
+  auth: false,
   data: () => ({
     password: '',
     username: '',
   }),
-
   mounted() {
     this.$validator.localize('en', bahasa);
   },
-
   methods: {
+    ...mapActions(['notify']),
     login() {
       let self = this;
       this.$validator.validateAll().then(isFormValid => {
         if (isFormValid) {
-          self.$store
-            .dispatch('login', {
-              username: this.username,
-              password: this.password,
+          this.$auth
+            .loginWith('local', {
+              data: {
+                username: this.username,
+                password: this.password,
+              },
             })
-            .then(() => {
-              this.$router.push('dashboard');
+            .then(res => {
+              return this.$router.push('/dashboard');
             })
             .catch(err => {
-              console.log('error when trying to login : ', err);
+              this.notify({ type: 'error', message: err });
             });
         }
       });

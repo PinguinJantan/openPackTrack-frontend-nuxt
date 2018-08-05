@@ -124,7 +124,10 @@ export default {
   },
   computed: {
     ...mapState(['notification']),
-    ...mapGetters(['isLoggedIn', 'alert']),
+    ...mapGetters(['alert']),
+    isLoggedIn() {
+      return this.$auth.loggedIn;
+    },
     snackbarMessage: {
       get() {
         return this.notification.active;
