@@ -143,13 +143,11 @@ export default {
       this.notify({ type: 'error', message: '' });
     },
     logout() {
-      this.$store.dispatch('logout');
-      this.$router.push({
-        name: 'index',
+      this.$auth.logout().then(() => {
+        this.$router.push({
+          name: 'index',
+        });
       });
-    },
-    dismissAlert() {
-      this.$store.commit('clearAlert');
     },
   },
 };
