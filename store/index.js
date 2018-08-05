@@ -78,12 +78,8 @@ const createStore = () => {
       }
     },
     getters: {
-      isLoggedIn(state) {
-        return state.token !== null ? true : false;
-      },
-      alert(state) {
-        return state.alert;
-      }
+      isLoggedIn: state => state.token !== null,
+      alert: state => state.alert,
     }
   });
 };
