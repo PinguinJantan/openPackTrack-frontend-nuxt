@@ -34,7 +34,10 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    'vuetify/src/stylus/main.styl'
+    'vuetify/src/stylus/main.styl',
+    'vue-multiselect/dist/vue-multiselect.min.css',
+    '@/assets/css/multiselect.css',
+    '@/assets/css/customs.css'
   ],
 
   /*

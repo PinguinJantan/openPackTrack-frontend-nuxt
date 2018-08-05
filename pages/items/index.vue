@@ -31,6 +31,11 @@
           <td>{{ props.item.sku.name }}</td>
           <td>{{ props.item.sku.category }}</td>
           <td>{{ props.item.sku.color }}</td>
+          <td class="justify-center layout px-0">
+            <v-btn icon class="mx-0" @click="editItem(props.item)">
+              <v-icon color="teal">edit</v-icon>
+            </v-btn>
+          </td>
         </template>
       </v-data-table>
       <div class="text-xs-center pt-2">
@@ -42,15 +47,18 @@
       </div>
     </v-flex>
     <import-modal :show="toggleImportModal" @close="handleCloseModal"/>
+    <edit-modal :show="toggleEditModal" @close="handleEditModal"/>
   </v-layout>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
 
 import ImportModal from '@/components/items/ImportModal';
+import EditModal from '@/components/items/EditModal.vue';
 export default {
   components: {
     ImportModal,
+    EditModal,
   },
   data: () => {
     return {
@@ -70,6 +78,7 @@ export default {
         { text: 'Warna', value: 'sku.color' },
       ],
       toggleImportModal: false,
+      toggleEditModal: false,
     };
   },
   created() {
@@ -104,6 +113,9 @@ export default {
         '_blank',
       );
       win.focus();
+    },
+    editItem(item) {
+      toggleEditModal = true;
     },
   },
   computed: {

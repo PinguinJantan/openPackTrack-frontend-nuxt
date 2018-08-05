@@ -1,0 +1,10 @@
+.multiselect__tags {
+  border-radius: 4px;
+  border: 2px solid rgba(0, 0, 0, .87);
+  min-height: 58px;
+  padding-top: 18px;
+}
+
+.multiselect__select {
+  line-height: 35px
+}
