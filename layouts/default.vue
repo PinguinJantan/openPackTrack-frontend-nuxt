@@ -78,6 +78,7 @@
       :color="notification.color"
       multi-line
       v-model="snackbarMessage">{{ notification.message }}
+      <v-btn dark flat >Detail</v-btn>
       <v-btn dark flat @click="notificationToggle">Close</v-btn>
     </v-snackbar>
     <v-footer :fixed="fixed" app>

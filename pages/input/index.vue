@@ -20,6 +20,11 @@
             <v-container>
               <v-card flat color="transparent">
                 <section>
+                  <v-btn color="primary" @click="goToStepOne()">
+                    <v-icon>keyboard_arrow_left</v-icon> Kembali
+                  </v-btn>
+                </section>
+                <section>
                   <div class="subheading">Profil</div>
                   <div class="headline">{{ selectedProfile }}</div>
                 </section>
@@ -52,7 +57,7 @@
                          block>Tambahkan Sepatu</v-btn>
                 </section>
                 <section class="text-xs-center">
-                  <div class="title">Sudah diinputkan</div>
+                  <div class="title">Jumlah</div>
                   <div class="display-4">{{ itemsAdded }}</div>
                 </section>
               </v-card>
@@ -94,12 +99,12 @@
                     </v-alert>
                   </template>
                 </v-data-table>
-                <v-card-actions>
-                  <v-spacer/>
-                  <v-btn @click="onSaveInputScan()" color="primary" :disabled="isSaveBtnDisabled">Simpan</v-btn>
-                </v-card-actions>
               </v-container>
             </v-card>
+            <v-card-actions>
+              <v-spacer/>
+              <v-btn @click="onSaveInputScan()" color="primary" :disabled="isSaveBtnDisabled">Simpan</v-btn>
+            </v-card-actions>
           </v-flex>
         </v-layout>
       </v-stepper-content>
@@ -216,6 +221,9 @@ export default {
         }
         this.$refs.inputItemType.focus();
       });
+    },
+    goToStepOne() {
+      this.step = 1;
     },
     goToStepTwo() {
       this.$refs.step1.validateStep().then(({ valid, model }) => {
