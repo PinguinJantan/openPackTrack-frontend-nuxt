@@ -1,5 +1,4 @@
 export const state = () => ({
-  test: 'test'
 })
 
 export const mutations = {
