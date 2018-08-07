@@ -6,24 +6,24 @@ export const mutations = {
 }
 
 export const actions = {
-  async createSku({ dispatch }, data) {
+  async createSku({ dispatch }, { name, code, category, color, gender }) {
     let result
 
     try {
       result = await this.$axios.$post('/api/sku/create', {
-        code: data.code,
-        name: data.name,
-        category: data.category,
-        color: data.color,
-        gender: data.gender
+        code: code,
+        name: name,
+        category: category,
+        color: color,
+        gender: gender
       })
       if (result.success) {
         return result.sku
       } else {
-        dispatch.notify({ type: 'error', message: result.message })
+        dispatch('notify', { type: 'error', message: result.message }, { root: true })
       }
     } catch (err) {
-      dispatch.notify({ type: 'error', message: err.message })
+      dispatch('notify', { type: 'error', message: err.message }, { root: true })
     }
   }
 }
