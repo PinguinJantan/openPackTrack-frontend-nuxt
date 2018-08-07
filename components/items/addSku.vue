@@ -154,7 +154,9 @@ export default {
         gender: this.gender,
       }).then(data => {
         this.saving = false;
-        this.reloadFn('sku');
+        this.$emit('success', {
+          sku: data,
+        });
         this.$emit('input', false);
       });
     },

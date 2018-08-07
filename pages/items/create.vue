@@ -1,16 +1,16 @@
 <template>
   <v-layout align-left justify-center>
-    <v-flex xs12 
-            sm6 
-            md6 
-            text-xs-center 
+    <v-flex xs12
+            sm6
+            md6
+            text-xs-center
             mt-5>
       <h3>Buat Item Baru</h3>
       <form>
         <div style="display: flex; margin-bottom: 8px">
           <v-flex text-xs-left>
-            <vue-multiselect 
-              :options="skuOptions" 
+            <vue-multiselect
+              :options="skuOptions"
               v-model="sku"
               label="name"
               track-by="name"
@@ -43,8 +43,8 @@
           outline
         />
         <v-flex text-xs-left>
-          <vue-multiselect 
-            :options="sizeOptions" 
+          <vue-multiselect
+            :options="sizeOptions"
             v-model="size"
             label="name"
             track-by="name"
@@ -61,7 +61,7 @@
         <v-btn color="primary" @click="create">Buat Item Baru</v-btn>
       </form>
     </v-flex>
-    <add-sku v-model="showAddSku" :reload-fn="fetchOptions"/>
+    <add-sku v-model="showAddSku" @success="onSuccessAddSku"/>
   </v-layout>
 </template>
 
@@ -140,6 +140,10 @@ export default {
     addSkuTag(newTag) {
       this.sizeOptions.push(newTag);
       this.size = newTag;
+    },
+    onSuccessAddSku(data) {
+      this.sku = data.sku;
+      this.fetchOptions('sku');
     },
   },
 };
