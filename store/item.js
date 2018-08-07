@@ -9,13 +9,7 @@ export const actions = {
     let result
 
     try {
-      result = await this.$axios.$post('/api/sku/create', {
-        code: code,
-        name: name,
-        category: category,
-        color: color,
-        gender: gender
-      })
+      result = await this.$axios.$post('/api/sku/create', { code, name, category, color, gender })
       if (result.success) {
         return result.sku
       } else {

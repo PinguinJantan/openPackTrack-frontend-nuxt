@@ -63,7 +63,7 @@ export default {
           this.loadingProfile = false;
           if (response.success) {
             this.optionSelectProfile = response.profiles.map(element => {
-              element.type = element.type + ' - ' + element.mixAmount;
+              element.type = `${element.type} - ${element.mixAmount}`;
               return element;
             });
           }
