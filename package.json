@@ -20,7 +20,8 @@
     ]
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.1.1",
+    "@nuxtjs/auth": "^4.5.1",
+    "@nuxtjs/axios": "^5.3.1",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "js-cookie": "^2.2.0",

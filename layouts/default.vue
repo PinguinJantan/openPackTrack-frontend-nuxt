@@ -19,7 +19,21 @@
             <v-list-tile-title v-text="menu.title"/>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-if="!isLogedIn" 
+        <v-list-tile
+          v-if="isLoggedIn"
+          router
+          :to="menu.to"
+          :key="i"
+          v-for="(menu, i) in loggedInMenus"
+          exact>
+          <v-list-tile-action>
+            <v-icon v-html="menu.icon"/>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title v-text="menu.title"/>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile v-if="!isLoggedIn" 
                      router 
                      :to="'/login'" 
                      exact>
@@ -88,7 +102,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -96,8 +110,8 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
-      menus: [
-        { icon: 'apps', title: 'Beranda', to: '/' },
+      menus: [{ icon: 'apps', title: 'Beranda', to: '/' }],
+      loggedInMenus: [
         { icon: 'folder', title: 'Item', to: '/items' },
         { icon: 'play_for_work', title: 'Input', to: '/input' },
         { icon: 'account_box', title: 'Pengguna', to: '/users' },
@@ -110,6 +124,10 @@ export default {
   },
   computed: {
     ...mapState(['notification']),
+    ...mapGetters(['alert']),
+    isLoggedIn() {
+      return this.$auth.loggedIn;
+    },
     snackbarMessage: {
       get() {
         return this.notification.active;
@@ -118,12 +136,6 @@ export default {
         this.notificationToggle();
       },
     },
-    isLogedIn() {
-      return this.$store.getters.isLogedIn;
-    },
-    alert() {
-      return this.$store.getters.alert;
-    },
   },
   methods: {
     ...mapActions(['notify']),
@@ -131,13 +143,11 @@ export default {
       this.notify({ type: 'error', message: '' });
     },
     logout() {
-      this.$store.dispatch('logout');
-      this.$router.push({
-        name: 'index',
+      this.$auth.logout().then(() => {
+        this.$router.push({
+          name: 'index',
+        });
       });
-    },
-    dismissAlert() {
-      this.$store.commit('clearAlert');
     },
   },
 };
