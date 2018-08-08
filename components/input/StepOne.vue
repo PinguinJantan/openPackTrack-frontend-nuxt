@@ -61,13 +61,11 @@ export default {
         .$get(`/api/profile/list`)
         .then(response => {
           this.loadingProfile = false;
-          var options = [];
           if (response.success) {
-            response.profile.forEach(profile => {
-              profile.type = profile.type + ' ' + profile.count;
-              options.push(profile);
+            this.optionSelectProfile = response.profiles.map(element => {
+              element.type = `${element.type} - ${element.mixAmount}`;
+              return element;
             });
-            this.optionSelectProfile = options;
           }
         })
         .catch(err => {

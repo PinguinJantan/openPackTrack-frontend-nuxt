@@ -25,7 +25,7 @@
               </v-flex>
             </v-layout>
             <v-flex md12>
-              <vue-multiselect :options="categoryOptions" 
+              <vue-multiselect :options="categoryOptions"
                                v-model="category"
                                placeholder="Kategori"
                                :allow-empty="false"
@@ -34,7 +34,7 @@
                                :taggable="true"/>
             </v-flex>
             <v-flex md12>
-              <vue-multiselect :options="colorOptions" 
+              <vue-multiselect :options="colorOptions"
                                v-model="color"
                                placeholder="Warna"
                                :allow-empty="false"
@@ -43,7 +43,7 @@
                                :taggable="true"/>
             </v-flex>
             <v-flex md12>
-              <vue-multiselect :options="genderOptions" 
+              <vue-multiselect :options="genderOptions"
                                v-model="gender"
                                placeholder="Gender"
                                :allow-empty="false"
@@ -55,7 +55,7 @@
           <v-layout justify-end row>
             <v-btn large @click="hideFn" :disabled="saving">Batal</v-btn>
             <v-spacer/>
-            <v-btn color="primary" 
+            <v-btn color="primary"
                    large
                    :disabled="saving"
                    @click="saveSku">
@@ -76,9 +76,11 @@
     </v-card>
   </v-dialog>
 </template>
+
 <script>
 import vueMultiselect from 'vue-multiselect';
-import item from '@/utils/factory/items';
+import { mapActions } from 'vuex';
+
 export default {
   name: 'AddSku',
   components: { vueMultiselect },
@@ -107,6 +109,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      createSku: 'item/createSku',
+    }),
     hideFn() {
       this.$emit('input', false);
     },
@@ -141,13 +146,19 @@ export default {
     },
     saveSku() {
       this.saving = true;
-      item
-        .createSku(this.$axios, this.name, this.code, this.category, this.color, this.gender)
-        .then(data => {
-          this.saving = false;
-          this.reloadFn('sku');
-          this.$emit('input', false);
+      this.createSku({
+        code: this.code,
+        name: this.name,
+        category: this.category,
+        color: this.color,
+        gender: this.gender,
+      }).then(data => {
+        this.saving = false;
+        this.$emit('success', {
+          sku: data,
         });
+        this.$emit('input', false);
+      });
     },
   },
   mounted() {
