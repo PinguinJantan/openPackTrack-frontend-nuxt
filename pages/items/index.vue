@@ -118,7 +118,7 @@ export default {
       win.focus();
     },
     editItem(item) {
-      toggleEditModal = true;
+      this.toggleEditModal = true;
     },
   },
   computed: {

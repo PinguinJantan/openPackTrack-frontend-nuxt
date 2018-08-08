@@ -23,8 +23,8 @@
           v-if="isLoggedIn"
           router
           :to="menu.to"
-          :key="i"
-          v-for="(menu, i) in loggedInMenus"
+          v-for="menu in loggedInMenus"
+          :key="menu.title"
           exact>
           <v-list-tile-action>
             <v-icon v-html="menu.icon"/>
