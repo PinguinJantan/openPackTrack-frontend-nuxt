@@ -67,14 +67,14 @@
 
 <script>
 import { mapActions } from 'vuex';
-import vueMultiselect from 'vue-multiselect';
 import addSku from '@/components/items/addSku.vue';
+
 export default {
   name: 'CreateItem',
   $_veeValidate: {
     validator: 'new',
   },
-  components: { addSku, vueMultiselect },
+  components: { addSku },
   data() {
     return {
       code: '',
