@@ -108,8 +108,11 @@ export default {
       this.fetchItems;
     },
     exportItems() {
+      // suppose to be just this.$auth.token , but it doesn't work
+      const token = this.$auth.$storage.getState('_token.local').split(' ')[1];
+
       const win = window.open(
-        `${process.env.baseUrl}/api/item/export?accessToken=${this.token}`,
+        `${process.env.baseUrl}/api/item/export?accessToken=${token}`,
         '_blank',
       );
       win.focus();
@@ -119,7 +122,6 @@ export default {
     },
   },
   computed: {
-    ...mapState(['token']),
     pages() {
       if (this.pagination.rowPerPage == null || this.pagination.totalItems == null) {
         return 0;
