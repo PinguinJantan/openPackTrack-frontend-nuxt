@@ -1,14 +1,29 @@
 <template>
   <v-layout row justify-center>
-    <v-btn color="primary" dark @click.native.stop="dialog = true">Open Dialog</v-btn>
     <v-dialog v-model="show" max-width="500">
       <v-card>
-        <v-card-title class="headline">Use Google's location service?</v-card-title>
-        <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          Edit Item
+        </v-card-title>
+
+        <v-card-text>
+          <item-form/>
+        </v-card-text>
+
+        <v-divider/>
+
         <v-card-actions>
           <v-spacer/>
-          <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
-          <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Agree</v-btn>
+          <v-btn
+            color="primary"
+            flat
+            @click="$emit('close')"
+          >
+            Tutup
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -16,7 +31,11 @@
 </template>
 
 <script>
+import ItemForm from '@/components/items/ItemForm';
+
 export default {
+  name: 'EditItem',
+  components: { ItemForm },
   props: {
     show: {
       type: Boolean,

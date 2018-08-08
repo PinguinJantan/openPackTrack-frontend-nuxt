@@ -47,7 +47,7 @@
       </div>
     </v-flex>
     <import-modal :show="toggleImportModal" @close="handleCloseModal"/>
-    <edit-modal :show="toggleEditModal" @close="handleEditModal"/>
+    <edit-modal :show="toggleEditModal" @close="handleCloseModal"/>
   </v-layout>
 </template>
 <script>
@@ -105,6 +105,7 @@ export default {
     },
     handleCloseModal() {
       this.toggleImportModal = false;
+      this.toggleEditModal = false;
       this.fetchItems;
     },
     exportItems() {
