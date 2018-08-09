@@ -52,7 +52,7 @@
           data-vv-name="ukuran"/>
         <div class="field-error v-messages error--text">{{ errors.has('ukuran') ? errors.first('ukuran') : '' }}</div>
       </v-flex>
-      <v-btn color="primary" @click="create">Buat Item Baru</v-btn>
+      <v-btn color="primary" @click="handleCallToAction">{{ actionButtonText }}</v-btn>
     </form>
     <add-sku v-model="showAddSku" @success="onSuccessAddSku"/>
   </div>
@@ -61,6 +61,9 @@
 import { mapActions } from 'vuex';
 import AddSku from '@/components/items/addSku';
 
+const CREATE = 'create';
+const EDIT = 'edit';
+
 export default {
   name: 'ItemForm',
   $_veeValidate: {
@@ -68,6 +71,13 @@ export default {
   },
   components: {
     AddSku,
+  },
+  props: {
+    mode: {
+      type: String,
+      validator: value => [CREATE, EDIT].includes(value),
+      default: () => CREATE,
+    },
   },
   data() {
     return {
@@ -82,6 +92,11 @@ export default {
   mounted() {
     this.fetchOptions('size');
     this.fetchOptions('sku');
+  },
+  computed: {
+    actionButtonText() {
+      return this.mode === CREATE ? 'Buat Item Baru' : 'Edit Item';
+    },
   },
   methods: {
     ...mapActions(['notify']),
@@ -135,6 +150,9 @@ export default {
     onSuccessAddSku(data) {
       this.sku = data.sku;
       this.fetchOptions('sku');
+    },
+    handleCallToAction() {
+      this[this.mode]();
     },
   },
 };

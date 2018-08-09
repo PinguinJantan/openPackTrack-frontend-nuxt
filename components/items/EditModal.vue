@@ -1,27 +1,15 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="show" max-width="500">
+    <v-dialog v-model="show" max-width="500" persistent>
       <v-card>
-        <v-card-title
-          class="headline grey lighten-2"
-          primary-title
-        >
-          Edit Item
-        </v-card-title>
-
+        <v-card-title class="headline grey lighten-2" primary-title>Edit Item</v-card-title>
         <v-card-text>
-          <item-form/>
+          <item-form mode="edit"/>
         </v-card-text>
-
         <v-divider/>
-
         <v-card-actions>
           <v-spacer/>
-          <v-btn
-            color="primary"
-            flat
-            @click="$emit('close')"
-          >
+          <v-btn color="primary" flat @click="$emit('close')">
             Tutup
           </v-btn>
         </v-card-actions>
