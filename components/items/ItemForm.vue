@@ -78,6 +78,12 @@ export default {
       validator: value => [CREATE, EDIT].includes(value),
       default: () => CREATE,
     },
+    item: {
+      type: Object,
+      default: () => {
+        return {};
+      }, // empty object indicate this is on create mode
+    },
   },
   data() {
     return {
@@ -92,6 +98,12 @@ export default {
   mounted() {
     this.fetchOptions('size');
     this.fetchOptions('sku');
+
+    if (this.mode === EDIT) {
+      this.code = this.item.code;
+      this.size = this.item.size;
+      this.sku = this.item.sku.name || '';
+    }
   },
   computed: {
     actionButtonText() {

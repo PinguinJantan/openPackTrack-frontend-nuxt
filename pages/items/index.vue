@@ -7,23 +7,20 @@
       <v-card-title>
         Semua Item
         <v-spacer/>
-        <v-text-field
-          append-icon="search"
-          label="Cari"
-          single-line
-          hide-details
-          v-model="searchKeyword"
-        />
+        <v-text-field append-icon="search" 
+                      label="Cari" 
+                      single-line 
+                      hide-details 
+                      v-model="searchKeyword" />
       </v-card-title>
-      <v-data-table
-        :headers="headers"
-        :pagination.sync="pagination"
-        :total-items="totalItems"
-        :loading="loading"
-        :search="searchKeyword"
-        :items="items"
-        hide-actions
-        class="elevation-1">
+      <v-data-table :headers="headers" 
+                    :pagination.sync="pagination" 
+                    :total-items="totalItems" 
+                    :loading="loading" 
+                    :search="searchKeyword" 
+                    :items="items" 
+                    hide-actions 
+                    class="elevation-1">
         <template slot="items" slot-scope="props">
           <td>{{ props.item.code }}</td>
           <td>{{ props.item.size }}</td>
@@ -43,11 +40,14 @@
                       :length="pages" 
                       @next="fetchItems(pagination.page, searchKeyword)" 
                       @previous="fetchItems(pagination.page, searchKeyword)" 
-                      @input="fetchItems(pagination.page, searchKeyword)"/>
+                      @input="fetchItems(pagination.page, searchKeyword)" />
       </div>
     </v-flex>
-    <import-modal :show="toggleImportModal" @close="handleCloseModal"/>
-    <edit-modal :show="toggleEditModal" @close="handleCloseModal"/>
+    <import-modal :show="toggleImportModal" @close="handleCloseModal" />
+    <edit-modal v-if="isAnyItemSelected" 
+                :show="isAnyItemSelected" 
+                @close="selectedItem = {}" 
+                :item="selectedItem" />
   </v-layout>
 </template>
 <script>
@@ -78,7 +78,7 @@ export default {
         { text: 'Warna', value: 'sku.color' },
       ],
       toggleImportModal: false,
-      toggleEditModal: false,
+      selectedItem: {},
     };
   },
   created() {
@@ -105,7 +105,6 @@ export default {
     },
     handleCloseModal() {
       this.toggleImportModal = false;
-      this.toggleEditModal = false;
       this.fetchItems;
     },
     exportItems() {
@@ -119,7 +118,7 @@ export default {
       win.focus();
     },
     editItem(item) {
-      this.toggleEditModal = true;
+      this.selectedItem = Object.assign({}, item);
     },
   },
   computed: {
@@ -129,6 +128,9 @@ export default {
       }
 
       return Math.ceil(this.pagination.totalItems / this.pagination.rowPerPage);
+    },
+    isAnyItemSelected() {
+      return Object.keys(this.selectedItem).length > 0;
     },
   },
   watch: {

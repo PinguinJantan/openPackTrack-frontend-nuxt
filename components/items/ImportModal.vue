@@ -92,7 +92,6 @@ export default {
         .catch(err => {
           this.currentStatus = STATUS_FAILED;
           this.notifyError(err.message);
-          console.log('error when upload : ', err);
         });
     },
     notifyError(message) {

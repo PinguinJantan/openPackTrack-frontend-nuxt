@@ -4,7 +4,7 @@
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>Edit Item</v-card-title>
         <v-card-text>
-          <item-form mode="edit"/>
+          <item-form mode="edit" :item="item"/>
         </v-card-text>
         <v-divider/>
         <v-card-actions>
@@ -28,6 +28,12 @@ export default {
     show: {
       type: Boolean,
       default: false,
+    },
+    item: {
+      type: Object,
+      default: () => {
+        return {};
+      }, // empty object indicate this is on create mode
     },
   },
 };
