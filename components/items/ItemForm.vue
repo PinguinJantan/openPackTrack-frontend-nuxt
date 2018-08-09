@@ -52,7 +52,7 @@
           data-vv-name="ukuran"/>
         <div class="field-error v-messages error--text">{{ errors.has('ukuran') ? errors.first('ukuran') : '' }}</div>
       </v-flex>
-      <v-btn color="primary" @click="handleCallToAction">{{ actionButtonText }}</v-btn>
+      <v-btn color="primary" @click="submit">{{ actionButtonText }}</v-btn>
     </form>
     <add-sku v-model="showAddSku" @success="onSuccessAddSku"/>
   </div>
@@ -112,27 +112,18 @@ export default {
   },
   methods: {
     ...mapActions(['notify']),
-    create() {
+    submit() {
       this.$validator.validateAll().then(isFormValid => {
         if (isFormValid) {
-          this.$axios
-            .$post('/api/item/create', {
-              code: this.code,
-              size: this.size.name,
-              skuId: this.sku.id,
-            })
-            .then(res => {
-              if (res.success) {
-                this.$router.push({
-                  name: 'items',
-                });
-                return;
-              }
-              this.notify({ type: 'info', message: res.message });
-            })
-            .catch(err => {
-              this.notify({ type: 'error', message: err.message });
-            });
+          const endpoint = this.mode === CREATE ? '/api/item/create' : '/api/item/update';
+          const payload = {
+            id: this.item.id || null,
+            size: this.size,
+            code: this.code,
+            skuId: this.sku,
+            barcode: this.barcode,
+          };
+          this.send(endpoint, payload);
         }
       });
     },
@@ -163,8 +154,24 @@ export default {
       this.sku = data.sku;
       this.fetchOptions('sku');
     },
-    handleCallToAction() {
-      this[this.mode]();
+    send(endpoint, payload) {
+      this.$axios
+        .$post(endpoint, payload)
+        .then(res => {
+          if (res.success) {
+            this.goToItemPage();
+            return;
+          }
+          this.notify({ type: 'info', message: res.message });
+        })
+        .catch(err => {
+          return this.notify({ type: 'error', message: err.message });
+        });
+    },
+    goToItemPage() {
+      this.$router.push({
+        name: 'items',
+      });
     },
   },
 };
