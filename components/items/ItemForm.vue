@@ -36,6 +36,15 @@
         required
         outline
       />
+      <v-text-field
+        v-model="barcode"
+        label="Barcode"
+        :error-messages="errors.collect('barcode')"
+        v-validate="'required'"
+        data-vv-name="barcode"
+        required
+        outline
+      />
       <v-flex text-xs-left>
         <vue-multiselect
           :options="sizeOptions"
@@ -60,6 +69,7 @@
 <script>
 import { mapActions } from 'vuex';
 import AddSku from '@/components/items/addSku';
+import vueMultiselect from 'vue-multiselect';
 
 const CREATE = 'create';
 const EDIT = 'edit';
@@ -71,6 +81,7 @@ export default {
   },
   components: {
     AddSku,
+    vueMultiselect,
   },
   props: {
     mode: {
@@ -88,6 +99,7 @@ export default {
   data() {
     return {
       code: '',
+      barcode: '',
       sizeOptions: [],
       size: '',
       skuOptions: [],
@@ -101,8 +113,9 @@ export default {
 
     if (this.mode === EDIT) {
       this.code = this.item.code;
+      this.barcode = this.item.barcode;
       this.size = this.item.size;
-      this.sku = this.item.sku.name || '';
+      this.sku = this.item.sku || '';
     }
   },
   computed: {
@@ -118,9 +131,9 @@ export default {
           const endpoint = this.mode === CREATE ? '/api/item/create' : '/api/item/update';
           const payload = {
             id: this.item.id || null,
-            size: this.size,
+            size: this.size.name,
             code: this.code,
-            skuId: this.sku,
+            skuId: this.sku.id,
             barcode: this.barcode,
           };
           this.send(endpoint, payload);
@@ -169,9 +182,13 @@ export default {
         });
     },
     goToItemPage() {
-      this.$router.push({
-        name: 'items',
-      });
+      if (this.mode === CREATE) {
+        this.$router.push({
+          name: 'items',
+        });
+      } else {
+        this.$router.go(this.$router.currentRoute);
+      }
     },
   },
 };

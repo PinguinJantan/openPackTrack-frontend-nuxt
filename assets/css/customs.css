@@ -5,3 +5,7 @@
   font-size: 12px;
   padding-left: 8px;
 }
+
+.clickable {
+  cursor: pointer;
+}
