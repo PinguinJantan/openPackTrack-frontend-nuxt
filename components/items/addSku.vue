@@ -79,9 +79,11 @@
 
 <script>
 import { mapActions } from 'vuex';
+import vueMultiselect from 'vue-multiselect';
 
 export default {
   name: 'AddSku',
+  components: { vueMultiselect },
   props: {
     value: {
       type: Boolean,

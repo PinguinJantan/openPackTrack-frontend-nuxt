@@ -1,6 +1,6 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm12>
+  <v-layout justify-center>
+    <v-flex xs10 sm10 mb-4>
       <v-btn color="primary mb-3" to="/items/create">Buat Item Baru</v-btn>
       <v-btn outline class="mb-3" @click="toggleImportModal = !toggleImportModal">Import Item</v-btn>
       <v-btn outline class="mb-3" @click="exportItems()">Export Item</v-btn>
@@ -10,7 +10,8 @@
         <v-text-field append-icon="search" 
                       label="Cari" 
                       single-line 
-                      hide-details 
+                      hide-details
+                      clearable
                       v-model="searchKeyword" />
       </v-card-title>
       <v-data-table :headers="headers" 
@@ -22,12 +23,12 @@
                     hide-actions 
                     class="elevation-1">
         <template slot="items" slot-scope="props">
-          <td>{{ props.item.code }}</td>
-          <td>{{ props.item.size }}</td>
-          <td>{{ props.item.sku.code }}</td>
-          <td>{{ props.item.sku.name }}</td>
-          <td>{{ props.item.sku.category }}</td>
-          <td>{{ props.item.sku.color }}</td>
+          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.code }}</td>
+          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.size }}</td>
+          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.code }}</td>
+          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.name }}</td>
+          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.category }}</td>
+          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.color }}</td>
           <td class="justify-center layout px-0">
             <v-btn icon class="mx-0" @click="editItem(props.item)">
               <v-icon color="teal">edit</v-icon>
@@ -38,9 +39,9 @@
       <div class="text-xs-center pt-2">
         <v-pagination v-model="pagination.page" 
                       :length="pages" 
-                      @next="fetchItems(pagination.page, searchKeyword)" 
-                      @previous="fetchItems(pagination.page, searchKeyword)" 
-                      @input="fetchItems(pagination.page, searchKeyword)" />
+                      @next="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)" 
+                      @previous="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)" 
+                      @input="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)" />
       </div>
     </v-flex>
     <import-modal :show="toggleImportModal" @close="handleCloseModal" />
@@ -48,6 +49,7 @@
                 :show="isAnyItemSelected" 
                 @close="selectedItem = {}" 
                 :item="selectedItem" />
+    <detail-modal v-model="isShowDetail" :item="detail" />
   </v-layout>
 </template>
 <script>
@@ -55,14 +57,19 @@ import { mapState, mapActions } from 'vuex';
 
 import ImportModal from '@/components/items/ImportModal';
 import EditModal from '@/components/items/EditModal.vue';
+import DetailModal from '@/components/items/DetailModal.vue';
+import _ from 'lodash';
 export default {
   components: {
     ImportModal,
     EditModal,
+    DetailModal,
   },
   data: () => {
     return {
       searchKeyword: '',
+      detail: null,
+      isShowDetail: false,
       totalItems: 0,
       loading: true,
       pagination: {
@@ -83,13 +90,21 @@ export default {
   },
   created() {
     this.fetchItems(1);
+    this.debouncedFetchItems = _.debounce(this.fetchItems, 10000);
   },
   methods: {
-    ...mapActions(['notify']),
-    fetchItems(page = 1, keyword = '') {
+    ...mapActions({
+      notify: 'notify',
+      detailItem: 'item/detailItem',
+    }),
+    fetchItems(page = 1, keyword = '', sortBy = 'code', descending = false) {
       this.loading = true;
       this.$axios
-        .$get(`/api/item/all?page=${page}&search=${keyword}`)
+        .$get(
+          `/api/item/all?page=${page}&search=${keyword || ''}&sortBy=${sortBy}&sortDirection=${
+            descending ? 'DESC' : 'ASC'
+          }`,
+        )
         .then(response => {
           this.loading = false;
           if (response.success) {
@@ -118,7 +133,27 @@ export default {
       win.focus();
     },
     editItem(item) {
-      this.selectedItem = Object.assign({}, item);
+      var procItem = {
+        id: item.id,
+        barcode: item.barcode,
+        code: item.code,
+        sku: {
+          id: item.sku.id,
+          code: item.sku.code,
+          name: item.sku.name,
+        },
+        size: {
+          name: item.size,
+        },
+      };
+      this.selectedItem = Object.assign({}, procItem);
+    },
+    showDetail(code) {
+      this.detail = null;
+      this.isShowDetail = true;
+      this.detailItem({ code }).then(result => {
+        this.detail = result;
+      });
     },
   },
   computed: {
@@ -135,7 +170,15 @@ export default {
   },
   watch: {
     searchKeyword(keyword) {
-      this.fetchItems(1, keyword);
+      this.debouncedFetchItems(1, keyword, this.pagination.sortBy, this.pagination.descending);
+    },
+    pagination(ob) {
+      this.fetchItems(
+        this.pagination.page,
+        this.searchKeyword,
+        this.pagination.sortBy,
+        this.pagination.descending,
+      );
     },
   },
 };

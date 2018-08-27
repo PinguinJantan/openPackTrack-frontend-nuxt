@@ -18,6 +18,19 @@ export const actions = {
     } catch (err) {
       dispatch('notify', { type: 'error', message: err.message }, { root: true })
     }
+  },
+  async detailItem({ dispatch }, { code }) {
+    let result
+    try {
+      result = await this.$axios.$get(`/api/item/${code}`)
+      if (result.success) {
+        return result.item
+      } else {
+        dispatch('notify', { type: 'error', message: result.message }, { root: true })
+      }
+    } catch(err) {
+      dispatch('notify', { type: 'error', message: err.message }, { root: true })
+    }
   }
 }
 
