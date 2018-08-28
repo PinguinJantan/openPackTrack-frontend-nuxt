@@ -32,13 +32,13 @@
           <v-flex xs6 md6 lg6 pr-3>
             <v-text-field
               label="Dibuat"
-              :value="$moment(item.createdAt).format('D MMMM YYYY h:mm:ss')"
+              :value="dayjs(item.createdAt).format('D MMMM YYYY h:mm:ss')"
               readonly/>
           </v-flex>
           <v-flex xs6 md6 lg6>
             <v-text-field
               label="Diupdate"
-              :value="$moment(item.updatedAt).format('D MMMM YYYY h:mm:ss')"
+              :value="dayjs(item.updatedAt).format('D MMMM YYYY h:mm:ss')"
               readonly/>
           </v-flex>
         </v-layout>
@@ -90,11 +90,12 @@
   </v-dialog>
 </template>
 <script>
+import dayjs from 'dayjs';
 export default {
   props: {
     value: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     item: {
       type: Function,
@@ -105,6 +106,9 @@ export default {
     hideFn() {
       this.$emit('input', false);
     },
+  },
+  created() {
+    this.dayjs = dayjs;
   },
 };
 </script>

@@ -58,7 +58,7 @@ import { mapState, mapActions } from 'vuex';
 import ImportModal from '@/components/items/ImportModal';
 import EditModal from '@/components/items/EditModal.vue';
 import DetailModal from '@/components/items/DetailModal.vue';
-import _ from 'lodash';
+import { debounce } from 'lodash';
 export default {
   components: {
     ImportModal,
@@ -90,7 +90,7 @@ export default {
   },
   created() {
     this.fetchItems(1);
-    this.debouncedFetchItems = _.debounce(this.fetchItems, 10000);
+    this.debouncedFetchItems = debounce(this.fetchItems, 10000);
   },
   methods: {
     ...mapActions({
