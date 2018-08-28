@@ -33,6 +33,9 @@
             <v-btn icon class="mx-0" @click="editItem(props.item)">
               <v-icon color="teal">edit</v-icon>
             </v-btn>
+            <v-btn icon class="mx-0" @click="showDetail(props.item.code, 'delete')">
+              <v-icon color="red">delete</v-icon>
+            </v-btn>
           </td>
         </template>
       </v-data-table>
@@ -49,7 +52,8 @@
                 :show="isAnyItemSelected" 
                 @close="selectedItem = {}" 
                 :item="selectedItem" />
-    <detail-modal v-model="isShowDetail" :item="detail" />
+    <detail-modal v-model="isShowDetail" :item="detail"/>
+    <detail-modal v-model="isShowDelete" :item="detail" mode="delete" :refresh="refreshCurrentPage"/>
   </v-layout>
 </template>
 <script>
@@ -70,6 +74,7 @@ export default {
       searchKeyword: '',
       detail: null,
       isShowDetail: false,
+      isShowDelete: false,
       totalItems: 0,
       loading: true,
       pagination: {
@@ -148,12 +153,21 @@ export default {
       };
       this.selectedItem = Object.assign({}, procItem);
     },
-    showDetail(code) {
+    showDetail(code, mode = 'detail') {
       this.detail = null;
-      this.isShowDetail = true;
+      if (mode === 'detail') this.isShowDetail = true;
+      else this.isShowDelete = true;
       this.detailItem({ code }).then(result => {
         this.detail = result;
       });
+    },
+    refreshCurrentPage() {
+      this.fetchItems(
+        this.pagination.page,
+        this.searchKeyword,
+        this.pagination.sortBy,
+        this.pagination.descending,
+      );
     },
   },
   computed: {
