@@ -46,7 +46,6 @@ module.exports = {
   plugins: [
     '@/plugins/vuetify',
     '@/plugins/vee-validate',
-    '@/plugins/vue-moment',
     '@/plugins/vue-multiselect',
   ],
 
