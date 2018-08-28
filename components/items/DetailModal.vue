@@ -1,8 +1,14 @@
 <template>
   <v-dialog persistent v-model="value" max-width="500">
     <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title>
-        Detail
+      <v-card-title class="headline grey lighten-2" primary-title v-if="mode === 'detail'">
+        <span >Detail</span>
+      </v-card-title>
+      <v-card-title class="headline red lighten-1" primary-title v-else>
+        <v-layout column>
+          <span class="title white--text">Hapus</span>
+          <span class="subheading white--text">Apakah anda ingin menghapus item berikut?</span>
+        </v-layout>
       </v-card-title>
       <v-card-text v-if="item">
         <v-layout pb-2>
@@ -84,13 +90,22 @@
         <v-progress-circular indeterminate color="primary"/>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="hideFn">Tutup</v-btn>
+        <v-btn v-if="mode === 'detail'" color="primary" @click="hideFn">Tutup</v-btn>
+        <template v-else>
+          <v-btn color="primary" :disabled="loading" @click="hideFn">Batal</v-btn>
+          <v-spacer/>
+          <v-btn color="error" :disabled="!item || loading" @click="deleteFn">
+            <v-progress-circular v-if="loading" indeterminate size="20"/>
+            Hapus
+          </v-btn>
+        </template>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 <script>
 import dayjs from 'dayjs';
+import { mapActions } from 'vuex';
 export default {
   props: {
     value: {
@@ -98,13 +113,40 @@ export default {
       default: false,
     },
     item: {
+      type: Object,
+      default: function() {
+        return {};
+      },
+    },
+    mode: {
+      type: String,
+      default: 'detail',
+    },
+    refresh: {
       type: Function,
       default: function() {},
     },
   },
+  data() {
+    return {
+      loading: false,
+    };
+  },
   methods: {
+    ...mapActions({
+      notify: 'notify',
+      deleteItem: 'item/deleteItem',
+    }),
     hideFn() {
       this.$emit('input', false);
+    },
+    deleteFn(id) {
+      this.loading = true;
+      this.deleteItem({ id: this.item.id }).then(() => {
+        this.loading = false;
+        this.refresh();
+        this.hideFn();
+      });
     },
   },
   created() {

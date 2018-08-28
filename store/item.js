@@ -31,6 +31,20 @@ export const actions = {
     } catch(err) {
       dispatch('notify', { type: 'error', message: err.message }, { root: true })
     }
+  },
+  async deleteItem({ dispatch }, { id }) {
+    let result
+    try {
+      result = await this.$axios.$delete(`/api/item/delete`, { data: { id } })
+      if (result.success) {
+        dispatch('notify', { type: 'teal', message: result.message }, { root: true })
+        return result
+      } else {
+        dispatch('notify', { type: 'error', message: result.message }, { root: true })
+      }
+    } catch(err) {
+      dispatch('notify', { type: 'error', message: err.message }, { root: true })
+    }
   }
 }
 
