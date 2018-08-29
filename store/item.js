@@ -35,7 +35,7 @@ export const actions = {
   async deleteItem({ dispatch }, { id }) {
     let result
     try {
-      result = await this.$axios.$delete(`/api/item/delete`, { data: { id } })
+      result = await this.$axios.$delete(`/api/item/delete/${id}`)
       if (result.success) {
         dispatch('notify', { type: 'teal', message: result.message }, { root: true })
         return result
