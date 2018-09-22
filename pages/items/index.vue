@@ -23,7 +23,7 @@
                     hide-actions 
                     class="elevation-1">
         <template slot="items" slot-scope="props">
-          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.code }}</td>
+          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.barcode }}</td>
           <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.size }}</td>
           <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.code }}</td>
           <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.name }}</td>
@@ -82,7 +82,7 @@ export default {
       },
       items: [],
       headers: [
-        { text: 'Kode', value: 'code' },
+        { text: 'Barcode', value: 'barcode' },
         { text: 'Ukuran', value: 'size' },
         { text: 'SKU', value: 'sku.code' },
         { text: 'Nama', value: 'sku.name' },
