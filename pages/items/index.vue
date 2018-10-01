@@ -111,9 +111,7 @@ export default {
       );
       win.focus();
     },
-    editItem(item) {
-      toggleEditModal = true;
-    },
+    editItem(item) {},
   },
   computed: {
     ...mapState(['token']),

@@ -34,7 +34,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
-import bahasa from 'vee-validate/dist/locale/id';
+
 export default {
   $_veeValidate: {
     validator: 'new',
@@ -44,9 +44,6 @@ export default {
     password: '',
     username: '',
   }),
-  mounted() {
-    this.$validator.localize('en', bahasa);
-  },
   methods: {
     ...mapActions(['notify']),
     login() {
