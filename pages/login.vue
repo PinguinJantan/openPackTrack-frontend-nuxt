@@ -40,6 +40,9 @@ export default {
     validator: 'new',
   },
   auth: false,
+  mounted() {
+    if (this.$auth.loggedIn) this.goToDashboard();
+  },
   data: () => ({
     password: '',
     username: '',
@@ -58,13 +61,16 @@ export default {
               },
             })
             .then(res => {
-              return this.$router.push('/dashboard');
+              return this.goToDashboard();
             })
             .catch(err => {
               this.notify({ type: 'error', message: err });
             });
         }
       });
+    },
+    goToDashboard() {
+      this.$router.push({ name: 'dashboard' });
     },
   },
 };
