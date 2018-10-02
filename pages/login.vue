@@ -34,19 +34,19 @@
 </template>
 <script>
 import { mapActions } from 'vuex';
-import bahasa from 'vee-validate/dist/locale/id';
+
 export default {
   $_veeValidate: {
     validator: 'new',
   },
   auth: false,
+  mounted() {
+    if (this.$auth.loggedIn) this.goToDashboard();
+  },
   data: () => ({
     password: '',
     username: '',
   }),
-  mounted() {
-    this.$validator.localize('en', bahasa);
-  },
   methods: {
     ...mapActions(['notify']),
     login() {
@@ -61,13 +61,16 @@ export default {
               },
             })
             .then(res => {
-              return this.$router.push('/dashboard');
+              return this.goToDashboard();
             })
             .catch(err => {
               this.notify({ type: 'error', message: err });
             });
         }
       });
+    },
+    goToDashboard() {
+      this.$router.push({ name: 'dashboard' });
     },
   },
 };
