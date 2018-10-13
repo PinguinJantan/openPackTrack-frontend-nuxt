@@ -55,7 +55,13 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
     '@nuxtjs/auth',
+    '@nuxtjs/toast',
   ],
+
+  toast: {
+    position: 'top-center',
+    duration: 10000,
+  },
 
   /*
   ** Axios module configuration
