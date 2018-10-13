@@ -50,7 +50,7 @@
   </v-layout>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 import ImportModal from '@/components/items/ImportModal';
 
@@ -82,7 +82,6 @@ export default {
     this.fetchItems(1);
   },
   methods: {
-    ...mapActions(['notify']),
     fetchItems(page = 1, keyword = '') {
       this.loading = true;
       this.$axios
@@ -97,7 +96,7 @@ export default {
           }
         })
         .catch(err => {
-          this.notify({ type: 'error', message: err.message });
+          this.$toast.error(err.message);
         });
     },
     handleCloseModal() {

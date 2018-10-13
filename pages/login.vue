@@ -33,8 +33,6 @@
   </v-layout>
 </template>
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   $_veeValidate: {
     validator: 'new',
@@ -48,7 +46,6 @@ export default {
     username: '',
   }),
   methods: {
-    ...mapActions(['notify']),
     login() {
       let self = this;
       this.$validator.validateAll().then(isFormValid => {
@@ -64,7 +61,7 @@ export default {
               return this.goToDashboard();
             })
             .catch(err => {
-              this.notify({ type: 'error', message: err });
+              this.$toast.error(err.message);
             });
         }
       });

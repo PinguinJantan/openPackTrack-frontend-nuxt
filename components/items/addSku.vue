@@ -138,10 +138,10 @@ export default {
             return;
           }
 
-          this.notify({ type: 'error', message: res.message });
+          this.$toast.show(res.message);
         })
         .catch(err => {
-          this.notify({ type: 'error', message: err.message });
+          this.$toast.error(err.message);
         });
     },
     saveSku() {
@@ -152,13 +152,16 @@ export default {
         category: this.category,
         color: this.color,
         gender: this.gender,
-      }).then(data => {
-        this.saving = false;
-        this.$emit('success', {
-          sku: data,
-        });
-        this.$emit('input', false);
-      });
+      })
+        .then(data => {
+          this.saving = false;
+          this.$emit('success', {
+            sku: data,
+          });
+          this.$emit('input', false);
+          this.$toast.show(data.message);
+        })
+        .catch(err => this.$toast.error(err.message));
     },
   },
   mounted() {

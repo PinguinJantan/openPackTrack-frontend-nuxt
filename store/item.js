@@ -13,10 +13,10 @@ export const actions = {
       if (result.success) {
         return result.sku
       } else {
-        dispatch('notify', { type: 'error', message: result.message }, { root: true })
+        return result;
       }
     } catch (err) {
-      dispatch('notify', { type: 'error', message: err.message }, { root: true })
+      return err
     }
   }
 }

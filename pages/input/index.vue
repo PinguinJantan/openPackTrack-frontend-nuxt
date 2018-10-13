@@ -114,8 +114,6 @@
 
 <script>
 import _find from 'lodash/find';
-import { mapActions } from 'vuex';
-
 import StepOne from '@/components/input/StepOne';
 
 export default {
@@ -160,7 +158,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['notify']),
     clearInput() {
       this.itemCode = '';
       this.innerCode = '';
@@ -176,10 +173,7 @@ export default {
           itemCode: this.itemCode,
         });
       } else {
-        this.notify({
-          type: 'error',
-          message: `Sudah memasukan kode ${this.innerCode}`,
-        });
+        this.$toast.error(`Sudah memasukan kode ${this.innerCode}`);
       }
     },
     handleAddItem() {
@@ -200,23 +194,17 @@ export default {
                 if (response.itemDetail) {
                   this.pushItem(response.itemDetail);
                 } else {
-                  this.notify({
-                    type: 'error',
-                    message: 'Kode Produk tidak ditemukan di database',
-                  });
+                  this.$toast.error('Kode produk tidak di temukan di database');
                 }
               } else {
-                this.notify({
-                  type: 'error',
-                  message: `Kode Inner sudah pernah digunakan di database`,
-                });
+                this.$toast.error('Kode inner sudah pernah di gunakan di database');
               }
               this.addBtnLoading = false;
               this.clearInput();
             })
             .catch(err => {
               this.addBtnLoading = false;
-              this.notify({ type: 'error', message: err.message });
+              this.$toast.error(err.message);
             });
         }
         this.$refs.inputItemType.focus();
@@ -257,13 +245,13 @@ export default {
         })
         .then(res => {
           if (res.success) {
-            this.notify({ type: 'success', message: 'Box berhasil disimpan' });
+            this.$toast.show('Box berhasil di simpan');
             return;
           }
-          this.notify({ type: 'info', message: res.message });
+          this.$toast.show(res.message);
         })
         .catch(err => {
-          this.notify({ type: 'error', message: err.message });
+          this.$toast.error(err.message);
         });
     },
   },

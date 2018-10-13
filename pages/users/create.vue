@@ -65,8 +65,6 @@
   </v-layout>
 </template>
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   $_veeValidate: {
     validator: 'new',
@@ -86,7 +84,6 @@ export default {
     this.fetchRoles();
   },
   methods: {
-    ...mapActions(['notify']),
     createUser() {
       this.$validator.validateAll().then(isFormValid => {
         if (isFormValid) {
@@ -106,10 +103,10 @@ export default {
                 return;
               }
 
-              this.notify({ type: 'error', messsage: res.messsage });
+              this.$toast.error(res.messsage);
             })
             .catch(err => {
-              this.notify({ type: 'error', messsage: err.messsage });
+              this.$toast.error(err.messsage);
             });
         }
       });
@@ -127,10 +124,10 @@ export default {
               return;
             }
 
-            this.notify({ type: 'error', messsage: res.messsage });
+            this.$toast.error(res.messsage);
           })
           .catch(err => {
-            this.notify({ type: 'error', messsage: err.messsage });
+            this.$toast.error(err.messsage);
             reject(err);
           });
       });
@@ -145,10 +142,10 @@ export default {
             return;
           }
 
-          this.notify({ type: 'error', messsage: res.messsage });
+          this.$toast.error(res.messsage);
         })
         .catch(err => {
-          this.notify({ type: 'error', messsage: err.messsage });
+          this.$toast.error(err.messsage);
         });
     },
     goToUsers() {
