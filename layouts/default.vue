@@ -88,13 +88,6 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-snackbar
-      :color="notification.color"
-      multi-line
-      v-model="snackbarMessage">{{ notification.message }}
-      <v-btn dark flat >Detail</v-btn>
-      <v-btn dark flat @click="notificationToggle">Close</v-btn>
-    </v-snackbar>
     <v-footer :fixed="fixed" app>
       <span>&copy; 2018</span>
     </v-footer>
@@ -102,7 +95,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -123,25 +116,12 @@ export default {
     };
   },
   computed: {
-    ...mapState(['notification']),
     ...mapGetters(['alert']),
     isLoggedIn() {
       return this.$auth.loggedIn;
     },
-    snackbarMessage: {
-      get() {
-        return this.notification.active;
-      },
-      set(val) {
-        this.notificationToggle();
-      },
-    },
   },
   methods: {
-    ...mapActions(['notify']),
-    notificationToggle() {
-      this.notify({ type: 'error', message: '' });
-    },
     logout() {
       this.$auth.logout().then(() => {
         this.$router.push({

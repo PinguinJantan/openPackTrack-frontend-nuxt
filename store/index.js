@@ -15,9 +15,6 @@ export const mutations = {
 }
 
 export const actions = {
-  notify(vuexCtx, payload) {
-    vuexCtx.commit('SET_NOTIFICATION', payload)
-  }
 }
 
 export const getters = {
