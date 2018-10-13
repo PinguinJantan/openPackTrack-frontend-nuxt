@@ -66,7 +66,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import vueMultiselect from 'vue-multiselect';
 import addSku from '@/components/items/addSku.vue';
 export default {
@@ -90,7 +89,6 @@ export default {
     this.fetchOptions('sku');
   },
   methods: {
-    ...mapActions(['notify']),
     showSkuModal() {
       this.showAddSku = true;
     },
@@ -110,10 +108,10 @@ export default {
                 });
                 return;
               }
-              this.notify({ type: 'info', message: res.message });
+              this.$toast.show(res.message);
             })
             .catch(err => {
-              this.notify({ type: 'error', message: err.message });
+              this.$toast.error(err.message);
             });
         }
       });
@@ -127,10 +125,10 @@ export default {
             return;
           }
 
-          this.notify({ type: 'error', message: res.message });
+          this.$toast.error(res.message);
         })
         .catch(err => {
-          this.notify({ type: 'error', message: err.message });
+          this.$toast.error(err.message);
         });
     },
     addSizeTag(newTag) {
