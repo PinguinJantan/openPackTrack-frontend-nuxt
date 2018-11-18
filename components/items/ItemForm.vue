@@ -8,7 +8,7 @@
             v-model="sku"
             label="name"
             track-by="name"
-            placeholder="SKU"
+            placeholder="Pilih SKU yang sudah ada"
             :allow-empty="false"
             tag-position="bottom"
             data-vv-as="SKU"
@@ -23,8 +23,11 @@
           </vue-multiselect>
           <div class="field-error v-messages error--text">{{ errors.has('sku') ? errors.first('sku') : '' }}</div>
         </v-flex>
-        <v-btn color="green" large @click="showAddSku = true">
-          <v-icon color="white">add</v-icon>
+        <v-layout align-center justify-center row fill-height style="height: 50px;">
+          <v-flex>atau</v-flex>
+        </v-layout>
+        <v-btn color="grey lighten-1" large @click="showAddSku = true">
+          Buat SKU baru
         </v-btn>
       </div>
       <v-text-field
