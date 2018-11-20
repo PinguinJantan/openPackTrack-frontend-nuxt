@@ -15,6 +15,7 @@
           data-vv-name="username"
           @keyup.enter="login"
           required
+          id="username"
         />
         <v-text-field
           v-model="password"
@@ -26,8 +27,9 @@
           type="password"
           @keyup.enter="login"
           required
+          id="password"
         />
-        <v-btn color="primary" @click="login">Login</v-btn>
+        <v-btn color="primary" @click="login" id="login-button">Login</v-btn>
       </form>
     </v-flex>
   </v-layout>

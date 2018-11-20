@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "status": "OK",
+  "user": {
+    "name": "Diky Arga",
+    "username": "dikyarga",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTU0MjczMTg4NiwiZXhwIjoxNTQyODE4Mjg2fQ.FakeTokenObvioslly",
+    "warehouseId": null,
+    "expiresAt": 1542818286
+  }
+}
