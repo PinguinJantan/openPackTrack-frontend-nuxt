@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "user": {
+    "id": 7,
+    "name": "Diky Arga",
+    "username": "dikyarga",
+    "email": "hello@dikyarga.com",
+    "identityNumber": "999999999",
+    "roles": ["admin"]
+  }
+}
