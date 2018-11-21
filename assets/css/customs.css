@@ -9,3 +9,7 @@
 .clickable {
   cursor: pointer;
 }
+
+.big-text-table td {
+  font-size: 16px !important;
+}
