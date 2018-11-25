@@ -57,8 +57,6 @@
   </v-layout>
 </template>
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   $_veeValidate: {
     validator: 'new',
@@ -83,7 +81,6 @@ export default {
     this.fetchRoles().then(() => this.fetchUser());
   },
   methods: {
-    ...mapActions(['notify']),
     fetchUser() {
       this.$axios.$get(`/api/user/${this.$route.params.username}`).then(res => {
         if (res.success) {
@@ -108,7 +105,7 @@ export default {
             }
           })
           .catch(err => {
-            this.notify({ type: 'error', message: err.message });
+            this.$toast.error(err.message);
           });
       });
     },
@@ -124,16 +121,16 @@ export default {
                 this.assignUserToRoles(this.user.id, this.selectedRole)
                   .then(success => {
                     if (success) {
-                      this.notify({ type: 'success', message: 'sukses update profil dan peran' });
+                      this.$toast.success('sukses update  profil dan peran');
                     } else {
-                      this.notify({ type: 'error', message: 'gagal saat mendelkasikan peran' });
+                      this.$toast.error('gagal saat mendelkasikan peran');
                     }
                   })
                   .catch(err => {
-                    this.notify({ type: 'error', message: err });
+                    this.$toast.error(err.message);
                   });
               } else {
-                this.notify({ type: 'success', message: 'sukses update profil' });
+                this.$toast.success('sukses update profil');
               }
             }
           });
@@ -144,7 +141,7 @@ export default {
       return new Promise((resolve, reject) => {
         // notify user role is empty
         if (!role) {
-          this.notify({ type: 'error', message: 'Peran tidak boleh kosong' });
+          this.$toast.error('peran tidak boleh kosong');
           resolve(false);
         }
 

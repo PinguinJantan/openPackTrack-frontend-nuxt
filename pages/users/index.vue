@@ -49,8 +49,6 @@
   </v-layout>
 </template>
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   data: () => {
     return {
@@ -74,7 +72,6 @@ export default {
     this.fetchItems(1);
   },
   methods: {
-    ...mapActions(['notify']),
     fetchItems(page = 1, keyword = '') {
       this.loading = true;
       this.$axios
@@ -89,7 +86,7 @@ export default {
           }
         })
         .catch(err => {
-          this.notify({ type: 'error', message: err.message });
+          this.$toast.error(err.message);
         });
     },
   },

@@ -86,7 +86,7 @@ export default {
         })
         .catch(err => {
           this.loadingProfile = false;
-          this.$store.dispatch('notify', { type: 'error', message: err.message });
+          this.$toast.error(err.message);
         });
     },
     validateStep() {
@@ -102,14 +102,11 @@ export default {
                   resolve({ valid: valid, model: this.formModel });
                 } else {
                   this.btnLoading = false;
-                  this.$store.dispatch('notify', {
-                    type: 'error',
-                    message: `karton kode ${this.formModel.cartonCode} sudah digunakan`,
-                  });
+                  this.$toast.error(`karton kode ${this.formModel.cartonCode} sudah digunakan`);
                 }
               })
               .catch(err => {
-                this.$store.dispatch('notify', { type: 'error', message: err.message });
+                this.$toast.error(err.message);
               });
           }
         });

@@ -57,7 +57,7 @@
   </v-layout>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 import ImportModal from '@/components/items/ImportModal';
 import EditModal from '@/components/items/EditModal.vue';
@@ -120,7 +120,7 @@ export default {
           }
         })
         .catch(err => {
-          this.notify({ type: 'error', message: err.message });
+          this.$toast.error(err.message);
         });
     },
     handleCloseModal() {

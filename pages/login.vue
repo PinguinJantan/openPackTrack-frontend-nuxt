@@ -15,6 +15,7 @@
           data-vv-name="username"
           @keyup.enter="login"
           required
+          id="username"
         />
         <v-text-field
           v-model="password"
@@ -25,29 +26,27 @@
           type="password"
           @keyup.enter="login"
           required
+          id="password"
         />
-        <v-btn color="primary" @click="login">Login</v-btn>
+        <v-btn color="primary" @click="login" id="login-button">Login</v-btn>
       </form>
     </v-flex>
   </v-layout>
 </template>
 <script>
-import { mapActions } from 'vuex';
-import bahasa from 'vee-validate/dist/locale/id';
 export default {
   $_veeValidate: {
     validator: 'new',
   },
   auth: false,
+  mounted() {
+    if (this.$auth.loggedIn) this.goToDashboard();
+  },
   data: () => ({
     password: '',
     username: '',
   }),
-  mounted() {
-    this.$validator.localize('en', bahasa);
-  },
   methods: {
-    ...mapActions(['notify']),
     login() {
       let self = this;
       this.$validator.validateAll().then(isFormValid => {
@@ -60,13 +59,16 @@ export default {
               },
             })
             .then(res => {
-              return this.$router.push('/dashboard');
+              return this.goToDashboard();
             })
             .catch(err => {
-              this.notify({ type: 'error', message: err });
+              this.$toast.error(err.message);
             });
         }
       });
+    },
+    goToDashboard() {
+      this.$router.push({ name: 'dashboard' });
     },
   },
 };
