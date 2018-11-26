@@ -16,11 +16,12 @@
 </template>
 
 <script>
+import ItemForm from '@/components/items/ItemForm';
 import vueMultiselect from 'vue-multiselect';
 import addSku from '@/components/items/addSku.vue';
 export default {
   name: 'CreateItem',
-  components: {},
+  components: { ItemForm },
   data() {
     return {
       code: '',

@@ -57,7 +57,7 @@
   </v-layout>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapActions } from 'vuex';
 
 import ImportModal from '@/components/items/ImportModal';
 import EditModal from '@/components/items/EditModal.vue';
@@ -99,7 +99,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      notify: 'notify',
       detailItem: 'item/detailItem',
     }),
     fetchItems(page = 1, keyword = '', sortBy = 'code', descending = false) {
