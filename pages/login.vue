@@ -20,7 +20,6 @@
         <v-text-field
           v-model="password"
           label="Kata Sandi"
-          :counter="10"
           :error-messages="errors.collect('password')"
           v-validate="'required'"
           data-vv-name="password"

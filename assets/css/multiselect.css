@@ -1,8 +1,12 @@
 .multiselect__tags {
   border-radius: 4px;
-  border: 2px solid rgba(0, 0, 0, .87);
+  border: 2px solid rgba(0, 0, 0, .54);
   min-height: 58px;
   padding-top: 18px;
+}
+
+.multiselect__tags:hover {
+  border-color: rgba(0, 0, 0, .87);
 }
 
 .multiselect__select {

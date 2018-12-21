@@ -1,79 +1,27 @@
 <template>
   <v-layout align-left justify-center>
     <v-flex xs12
-            sm6
-            md6
+            sm8
+            md8
             text-xs-center
             mt-5>
-      <h3>Buat Item Baru</h3>
-      <form>
-        <div style="display: flex; margin-bottom: 8px">
-          <v-flex text-xs-left>
-            <vue-multiselect
-              :options="skuOptions"
-              v-model="sku"
-              label="name"
-              track-by="name"
-              placeholder="SKU"
-              :allow-empty="false"
-              tag-position="bottom"
-              data-vv-as="SKU"
-              data-vv-name="sku"
-              v-validate="'required'">
-              <template slot="singleLabel" slot-scope="props">
-                {{ props.option.code }} ({{ props.option.name }})
-              </template>
-              <template slot="option" slot-scope="props">
-                {{ props.option.code }} ({{ props.option.name }})
-              </template>
-            </vue-multiselect>
-            <div class="field-error v-messages error--text">{{ errors.has('sku') ? errors.first('sku') : '' }}</div>
-          </v-flex>
-          <v-btn color="green" large @click="showSkuModal">
-            <v-icon color="white">add</v-icon>
-          </v-btn>
-        </div>
-        <v-text-field
-          v-model="code"
-          label="Code"
-          :error-messages="errors.collect('code')"
-          v-validate="'required'"
-          data-vv-name="code"
-          required
-          outline
-        />
-        <v-flex text-xs-left>
-          <vue-multiselect
-            :options="sizeOptions"
-            v-model="size"
-            label="name"
-            track-by="name"
-            placeholder="Ukuran"
-            :allow-empty="false"
-            tag-position="bottom"
-            @tag="addSizeTag"
-            :taggable="true"
-            v-validate="'required'"
-            data-vv-as="Ukuran"
-            data-vv-name="ukuran"/>
-          <div class="field-error v-messages error--text">{{ errors.has('ukuran') ? errors.first('ukuran') : '' }}</div>
-        </v-flex>
-        <v-btn color="primary" @click="create">Buat Item Baru</v-btn>
-      </form>
+      <h2 class="mb-3">Buat Item Baru</h2>
+      <v-card ma3>
+        <v-card-text>
+          <item-form/>
+        </v-card-text>
+      </v-card>
     </v-flex>
-    <add-sku v-model="showAddSku" @success="onSuccessAddSku"/>
   </v-layout>
 </template>
 
 <script>
+import ItemForm from '@/components/items/ItemForm';
 import vueMultiselect from 'vue-multiselect';
 import addSku from '@/components/items/addSku.vue';
 export default {
   name: 'CreateItem',
-  $_veeValidate: {
-    validator: 'new',
-  },
-  components: { addSku, vueMultiselect },
+  components: { ItemForm },
   data() {
     return {
       code: '',

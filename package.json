@@ -24,6 +24,7 @@
   "dependencies": {
     "@nuxtjs/auth": "^4.5.1",
     "@nuxtjs/axios": "^5.3.1",
+    "dayjs": "^1.7.7",
     "@nuxtjs/toast": "^3.0.1",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
@@ -31,6 +32,7 @@
     "lodash": "^4.17.5",
     "nuxt": "^1.4.0",
     "vee-validate": "^2.0.6",
+    "vue-moment": "^4.0.0",
     "vue-multiselect": "^2.1.0",
     "vuetify": "^1.1.8"
   },

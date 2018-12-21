@@ -3,31 +3,39 @@
     <v-flex md6 offset-md3>
       <v-card class="my-2">
         <v-card-text>
-          <h3 class="headline">Profil Karton Box</h3>
-          <v-select
-            :items="optionSelectProfile"
-            v-model="formModel.selectedProfile"
-            data-vv-as="Profile Karton"
-            :error-messages="errors.collect('profile')"
-            v-validate="'required'"
-            data-vv-name="profile"
-            :loading="loadingProfile"
-            item-text="type"
-            return-object
-            label="Select"
-            single-line
-            bottom />
-
-          <h3 class="headline">Kode Karton Box</h3>
-          <v-text-field
-            class="pt-0"
-            name="input-1-3"
-            v-model="formModel.cartonCode"
-            data-vv-as="Kode Karton"
-            :error-messages="errors.collect('code')"
-            v-validate="'required'"
-            data-vv-name="code"
-            single-line />
+          <v-flex>
+            <h3 class="headline">Profil Karton Box</h3>
+            <v-select
+              :items="optionSelectProfile"
+              v-model="formModel.selectedProfile"
+              data-vv-as="Profile Karton"
+              :error-messages="errors.collect('profile')"
+              v-validate="'required'"
+              data-vv-name="profile"
+              :loading="loadingProfile"
+              item-text="name"
+              return-object
+              label="Select"
+              single-line
+              bottom />
+          </v-flex>
+          <v-flex v-if="formModel.selectedProfile" class="pb-4">
+            <detail :profile="formModel.selectedProfile"/>
+          </v-flex>
+          <v-flex>
+            <h3 class="headline">Kode Karton Box</h3>
+            <v-text-field
+              ref="cartonCodeField"
+              class="pt-0"
+              name="input-1-3"
+              v-model="formModel.cartonCode"
+              data-vv-as="Kode Karton"
+              :error-messages="errors.collect('code')"
+              v-validate="'required'"
+              data-vv-name="code"
+              @keyup.enter="goToNextStep()"
+              single-line />
+          </v-flex>
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
@@ -39,7 +47,15 @@
 </template>
 
 <script>
+import Detail from '@/components/profile/Detail.vue';
 export default {
+  components: { Detail },
+  props: {
+    clear: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       formModel: {
@@ -63,7 +79,7 @@ export default {
           this.loadingProfile = false;
           if (response.success) {
             this.optionSelectProfile = response.profiles.map(element => {
-              element.type = `${element.type} - ${element.mixAmount}`;
+              // element.type = `${element.type} - ${element.mixAmount}`;
               return element;
             });
           }
@@ -99,6 +115,19 @@ export default {
   },
   created() {
     this.fetchListProfile();
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.cartonCodeField.focus();
+      console.log('created', this.$refs.cartonCodeField);
+    });
+  },
+  watch: {
+    clear(newRecord) {
+      if (newRecord) {
+        this.formModel.cartonCode = '';
+      }
+    },
   },
 };
 </script>
