@@ -1,14 +1,14 @@
 <template>
   <v-stepper class="pt-stepper elevation-0" v-model="step">
     <v-layout>
-      <v-flex md3>
+      <v-flex md3 sm3>
         <div v-if="step == 2" style="display: flex; justify-content: center; align-items: center; height: 100%;">
           <v-btn color="primary" @click="goToStepOne()">
             <v-icon>keyboard_arrow_left</v-icon> Kembali
           </v-btn>
         </div>
       </v-flex>
-      <v-flex md9>
+      <v-flex md9 sm9>
         <v-layout>
           <v-flex md10 offset-1>
             <v-stepper-header class="elevation-0">
@@ -27,7 +27,7 @@
       </v-stepper-content>
       <v-stepper-content step="2">
         <v-layout>
-          <v-flex md3>
+          <v-flex md3 sm3>
             <v-container>
               <v-card flat color="transparent">
                 <!-- <section>

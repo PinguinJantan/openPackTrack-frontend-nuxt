@@ -33,6 +33,7 @@
               :error-messages="errors.collect('code')"
               v-validate="'required'"
               data-vv-name="code"
+              @focus="$event.target.select()"
               @keyup.enter="goToNextStep()"
               single-line />
           </v-flex>
