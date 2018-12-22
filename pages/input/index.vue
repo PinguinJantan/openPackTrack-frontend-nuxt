@@ -1,12 +1,23 @@
 <template>
   <v-stepper class="pt-stepper elevation-0" v-model="step">
     <v-layout>
-      <v-flex md6 offset-md3>
-        <v-stepper-header class="elevation-0">
-          <v-stepper-step step="1" :complete="step > 1">Pilih Profil karton</v-stepper-step>
-          <v-divider/>
-          <v-stepper-step step="2" :complete="step > 2">Inputkan Inner Box</v-stepper-step>
-        </v-stepper-header>
+      <v-flex md3>
+        <div v-if="step == 2" style="display: flex; justify-content: center; align-items: center; height: 100%;">
+          <v-btn color="primary" @click="goToStepOne()">
+            <v-icon>keyboard_arrow_left</v-icon> Kembali
+          </v-btn>
+        </div>
+      </v-flex>
+      <v-flex md9>
+        <v-layout>
+          <v-flex md10 offset-1>
+            <v-stepper-header class="elevation-0">
+              <v-stepper-step step="1" :complete="step > 1">Pilih Profil karton</v-stepper-step>
+              <v-divider/>
+              <v-stepper-step step="2" :complete="step > 2">Inputkan Inner Box</v-stepper-step>
+            </v-stepper-header>
+          </v-flex>
+        </v-layout>
       </v-flex>
     </v-layout>
 
@@ -19,11 +30,11 @@
           <v-flex md3>
             <v-container>
               <v-card flat color="transparent">
-                <section>
+                <!-- <section>
                   <v-btn color="primary" @click="goToStepOne()">
                     <v-icon>keyboard_arrow_left</v-icon> Kembali
                   </v-btn>
-                </section>
+                </section> -->
                 <section>
                   <div class="subheading">Profil</div>
                   <div class="headline">
