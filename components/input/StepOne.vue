@@ -55,6 +55,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    currentStep: {
+      type: Number,
+      default: 1,
+    },
   },
   data() {
     return {
@@ -126,6 +130,13 @@ export default {
     clear(newRecord) {
       if (newRecord) {
         this.formModel.cartonCode = '';
+      }
+    },
+    currentStep(step) {
+      if (step == 1) {
+        setTimeout(() => {
+          this.$refs.cartonCodeField.focus();
+        }, 500);
       }
     },
   },

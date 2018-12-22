@@ -12,7 +12,7 @@
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <step-one ref="step1" @next-step="goToStepTwo()" :clear="newRecord"/>
+        <step-one ref="step1" @next-step="goToStepTwo()" :clear="newRecord" :current-step="step"/>
       </v-stepper-content>
       <v-stepper-content step="2">
         <v-layout>
@@ -249,6 +249,9 @@ export default {
         });
       }
     },
+    focusToItemType() {
+      this.$refs.inputItemType.focus();
+    },
     focusToInnerCode() {
       this.$refs.inputInnerCode.focus();
     },
@@ -332,6 +335,15 @@ export default {
         .catch(err => {
           this.$toast.error(err.message);
         });
+    },
+  },
+  watch: {
+    step(value) {
+      if (value == 2) {
+        setTimeout(() => {
+          this.focusToItemType();
+        }, 500);
+      }
     },
   },
   components: { StepOne, Detail },
