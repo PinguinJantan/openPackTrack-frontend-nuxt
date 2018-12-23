@@ -33,6 +33,7 @@
               :error-messages="errors.collect('code')"
               v-validate="'required'"
               data-vv-name="code"
+              @focus="$event.target.select()"
               @keyup.enter="goToNextStep()"
               single-line />
           </v-flex>
@@ -54,6 +55,10 @@ export default {
     clear: {
       type: Boolean,
       default: false,
+    },
+    currentStep: {
+      type: Number,
+      default: 1,
     },
   },
   data() {
@@ -126,6 +131,13 @@ export default {
     clear(newRecord) {
       if (newRecord) {
         this.formModel.cartonCode = '';
+      }
+    },
+    currentStep(step) {
+      if (step == 1) {
+        setTimeout(() => {
+          this.$refs.cartonCodeField.focus();
+        }, 500);
       }
     },
   },

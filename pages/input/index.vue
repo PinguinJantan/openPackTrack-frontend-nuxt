@@ -1,29 +1,35 @@
 <template>
   <v-stepper class="pt-stepper elevation-0" v-model="step">
     <v-layout>
-      <v-flex md6 offset-md3>
-        <v-stepper-header class="elevation-0">
-          <v-stepper-step step="1" :complete="step > 1">Pilih Profil karton</v-stepper-step>
-          <v-divider/>
-          <v-stepper-step step="2" :complete="step > 2">Inputkan Inner Box</v-stepper-step>
-        </v-stepper-header>
+      <v-flex md3 sm3>
+        <div v-if="step == 2" style="display: flex; justify-content: center; align-items: center; height: 100%;">
+          <v-btn color="primary" @click="goToStepOne()">
+            <v-icon>keyboard_arrow_left</v-icon> Kembali
+          </v-btn>
+        </div>
+      </v-flex>
+      <v-flex md9 sm9>
+        <v-layout>
+          <v-flex md10 offset-1>
+            <v-stepper-header class="elevation-0">
+              <v-stepper-step step="1" :complete="step > 1">Pilih Profil karton</v-stepper-step>
+              <v-divider/>
+              <v-stepper-step step="2" :complete="step > 2">Inputkan Inner Box</v-stepper-step>
+            </v-stepper-header>
+          </v-flex>
+        </v-layout>
       </v-flex>
     </v-layout>
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <step-one ref="step1" @next-step="goToStepTwo()" :clear="newRecord"/>
+        <step-one ref="step1" @next-step="goToStepTwo()" :clear="newRecord" :current-step="step"/>
       </v-stepper-content>
       <v-stepper-content step="2">
         <v-layout>
-          <v-flex md3>
+          <v-flex md3 sm3>
             <v-container>
               <v-card flat color="transparent">
-                <section>
-                  <v-btn color="primary" @click="goToStepOne()">
-                    <v-icon>keyboard_arrow_left</v-icon> Kembali
-                  </v-btn>
-                </section>
                 <section>
                   <div class="subheading">Profil</div>
                   <div class="headline">
@@ -249,6 +255,9 @@ export default {
         });
       }
     },
+    focusToItemType() {
+      this.$refs.inputItemType.focus();
+    },
     focusToInnerCode() {
       this.$refs.inputInnerCode.focus();
     },
@@ -332,6 +341,15 @@ export default {
         .catch(err => {
           this.$toast.error(err.message);
         });
+    },
+  },
+  watch: {
+    step(value) {
+      if (value == 2) {
+        setTimeout(() => {
+          this.focusToItemType();
+        }, 500);
+      }
     },
   },
   components: { StepOne, Detail },
