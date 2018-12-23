@@ -134,7 +134,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      notify: 'notify',
       deleteItem: 'item/deleteItem',
     }),
     hideFn() {

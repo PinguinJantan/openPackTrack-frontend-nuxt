@@ -37,13 +37,16 @@ export const actions = {
     try {
       result = await this.$axios.$delete(`/api/item/delete/${id}`)
       if (result.success) {
-        dispatch('notify', { type: 'teal', message: result.message }, { root: true })
+        // dispatch('notify', { type: 'teal', message: result.message }, { root: true })
+        this.$toast.show(result.message);
         return result
       } else {
-        dispatch('notify', { type: 'error', message: result.message }, { root: true })
+        // dispatch('notify', { type: 'error', message: result.message }, { root: true })
+        this.$toast.error(result.message);
       }
     } catch(err) {
-      dispatch('notify', { type: 'error', message: err.message }, { root: true })
+      // dispatch('notify', { type: 'error', message: err.message }, { root: true })
+      this.$toast.error(err.message);
     }
   }
 }

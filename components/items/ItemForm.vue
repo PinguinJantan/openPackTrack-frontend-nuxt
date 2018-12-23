@@ -129,7 +129,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['notify']),
     submit() {
       this.$validator.validateAll().then(isFormValid => {
         if (isFormValid) {
@@ -153,11 +152,10 @@ export default {
             this[`${option}Options`] = res[`${option}s`];
             return;
           }
-
-          this.notify({ type: 'error', message: res.message });
+          this.$toast.error(res.message);
         })
         .catch(err => {
-          this.notify({ type: 'error', message: err.message });
+          this.$toast.error(err.message);
         });
     },
     addSizeTag(newTag) {
@@ -180,10 +178,10 @@ export default {
             this.goToItemPage();
             return;
           }
-          this.notify({ type: 'info', message: res.message });
+          this.$toast.show(res.message);
         })
         .catch(err => {
-          return this.notify({ type: 'error', message: err.message });
+          return this.$toast.error(err.message);
         });
     },
     goToItemPage() {

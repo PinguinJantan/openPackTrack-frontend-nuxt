@@ -30,11 +30,6 @@
           <v-flex md3 sm3>
             <v-container>
               <v-card flat color="transparent">
-                <!-- <section>
-                  <v-btn color="primary" @click="goToStepOne()">
-                    <v-icon>keyboard_arrow_left</v-icon> Kembali
-                  </v-btn>
-                </section> -->
                 <section>
                   <div class="subheading">Profil</div>
                   <div class="headline">
