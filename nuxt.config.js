@@ -47,6 +47,7 @@ module.exports = {
     '@/plugins/vuetify',
     '@/plugins/vee-validate',
     '@/plugins/vue-multiselect',
+    '@/plugins/notify',
   ],
 
   /*
@@ -78,7 +79,7 @@ module.exports = {
       local: {
         endpoints: {
           login: { url: '/auth/login', method: 'post', propertyName: 'user.token' },
-          logout:false, 
+          logout:false,
           user: { url: '/api/user/me', method: 'get', propertyName: 'user'},
         },
         tokenRequired: true,
