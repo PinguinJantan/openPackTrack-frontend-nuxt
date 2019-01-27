@@ -1,11 +1,9 @@
-export const state = () => ({
-})
+export const state = () => ({})
 
-export const mutations = {
-}
+export const mutations = {}
 
 export const actions = {
-  async createSku({}, { name, code, category, color, gender }) {
+  async createSku (_, { name, code, category, color, gender }) {
     let result
 
     try {
@@ -15,25 +13,25 @@ export const actions = {
       throw err
     }
   },
-  async detailItem({}, { code }) {
+  async detailItem (_, { code }) {
     let result
     try {
       result = await this.$axios.$get(`/api/item/${code}`)
       return result.item
-    } catch(err) {
-      throw(err)
+    } catch (err) {
+      throw err
     }
   },
-  async deleteItem({}, { id }) {
+
+  async deleteItem (_, { id }) {
     let result
     try {
       result = await this.$axios.$delete(`/api/item/delete/${id}`)
       return result
-    } catch(err) {
-      throw(err);
+    } catch (err) {
+      throw err
     }
   }
 }
 
-export const getters = {
-}
+export const getters = {}
