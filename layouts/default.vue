@@ -33,9 +33,9 @@
             <v-list-tile-title v-text="menu.title"/>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-if="!isLoggedIn" 
-                     router 
-                     :to="'/login'" 
+        <v-list-tile v-if="!isLoggedIn"
+                     router
+                     :to="'/login'"
                      exact>
           <v-list-tile-action>
             <v-icon>account_box</v-icon>
@@ -59,11 +59,11 @@
 
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar fixed 
-               color="primary" 
-               flat 
-               dark 
-               dense 
+    <v-toolbar fixed
+               color="primary"
+               flat
+               dark
+               dense
                app>
       <v-toolbar-side-icon @click="drawer = !drawer"/>
       <v-toolbar-title v-text="title" />
@@ -116,7 +116,6 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['alert']),
     isLoggedIn() {
       return this.$auth.loggedIn;
     },

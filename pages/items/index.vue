@@ -7,20 +7,20 @@
       <v-card-title>
         Semua Item
         <v-spacer/>
-        <v-text-field append-icon="search" 
-                      label="Cari" 
-                      single-line 
+        <v-text-field append-icon="search"
+                      label="Cari"
+                      single-line
                       hide-details
                       clearable
                       v-model="searchKeyword" />
       </v-card-title>
-      <v-data-table :headers="headers" 
-                    :pagination.sync="pagination" 
-                    :total-items="totalItems" 
-                    :loading="loading" 
-                    :search="searchKeyword" 
-                    :items="items" 
-                    hide-actions 
+      <v-data-table :headers="headers"
+                    :pagination.sync="pagination"
+                    :total-items="totalItems"
+                    :loading="loading"
+                    :search="searchKeyword"
+                    :items="items"
+                    hide-actions
                     class="elevation-1">
         <template slot="items" slot-scope="props">
           <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.barcode }}</td>
@@ -40,17 +40,17 @@
         </template>
       </v-data-table>
       <div class="text-xs-center pt-2">
-        <v-pagination v-model="pagination.page" 
-                      :length="pages" 
-                      @next="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)" 
-                      @previous="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)" 
+        <v-pagination v-model="pagination.page"
+                      :length="pages"
+                      @next="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)"
+                      @previous="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)"
                       @input="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)" />
       </div>
     </v-flex>
     <import-modal :show="toggleImportModal" @close="handleCloseModal" />
-    <edit-modal v-if="isAnyItemSelected" 
-                :show="isAnyItemSelected" 
-                @close="selectedItem = {}" 
+    <edit-modal v-if="isAnyItemSelected"
+                :show="isAnyItemSelected"
+                @close="selectedItem = {}"
                 :item="selectedItem" />
     <detail-modal v-model="isShowDetail" :item="detail"/>
     <detail-modal v-model="isShowDelete" :item="detail" mode="delete" :refresh="refreshCurrentPage"/>
@@ -152,13 +152,16 @@ export default {
       };
       this.selectedItem = Object.assign({}, procItem);
     },
-    showDetail(code, mode = 'detail') {
+    async showDetail(code, mode = 'detail') {
       this.detail = null;
       if (mode === 'detail') this.isShowDetail = true;
       else this.isShowDelete = true;
-      this.detailItem({ code }).then(result => {
+      try {
+        let result = await this.detailItem({ code });
         this.detail = result;
-      });
+      } catch (message) {
+        this.$notifyError(message);
+      }
     },
     refreshCurrentPage() {
       this.fetchItems(

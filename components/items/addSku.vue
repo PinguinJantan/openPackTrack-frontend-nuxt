@@ -144,24 +144,24 @@ export default {
           this.$toast.error(err.message);
         });
     },
-    saveSku() {
+    async saveSku() {
       this.saving = true;
-      this.createSku({
+      const params = {
         code: this.code,
         name: this.name,
         category: this.category,
         color: this.color,
         gender: this.gender,
-      })
-        .then(data => {
-          this.saving = false;
-          this.$emit('success', {
-            sku: data,
-          });
-          this.$emit('input', false);
-          this.$toast.show(data.message);
-        })
-        .catch(err => this.$toast.error(err.message));
+      };
+
+      try {
+        const data = await this.createSku(params);
+        this.saving = false;
+        this.$emit('success', { sku: data });
+        this.$emit('input', false);
+      } catch (error) {
+        this.$notifyError(error.message);
+      }
     },
   },
   mounted() {

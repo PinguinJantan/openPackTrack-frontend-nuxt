@@ -5,48 +5,32 @@ export const mutations = {
 }
 
 export const actions = {
-  async createSku({ dispatch }, { name, code, category, color, gender }) {
+  async createSku({}, { name, code, category, color, gender }) {
     let result
 
     try {
       result = await this.$axios.$post('/api/sku/create', { code, name, category, color, gender })
-      if (result.success) {
-        return result.sku
-      } else {
-        return result;
-      }
+      return result.sku
     } catch (err) {
-      return err
+      throw err
     }
   },
-  async detailItem({ dispatch }, { code }) {
+  async detailItem({}, { code }) {
     let result
     try {
       result = await this.$axios.$get(`/api/item/${code}`)
-      if (result.success) {
-        return result.item
-      } else {
-        dispatch('notify', { type: 'error', message: result.message }, { root: true })
-      }
+      return result.item
     } catch(err) {
-      dispatch('notify', { type: 'error', message: err.message }, { root: true })
+      throw(err)
     }
   },
-  async deleteItem({ dispatch }, { id }) {
+  async deleteItem({}, { id }) {
     let result
     try {
       result = await this.$axios.$delete(`/api/item/delete/${id}`)
-      if (result.success) {
-        // dispatch('notify', { type: 'teal', message: result.message }, { root: true })
-        this.$toast.show(result.message);
-        return result
-      } else {
-        // dispatch('notify', { type: 'error', message: result.message }, { root: true })
-        this.$toast.error(result.message);
-      }
+      return result
     } catch(err) {
-      // dispatch('notify', { type: 'error', message: err.message }, { root: true })
-      this.$toast.error(err.message);
+      throw(err);
     }
   }
 }

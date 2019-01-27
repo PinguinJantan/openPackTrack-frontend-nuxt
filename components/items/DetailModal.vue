@@ -139,13 +139,17 @@ export default {
     hideFn() {
       this.$emit('input', false);
     },
-    deleteFn(id) {
+    async deleteFn(id) {
       this.loading = true;
-      this.deleteItem({ id: this.item.id }).then(() => {
+      try {
+        const result = await this.deleteItem({ id: this.item.id });
+        this.$notify(result.message);
         this.loading = false;
         this.refresh();
         this.hideFn();
-      });
+      } catch (error) {
+        this.$notifyError(error.message);
+      }
     },
   },
   created() {
