@@ -47,7 +47,7 @@ module.exports = {
     '@/plugins/vuetify',
     '@/plugins/vee-validate',
     '@/plugins/vue-multiselect',
-    '@/plugins/notify',
+    '@/plugins/notify'
   ],
 
   /*
@@ -57,12 +57,12 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    '@nuxtjs/toast',
+    '@nuxtjs/toast'
   ],
 
   toast: {
     position: 'top-center',
-    duration: 10000,
+    duration: 10000
   },
 
   /*
@@ -79,10 +79,10 @@ module.exports = {
       local: {
         endpoints: {
           login: { url: '/auth/login', method: 'post', propertyName: 'user.token' },
-          logout:false,
-          user: { url: '/api/user/me', method: 'get', propertyName: 'user'},
+          logout: false,
+          user: { url: '/api/user/me', method: 'get', propertyName: 'user' }
         },
-        tokenRequired: true,
+        tokenRequired: true
       }
     },
     redirect: {
@@ -90,9 +90,9 @@ module.exports = {
       logout: '/',
       callback: '/login',
       user: '/admin',
-      home: '/admin',
+      home: '/admin'
     },
-    resetOnError: true,
+    resetOnError: true
   },
 
   env: {
@@ -106,7 +106,7 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    extend(config, ctx) {
+    extend (config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
