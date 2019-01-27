@@ -141,7 +141,7 @@ export default {
       return new Promise((resolve, reject) => {
         // notify user role is empty
         if (!role) {
-          this.$toast.error('peran tidak boleh kosong');
+          this.$notifyError('peran tidak boleh kosong');
           resolve(false);
         }
 

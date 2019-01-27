@@ -36,7 +36,7 @@
                     {{ selectedProfile.name }}
                     <v-btn icon @click="showProfileDetail = true">
                       <v-icon>help</v-icon>
-                    </v-btn>                  
+                    </v-btn>
                   </div>
                 </section>
                 <section>
@@ -216,10 +216,7 @@ export default {
         },
       });
       if (arrayItems !== undefined) {
-        this.notify({
-          type: 'error',
-          message: `Sudah memasukan kode ${this.innerCode}`,
-        });
+        this.$notifyError(`Sudah memasukan kode ${this.innerCode}`);
       } else if (this.inputModel.selectedProfile.type === 'mix') {
         if (this.items.length < this.inputModel.selectedProfile.mixAmount) {
           this.items.push({
@@ -230,10 +227,7 @@ export default {
           });
         }
       } else if (inProfile === undefined) {
-        this.notify({
-          type: 'error',
-          message: `Tidak sesuai dengan profile ${this.inputModel.selectedProfile.name}`,
-        });
+        this.$notifyError(`Tidak sesuai dengan profile ${this.inputModel.selectedProfile.name}`);
       } else {
         let inItems = _filter(this.items, o => {
           if (o.type === itemDetail.skuName && o.size === itemDetail.size) return o;
@@ -241,10 +235,7 @@ export default {
         console.log(inItems, inProfile.amount);
 
         if (inItems && inItems.length >= inProfile.amount) {
-          this.notify({
-            type: 'error',
-            message: `Melebihi jumlah ${itemDetail.skuName} (${inProfile.amount})`,
-          });
+          this.$notifyError(`Melebihi jumlah ${itemDetail.skuName} (${inProfile.amount})`);
           return;
         }
         this.items.push({

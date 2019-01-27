@@ -5,16 +5,16 @@
         <span class="headline">Import Item</span>
       </v-card-title>
       <v-card-text class="text-xs-center">
-        <v-progress-circular v-if="isSaving" 
-                             indeterminate 
-                             :width="3" 
+        <v-progress-circular v-if="isSaving"
+                             indeterminate
+                             :width="3"
                              color="green"/>
-        <input v-if="isInitial || isFailed" 
-               type="file" 
-               accept="text/csv, .csv" 
+        <input v-if="isInitial || isFailed"
+               type="file"
+               accept="text/csv, .csv"
                @change="handleFileUpload($event.target.files)">
 
-        <h3 v-if="isSuccess">Data telah masuk kedalam database</h3> 
+        <h3 v-if="isSuccess">Data telah masuk kedalam database</h3>
       </v-card-text>
       <v-card-actions>
         <v-spacer/>
@@ -83,16 +83,13 @@ export default {
             this.currentStatus = STATUS_SUCCESS;
           } else {
             this.currentStatus = STATUS_FAILED;
-            this.notifyError(res.message);
+            this.$notifyError(res.message, { prefix: 'Update gagal karena' });
           }
         })
         .catch(err => {
           this.currentStatus = STATUS_FAILED;
-          this.notifyError(err.message);
+          this.$notifyError(err.message, { prefix: 'Update gagal karena' });
         });
-    },
-    notifyError(message) {
-      this.$toast.error(`update gagal karena ${message}`);
     },
   },
 };
