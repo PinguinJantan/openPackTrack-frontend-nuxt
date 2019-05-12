@@ -55,6 +55,7 @@
                     v-model="itemCode"
                     @keyup.enter="focusToInnerCode()"
                     single-line
+                    id="itemCodeInput"
                   />
                   <h3 class="title">Kode Inner</h3>
                   <v-text-field
@@ -66,6 +67,7 @@
                     v-model="innerCode"
                     @keyup.enter="handleAddItem()"
                     single-line
+                    id="innerCodeInput"
                   />
                   <v-btn
                     color="primary"
@@ -105,12 +107,17 @@
                           </th>
                         </tr>
                       </template>
-                      <template slot="items" slot-scope="props" class="bababa">
+                      <template slot="items" slot-scope="props">
                         <td class="text-xs-left">{{ props.item.type }}</td>
                         <td class="text-xs-left">{{ props.item.size }}</td>
                         <td class="text-xs-left">{{ props.item.code }}</td>
                         <td class="text-xs-left">
-                          <v-btn color="error" icon @click="removeItemFromTable(props.index)">
+                          <v-btn
+                            color="error"
+                            icon
+                            @click="removeItemFromTable(props.index)"
+                            class="delete-input"
+                          >
                             <v-icon small>delete</v-icon>
                           </v-btn>
                         </td>
@@ -127,10 +134,17 @@
               <v-flex>
                 <v-layout row>
                   <v-spacer />
-                  <v-btn color="secondary" @click="items = []" outline>Kosongkan Inputan</v-btn>
-                  <v-btn @click="onSaveInputScan()" 
-                         color="primary" 
-                         :disabled="!isAddBtnDisabled"
+                  <v-btn color="secondary" 
+                         @click="items = []" 
+                         outline 
+                         class="clear-input"
+                  >Kosongkan Inputan</v-btn
+                  >
+                  <v-btn
+                    @click="onSaveInputScan()"
+                    color="primary"
+                    id="saveInputButton"
+                    :disabled="!isAddBtnDisabled"
                   >Simpan</v-btn
                   >
                 </v-layout>

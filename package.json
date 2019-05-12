@@ -30,10 +30,11 @@
   "dependencies": {
     "@nuxtjs/auth": "^4.5.1",
     "@nuxtjs/axios": "^5.3.1",
-    "dayjs": "^1.7.7",
     "@nuxtjs/toast": "^3.0.1",
+    "dayjs": "^1.7.7",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "faker": "^4.1.0",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.5",
     "nuxt": "^2.6.3",
@@ -45,7 +46,7 @@
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "cross-env": "^5.1.4",
-    "cypress": "^3.1.2",
+    "cypress": "^3.2.0",
     "env-cmd": "^7.0.0",
     "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.9.0",

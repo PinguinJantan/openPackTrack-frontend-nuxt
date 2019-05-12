@@ -23,3 +23,9 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', () => { 
+  window.localStorage.setItem('auth._token.local', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTU1NzY0MTQzOCwiZXhwIjoxNTU3NzI3ODM4fQ.o5dGgMESHs-VHk2e685NzwkePUek_WbhjcIp-UFR6v0')
+  window.localStorage.setItem('auth.redirect', '/dashboard')
+  cy.setCookie('auth._token.local', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTU1NzY0MTQzOCwiZXhwIjoxNTU3NzI3ODM4fQ.o5dGgMESHs-VHk2e685NzwkePUek_WbhjcIp-UFR6v0')
+})
