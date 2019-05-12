@@ -18,6 +18,7 @@
               label="Select"
               single-line
               menu-props="bottom"
+              id="profileInput"
             />
           </v-flex>
           <v-flex v-if="formModel.selectedProfile" class="pb-4">
@@ -37,12 +38,19 @@
               @focus="$event.target.select()"
               @keyup.enter="goToNextStep()"
               single-line
+              id="codeInput"
             />
           </v-flex>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn :loading="btnLoading" color="primary" @click.native="goToNextStep()">Lanjut</v-btn>
+          <v-btn
+            :loading="btnLoading"
+            color="primary"
+            @click.native="goToNextStep()"
+            id="stepOneNextButton"
+          >Lanjut</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-flex>

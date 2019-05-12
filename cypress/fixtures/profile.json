@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "profiles": [{
+    "id": 1,
+    "name": "Vallen 5",
+    "mixAmount": null,
+    "type": "solid",
+    "profileItem": [{
+      "itemId": 1477,
+      "amount": 5,
+      "item": {
+        "skuId": 5,
+        "sizeId": 25,
+        "sku": {
+          "name": "VALLEN BM"
+        },
+        "size": {
+          "name": "38"
+        }
+      }
+    }]
+  }]
+}
