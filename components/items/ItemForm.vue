@@ -14,7 +14,8 @@
             tag-position="bottom"
             data-vv-as="SKU"
             data-vv-name="sku"
-            v-validate="'required'">
+            v-validate="'required'"
+          >
             <template slot="singleLabel" slot-scope="props">
               {{ props.option.code }} ({{ props.option.name }})
             </template>
@@ -22,7 +23,9 @@
               {{ props.option.code }} ({{ props.option.name }})
             </template>
           </vue-multiselect>
-          <div class="field-error v-messages error--text">{{ errors.has('sku') ? errors.first('sku') : '' }}</div>
+          <div class="field-error v-messages error--text">
+            {{ errors.has('sku') ? errors.first('sku') : '' }}
+          </div>
         </v-flex>
         <v-layout align-center justify-center row fill-height style="height: 50px;">
           <v-flex>atau</v-flex>
@@ -63,12 +66,15 @@
           :taggable="true"
           v-validate="'required'"
           data-vv-as="Ukuran"
-          data-vv-name="ukuran"/>
-        <div class="field-error v-messages error--text">{{ errors.has('ukuran') ? errors.first('ukuran') : '' }}</div>
+          data-vv-name="ukuran"
+        />
+        <div class="field-error v-messages error--text">
+          {{ errors.has('ukuran') ? errors.first('ukuran') : '' }}
+        </div>
       </v-flex>
-      <v-btn color="primary" @click="submit">{{ actionButtonText }}</v-btn>
+      <v-btn color="primary" large block @click="submit">{{ actionButtonText }}</v-btn>
     </form>
-    <add-sku v-model="showAddSku" @success="onSuccessAddSku"/>
+    <add-sku v-model="showAddSku" @success="onSuccessAddSku" />
   </div>
 </template>
 <script>
