@@ -2,10 +2,11 @@
   <v-stepper class="pt-stepper elevation-0" v-model="step">
     <v-layout>
       <v-flex md3 sm3>
-        <div v-if="step == 2" style="display: flex; justify-content: center; align-items: center; height: 100%;">
-          <v-btn color="primary" @click="goToStepOne()">
-            <v-icon>keyboard_arrow_left</v-icon> Kembali
-          </v-btn>
+        <div
+          v-if="step == 2"
+          style="display: flex; justify-content: center; align-items: center; height: 100%;"
+        >
+          <v-btn @click="goToStepOne()"> <v-icon>keyboard_arrow_left</v-icon> Kembali </v-btn>
         </div>
       </v-flex>
       <v-flex md9 sm9>
@@ -13,7 +14,7 @@
           <v-flex md10 offset-1>
             <v-stepper-header class="elevation-0">
               <v-stepper-step step="1" :complete="step > 1">Pilih Profil karton</v-stepper-step>
-              <v-divider/>
+              <v-divider />
               <v-stepper-step step="2" :complete="step > 2">Inputkan Inner Box</v-stepper-step>
             </v-stepper-header>
           </v-flex>
@@ -23,7 +24,7 @@
 
     <v-stepper-items>
       <v-stepper-content step="1">
-        <step-one ref="step1" @next-step="goToStepTwo()" :clear="newRecord" :current-step="step"/>
+        <step-one ref="step1" @next-step="goToStepTwo()" :clear="newRecord" :current-step="step" />
       </v-stepper-content>
       <v-stepper-content step="2">
         <v-layout>
@@ -53,7 +54,8 @@
                     v-validate="'required'"
                     v-model="itemCode"
                     @keyup.enter="focusToInnerCode()"
-                    single-line />
+                    single-line
+                  />
                   <h3 class="title">Kode Inner</h3>
                   <v-text-field
                     ref="inputInnerCode"
@@ -63,12 +65,16 @@
                     v-validate="'required'"
                     v-model="innerCode"
                     @keyup.enter="handleAddItem()"
-                    single-line />
-                  <v-btn color="primary"
-                         :disabled="isAddBtnDisabled"
-                         @click="handleAddItem()"
-                         :loading="addBtnLoading"
-                         block>Tambahkan Sepatu</v-btn>
+                    single-line
+                  />
+                  <v-btn
+                    color="primary"
+                    :disabled="isAddBtnDisabled"
+                    @click="handleAddItem()"
+                    :loading="addBtnLoading"
+                    block
+                  >Tambahkan Sepatu</v-btn
+                  >
                 </section>
                 <section class="text-xs-center">
                   <div class="title">Jumlah</div>
@@ -82,17 +88,19 @@
               <v-flex style="max-height: 80vh;">
                 <v-card class="table-input mb-5" flat>
                   <v-container>
-                    <v-btn color="secondary" @click="items = []" outline>Kosongkan Inputan</v-btn>
                     <v-data-table
                       class="table-narrow big-text-table"
                       :headers="headers"
                       :items="items"
-                      hide-actions>
+                      hide-actions
+                    >
                       <template slot="headers" slot-scope="props">
                         <tr>
-                          <th v-for="header in props.headers"
-                              :key="header.text"
-                              class="column sortable text-xs-left" >
+                          <th
+                            v-for="header in props.headers"
+                            :key="header.text"
+                            class="column sortable text-xs-left"
+                          >
                             {{ header.text }}
                           </th>
                         </tr>
@@ -118,8 +126,13 @@
               </v-flex>
               <v-flex>
                 <v-layout row>
-                  <v-spacer/>
-                  <v-btn @click="onSaveInputScan()" color="primary" :disabled="!isAddBtnDisabled">Simpan</v-btn>
+                  <v-spacer />
+                  <v-btn color="secondary" @click="items = []" outline>Kosongkan Inputan</v-btn>
+                  <v-btn @click="onSaveInputScan()" 
+                         color="primary" 
+                         :disabled="!isAddBtnDisabled"
+                  >Simpan</v-btn
+                  >
                 </v-layout>
               </v-flex>
             </v-layout>
@@ -129,9 +142,9 @@
     </v-stepper-items>
     <v-dialog v-model="showProfileDetail" max-width="500px">
       <v-card>
-        <detail :profile="inputModel.selectedProfile"/>
+        <detail :profile="inputModel.selectedProfile" />
         <v-card-actions>
-          <v-spacer/>
+          <v-spacer />
           <v-btn color="primary" @click="showProfileDetail = false">
             Tutup
           </v-btn>
@@ -347,7 +360,7 @@ export default {
 };
 </script>
 
-<style lang="stylus" >
+<style lang="stylus">
 .pt-stepper
   section
     margin-bottom 1rem

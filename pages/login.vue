@@ -1,10 +1,6 @@
 <template>
   <v-layout align-center justify-center>
-    <v-flex xs12 
-            sm4 
-            md4 
-            text-xs-center 
-            mt-5>
+    <v-flex xs12 sm4 md4 text-xs-center mt-5>
       <h3>Masuk kedalam sistem PackTrack</h3>
       <form>
         <v-text-field

@@ -17,10 +17,11 @@
               return-object
               label="Select"
               single-line
-              bottom />
+              menu-props="bottom"
+            />
           </v-flex>
           <v-flex v-if="formModel.selectedProfile" class="pb-4">
-            <detail :profile="formModel.selectedProfile"/>
+            <detail :profile="formModel.selectedProfile" />
           </v-flex>
           <v-flex>
             <h3 class="headline">Kode Karton Box</h3>
@@ -35,12 +36,13 @@
               data-vv-name="code"
               @focus="$event.target.select()"
               @keyup.enter="goToNextStep()"
-              single-line />
+              single-line
+            />
           </v-flex>
         </v-card-text>
         <v-card-actions>
-          <v-spacer/>
-          <v-btn :loading="btnLoading" color="primary" @click.native="goToNextStep()">Continue</v-btn>
+          <v-spacer />
+          <v-btn :loading="btnLoading" color="primary" @click.native="goToNextStep()">Lanjut</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
