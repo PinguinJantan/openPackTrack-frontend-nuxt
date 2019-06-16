@@ -1,22 +1,13 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      fixed
-      width=250
-      app>
+    <v-navigation-drawer v-model="drawer" fixed width="250" app>
       <v-list>
-        <v-list-tile
-          router
-          :to="menu.to"
-          :key="i"
-          v-for="(menu, i) in menus"
-          exact>
+        <v-list-tile router :to="menu.to" :key="i" v-for="(menu, i) in menus" exact>
           <v-list-tile-action>
-            <v-icon v-html="menu.icon"/>
+            <v-icon v-html="menu.icon" />
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="menu.title"/>
+            <v-list-tile-title v-text="menu.title" />
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile
@@ -24,19 +15,17 @@
           router
           :to="menu.to"
           :key="menu.title"
-          v-for="(menu) in loggedInMenus"
-          exact>
+          v-for="menu in dynamicMenus"
+          exact
+        >
           <v-list-tile-action>
-            <v-icon v-html="menu.icon"/>
+            <v-icon v-html="menu.icon" />
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title v-text="menu.title"/>
+            <v-list-tile-title v-text="menu.title" />
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile v-if="!isLoggedIn"
-                     router
-                     :to="'/login'"
-                     exact>
+        <v-list-tile v-if="!isLoggedIn" router :to="'/login'" exact>
           <v-list-tile-action>
             <v-icon>account_box</v-icon>
           </v-list-tile-action>
@@ -56,29 +45,24 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar fixed
-               color="primary"
-               flat
-               dark
-               dense
+    <v-toolbar fixed 
+               color="primary" 
+               flat 
+               dark 
+               dense 
                app>
-      <v-toolbar-side-icon @click="drawer = !drawer"/>
+      <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
-      <v-spacer/>
+      <v-spacer />
     </v-toolbar>
     <v-content>
       <v-container>
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer
-      temporary
-      :right="right"
-      v-model="rightDrawer"
-      fixed>
+    <v-navigation-drawer temporary :right="right" v-model="rightDrawer" fixed>
       <v-list>
         <v-list-tile @click.native="right = !right">
           <v-list-tile-action>
@@ -97,6 +81,13 @@
 <script>
 import { mapGetters } from 'vuex';
 
+const modelMenus = [
+  { icon: 'folder', title: 'Item', to: '/items', modelResource: 'item' },
+  { icon: 'account_box', title: 'Pengguna', to: '/users', modelResource: 'user' },
+  { icon: 'account_box', title: 'Pengguna', to: '/users', modelResource: '' },
+];
+const loggedInMenus = [{ icon: 'play_for_work', title: 'Input', to: '/input' }];
+
 export default {
   data() {
     return {
@@ -104,11 +95,6 @@ export default {
       drawer: false,
       fixed: false,
       menus: [{ icon: 'apps', title: 'Beranda', to: '/' }],
-      loggedInMenus: [
-        { icon: 'folder', title: 'Item', to: '/items' },
-        { icon: 'play_for_work', title: 'Input', to: '/input' },
-        { icon: 'account_box', title: 'Pengguna', to: '/users' },
-      ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
@@ -116,8 +102,18 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(['roleResources']),
     isLoggedIn() {
       return this.$auth.loggedIn;
+    },
+    dynamicMenus() {
+      return this.roleResources.filter(role => {
+        modelMenus.forEach(menu => {
+          if (menu.modelResource === role.name) return true;
+        });
+
+        return false;
+      });
     },
   },
   methods: {
