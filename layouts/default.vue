@@ -82,11 +82,14 @@
 import { mapGetters } from 'vuex';
 
 const modelMenus = [
-  { icon: 'folder', title: 'Item', to: '/items', modelResource: 'item' },
-  { icon: 'account_box', title: 'Pengguna', to: '/users', modelResource: 'user' },
-  { icon: 'account_box', title: 'Pengguna', to: '/users', modelResource: '' },
+  { icon: 'folder', title: 'Item', to: '/items', name: 'item' },
+  { icon: 'account_box', title: 'Pengguna', to: '/users', name: 'user' },
 ];
+
 const loggedInMenus = [{ icon: 'play_for_work', title: 'Input', to: '/input' }];
+
+const isMenuAvailable = (modelMenu, modelResources) =>
+  !!modelResources.find(modelResource => modelResource.name === modelMenu.name);
 
 export default {
   data() {
@@ -107,13 +110,7 @@ export default {
       return this.$auth.loggedIn;
     },
     dynamicMenus() {
-      return this.roleResources.filter(role => {
-        modelMenus.forEach(menu => {
-          if (menu.modelResource === role.name) return true;
-        });
-
-        return false;
-      });
+      return modelMenus.filter(menu => isMenuAvailable(menu, this.roleResources));
     },
   },
   methods: {
