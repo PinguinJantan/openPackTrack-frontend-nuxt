@@ -2,58 +2,96 @@
   <v-layout justify-center>
     <v-flex xs10 sm10 mb-4>
       <v-btn color="primary mb-3" to="/items/create">Buat Item Baru</v-btn>
-      <v-btn outline class="mb-3" @click="toggleImportModal = !toggleImportModal">Import Item</v-btn>
+      <v-btn outline 
+             class="mb-3" 
+             @click="toggleImportModal = !toggleImportModal"
+      >Import Item</v-btn
+      >
       <v-btn outline class="mb-3" @click="exportItems()">Export Item</v-btn>
       <v-card-title>
         Semua Item
-        <v-spacer/>
-        <v-text-field append-icon="search"
-                      label="Cari"
-                      single-line
-                      hide-details
-                      clearable
-                      v-model="searchKeyword" />
+        <v-spacer />
+        <v-text-field
+          append-icon="search"
+          label="Cari"
+          single-line
+          hide-details
+          clearable
+          v-model="searchKeyword"
+        />
       </v-card-title>
-      <v-data-table :headers="headers"
-                    :pagination.sync="pagination"
-                    :total-items="totalItems"
-                    :loading="loading"
-                    :search="searchKeyword"
-                    :items="items"
-                    hide-actions
-                    class="elevation-1">
-        <template slot="items" slot-scope="props">
-          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.barcode }}</td>
-          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.size }}</td>
-          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.code }}</td>
-          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.name }}</td>
-          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.category }}</td>
-          <td class="clickable" @click="showDetail(props.item.code)">{{ props.item.sku.color }}</td>
+      <v-data-table
+        :headers="headers"
+        :pagination.sync="pagination"
+        :total-items="pagination.totalItems"
+        :loading="loading"
+        :search="searchKeyword"
+        :items="items"
+        hide-actions
+        class="elevation-1"
+      >
+        <template slot="items" slot-scope="{ item }">
+          <td class="clickable" @click="showDetail(item.code)">{{ item.barcode }}</td>
+          <td class="clickable" @click="showDetail(item.code)">{{ item.size }}</td>
+          <td class="clickable" @click="showDetail(item.code)">{{ item.sku.code }}</td>
+          <td class="clickable" @click="showDetail(item.code)">{{ item.sku.name }}</td>
+          <td class="clickable" @click="showDetail(item.code)">{{ item.sku.category }}</td>
+          <td class="clickable" @click="showDetail(item.code)">{{ item.sku.color }}</td>
           <td class="justify-center layout px-0">
-            <v-btn icon class="mx-0" @click="editItem(props.item)">
+            <v-btn icon class="mx-0" @click="editItem(item)">
               <v-icon color="teal">edit</v-icon>
             </v-btn>
-            <v-btn icon class="mx-0" @click="showDetail(props.item.code, 'delete')">
+            <v-btn icon class="mx-0" @click="showDetail(item.code, 'delete')">
               <v-icon color="red">delete</v-icon>
             </v-btn>
           </td>
         </template>
       </v-data-table>
       <div class="text-xs-center pt-2">
-        <v-pagination v-model="pagination.page"
-                      :length="pages"
-                      @next="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)"
-                      @previous="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)"
-                      @input="fetchItems(pagination.page, searchKeyword, pagination.sortBy || 'code', pagination.descending)" />
+        <v-pagination
+          v-model="pagination.page"
+          :length="pages"
+          @next="
+            fetchItems(
+              pagination.page,
+              searchKeyword,
+              pagination.sortBy || 'code',
+              pagination.descending,
+            )
+          "
+          @previous="
+            fetchItems(
+              pagination.page,
+              searchKeyword,
+              pagination.sortBy || 'code',
+              pagination.descending,
+            )
+          "
+          @input="
+            fetchItems(
+              pagination.page,
+              searchKeyword,
+              pagination.sortBy || 'code',
+              pagination.descending,
+            )
+          "
+        />
       </div>
     </v-flex>
     <import-modal :show="toggleImportModal" @close="handleCloseModal" />
-    <edit-modal v-if="isAnyItemSelected"
-                :show="isAnyItemSelected"
-                @close="selectedItem = {}"
-                :item="selectedItem" />
-    <detail-modal v-model="isShowDetail" :item="detail"/>
-    <detail-modal v-model="isShowDelete" :item="detail" mode="delete" :refresh="refreshCurrentPage"/>
+    <edit-modal
+      v-if="isAnyItemSelected"
+      :show="isAnyItemSelected"
+      @close="selectedItem = {}"
+      :item="selectedItem"
+    />
+    <detail-modal v-model="isShowDetail" :item="detail" />
+    <detail-modal
+      v-model="isShowDelete"
+      :item="detail"
+      mode="delete"
+      :refresh="refreshCurrentPage"
+    />
   </v-layout>
 </template>
 <script>
@@ -75,7 +113,6 @@ export default {
       detail: null,
       isShowDetail: false,
       isShowDelete: false,
-      totalItems: 0,
       loading: true,
       pagination: {
         rowPerPage: 10,
@@ -93,7 +130,7 @@ export default {
       selectedItem: {},
     };
   },
-  created() {
+  mounted() {
     this.fetchItems(1);
     this.debouncedFetchItems = debounce(this.fetchItems, 10000);
   },
@@ -113,9 +150,8 @@ export default {
           this.loading = false;
           if (response.success) {
             this.items = response.item;
-            this.pagination.page = page;
+            this.pagination.page = response.pagination.currentPage;
             this.pagination.totalItems = response.pagination.total;
-            this.totalItems = response.pagination.pageCount;
           }
         })
         .catch(err => {
@@ -174,9 +210,7 @@ export default {
   },
   computed: {
     pages() {
-      if (this.pagination.rowPerPage == null || this.pagination.totalItems == null) {
-        return 0;
-      }
+      if (this.pagination.rowPerPage == null || this.pagination.totalItems == null) return 0;
 
       return Math.ceil(this.pagination.totalItems / this.pagination.rowPerPage);
     },
