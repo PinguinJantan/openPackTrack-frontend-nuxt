@@ -9,11 +9,14 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtServerInit ({ commit, state }, ctx) {
+  async nuxtServerInit ({ dispatch }) {
+    await dispatch('fetchResourceRoles')
+  },
+  async fetchResourceRoles ({ commit, state }) {
     if (!state.auth.loggedIn) return
     // get role resources
     try {
-      const result = await ctx.$axios.get(`/api/user/role/${state.auth.user.roles[0]}`)
+      const result = await this.$axios.get(`/api/user/role/${state.auth.user.roles[0]}`)
       commit('SET_ROLE_RESOURCES', result.data.role.resources)
     } catch (error) {
       console.log('error :', error)

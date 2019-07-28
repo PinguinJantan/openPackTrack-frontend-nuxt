@@ -30,6 +30,7 @@
   </v-layout>
 </template>
 <script>
+import { mapActions } from 'vuex';
 export default {
   $_veeValidate: {
     validator: 'new',
@@ -43,6 +44,7 @@ export default {
     username: '',
   }),
   methods: {
+    ...mapActions(['fetchResourceRoles']),
     login() {
       let self = this;
       this.$validator.validateAll().then(isFormValid => {
@@ -55,6 +57,7 @@ export default {
               },
             })
             .then(res => {
+              this.fetchResourceRoles();
               return this.goToDashboard();
             })
             .catch(err => {
