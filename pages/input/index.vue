@@ -132,7 +132,7 @@
                 </v-card>
               </v-flex>
               <v-flex>
-                <v-layout row>
+                <v-layout row class="actions">
                   <v-spacer />
                   <v-btn color="secondary" 
                          @click="items = []" 
@@ -404,4 +404,9 @@ export default {
 
 .container
   padding 0 16px
+.actions
+  position: fixed;
+  right: 10%;
+  bottom: 50px;
+  background-color: white;
 </style>
