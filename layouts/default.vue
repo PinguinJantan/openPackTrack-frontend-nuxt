@@ -91,6 +91,15 @@ const loggedInMenus = [{ icon: 'play_for_work', title: 'Input', to: '/input' }];
 const isMenuAvailable = (modelMenu, modelResources) =>
   !!modelResources.find(modelResource => modelResource.name === modelMenu.name);
 
+const inputMenu = {
+  icon: 'input',
+  title: 'Input',
+  to: '/input',
+  name: 'input',
+};
+
+const roleCanAccessInput = ['admin', 'basic'];
+
 export default {
   data() {
     return {
@@ -110,7 +119,17 @@ export default {
       return this.$auth.loggedIn;
     },
     dynamicMenus() {
-      return modelMenus.filter(menu => isMenuAvailable(menu, this.roleResources));
+      const shouldShowInputMenu =
+        this.$auth.user &&
+        !!this.$auth.user.roles.find(role => {
+          return roleCanAccessInput.includes(role);
+        });
+      const additionalMenu = shouldShowInputMenu ? [inputMenu] : [];
+
+      return [
+        ...additionalMenu,
+        ...modelMenus.filter(menu => isMenuAvailable(menu, this.roleResources)),
+      ];
     },
   },
   methods: {
