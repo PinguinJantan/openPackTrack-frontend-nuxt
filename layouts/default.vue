@@ -72,9 +72,6 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; 2018</span>
-    </v-footer>
   </v-app>
 </template>
 
@@ -105,7 +102,6 @@ export default {
     return {
       clipped: false,
       drawer: false,
-      fixed: false,
       menus: [{ icon: 'apps', title: 'Beranda', to: '/' }],
       miniVariant: false,
       right: true,
