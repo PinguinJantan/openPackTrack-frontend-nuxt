@@ -133,6 +133,7 @@
                     @click="onSaveInputScan()"
                     color="primary"
                     id="saveInputButton"
+                    ref="saveInput"
                     :disabled="!isAddBtnDisabled"
                   >Simpan</v-btn
                   >
@@ -356,6 +357,13 @@ export default {
         setTimeout(() => {
           this.focusToItemType();
         }, 500);
+      }
+    },
+    isAddBtnDisabled(newValue) {
+      if (newValue) {
+        this.$nextTick(() => {
+          this.$refs.saveInput.$el.focus();
+        });
       }
     },
   },
