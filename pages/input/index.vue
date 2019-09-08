@@ -9,17 +9,6 @@
           <v-btn @click="goToStepOne()"> <v-icon>keyboard_arrow_left</v-icon> Kembali </v-btn>
         </div>
       </v-flex>
-      <v-flex md9 sm9>
-        <v-layout>
-          <v-flex md10 offset-1>
-            <v-stepper-header class="elevation-0">
-              <v-stepper-step step="1" :complete="step > 1">Pilih Profil karton</v-stepper-step>
-              <v-divider />
-              <v-stepper-step step="2" :complete="step > 2">Inputkan Inner Box</v-stepper-step>
-            </v-stepper-header>
-          </v-flex>
-        </v-layout>
-      </v-flex>
     </v-layout>
 
     <v-stepper-items>
