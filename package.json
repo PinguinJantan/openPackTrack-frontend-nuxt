@@ -39,7 +39,7 @@
     "lodash": "^4.17.5",
     "nuxt": "^2.6.3",
     "vee-validate": "^2.0.6",
-    "vue-moment": "^4.0.0",
+    "vue-moment": "^4.1.0",
     "vue-multiselect": "^2.1.0",
     "vuetify": "^1.5.14"
   },
